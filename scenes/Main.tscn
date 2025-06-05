@@ -1,9 +1,39 @@
+
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="2"]
+[gd_scene load_steps=5 format=3 uid="uid://citgr4h7kjmw2"]
+
+[ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_elqb8"]
+size = Vector2(1920, 196)
+
+[sub_resource type="Gradient" id="Gradient_rvslj"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.0784314, 0.419608, 0.12549, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0bbpv"]
+gradient = SubResource("Gradient_rvslj")
+width = 1920
+height = 200
+
 
 [node name="Main" type="Node"]
 
 [node name="Player" parent="." instance=ExtResource("1")]
+
 [node name="Enemy" parent="." instance=ExtResource("2")]
+
+position = Vector2(162, 93)
+
+[node name="testing_floor" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="testing_floor"]
+position = Vector2(580, 550)
+shape = SubResource("RectangleShape2D_elqb8")
+
+[node name="Sprite2D" type="Sprite2D" parent="testing_floor"]
+position = Vector2(582, 553)
+texture = SubResource("GradientTexture2D_0bbpv")
