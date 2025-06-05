@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dolm0awkrgl7m"]
+[gd_scene load_steps=9 format=3 uid="uid://dolm0awkrgl7m"]
 
 [ext_resource type="Script" uid="uid://cx80fdkryqxil" path="res://scripts/player.gd" id="1"]
 
@@ -15,8 +15,43 @@ fill_from = Vector2(0, 1)
 radius = 16.0
 height = 64.0
 
-[sub_resource type="RectangleShape2D" id="Rectangle_1"]
-size = Vector2(108, 64)
+[sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
+radius = 83.0542
+
+[sub_resource type="Gradient" id="Gradient_g2els"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qhqgy"]
+gradient = SubResource("Gradient_g2els")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dqkch"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(2, 2, 2)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 40.0
+emission_ring_inner_radius = 40.0
+emission_ring_cone_angle = 90.0
+orbit_velocity_min = -1.0
+orbit_velocity_max = 1.0
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = 57.47
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -30.0
+radial_accel_max = 30.0
+scale_min = 0.0
+color = Color(1, 0.847059, 0.870588, 1)
+color_ramp = SubResource("GradientTexture1D_qhqgy")
+hue_variation_min = -0.2
+hue_variation_max = 0.2
+turbulence_enabled = true
+turbulence_noise_strength = 10.0
+turbulence_noise_speed_random = 0.5
+turbulence_influence_max = 0.169
+turbulence_initial_displacement_min = 1.49012e-06
+turbulence_initial_displacement_max = 5.4
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1")
@@ -31,4 +66,14 @@ shape = SubResource("CapsuleShape2D_qhqgy")
 monitoring = false
 
 [node name="CollisionShape2D_attack" type="CollisionShape2D" parent="AttackArea"]
-shape = SubResource("Rectangle_1")
+shape = SubResource("CircleShape2D_3vyb7")
+
+[node name="AttackAnimation" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 160
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+randomness = 0.3
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_dqkch")

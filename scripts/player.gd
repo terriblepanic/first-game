@@ -6,6 +6,7 @@ extends CharacterBody2D
 @export var attack_cooldown := 0.2
 
 @onready var attack_area: Area2D = $AttackArea
+@onready var attack_animation: GPUParticles2D = $AttackAnimation
 
 var _attack_timer := 0.0
 var _is_attacking := false
@@ -36,6 +37,7 @@ func _physics_process(delta: float) -> void:
 
 func perform_attack() -> void:
 	_is_attacking = true
+	attack_animation.restart()
 	_attack_timer = attack_cooldown
 	attack_area.monitoring = true
 
