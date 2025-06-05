@@ -23,7 +23,6 @@ texture = SubResource("GradientTexture2D_md0e3")
 shape = SubResource("1")
 
 [node name="HPBar" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -49.0
@@ -39,12 +38,5 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-max_value = 3.0
-value = 3.0
+value = 100.0
 show_percentage = false
-
-[node name="HealthBarTimer" type="Timer" parent="."]
-wait_time = 2.0
-one_shot = true
-
-[connection signal="timeout" from="HealthBarTimer" to="." method="_on_health_bar_timer_timeout"]
