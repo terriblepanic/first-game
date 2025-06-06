@@ -42,6 +42,7 @@ gravity = Vector3(0, 0, 0)
 radial_accel_min = -30.0
 radial_accel_max = 30.0
 scale_min = 0.0
+scale_max = 6.75
 color = Color(1, 0.847059, 0.870588, 1)
 color_ramp = SubResource("GradientTexture1D_qhqgy")
 hue_variation_min = -0.2

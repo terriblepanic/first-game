@@ -1,10 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://citgr4h7kjmw2"]
+[gd_scene load_steps=18 format=3 uid="uid://citgr4h7kjmw2"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://dkpppp5nyoaox" path="res://scenes/enemy.tscn" id="2"]
+[ext_resource type="Texture2D" uid="uid://dd63kst26r5ds" path="res://assets/parallax_bg/paralax_bg_1_sky.png" id="3_q8u5g"]
+[ext_resource type="Texture2D" uid="uid://bmn82hvqpj7sw" path="res://assets/parallax_bg/paralax_bg_2_smallClouds.png" id="4_lhr70"]
+[ext_resource type="Script" uid="uid://dnjdjvavi217w" path="res://scripts/small_clouds.gd" id="4_wp0k4"]
+[ext_resource type="Texture2D" uid="uid://bet4f50wgjens" path="res://assets/parallax_bg/paralax_bg_3_mountains.png" id="5_wp0k4"]
+[ext_resource type="Texture2D" uid="uid://b12lox3xgffwy" path="res://assets/parallax_bg/paralax_bg_4_bigClouds.png" id="6_bjd11"]
+[ext_resource type="Script" uid="uid://odaxpu7ubwei" path="res://scripts/big_clouds.gd" id="6_lhr70"]
+[ext_resource type="Texture2D" uid="uid://du2iwna3rn7ak" path="res://assets/parallax_bg/paralax_bg_5_forest.png" id="7_qmy6f"]
+[ext_resource type="Texture2D" uid="uid://d05y3myd7kinb" path="res://assets/parallax_bg/paralax_bg_6_farBushes.png" id="8_mwfav"]
+[ext_resource type="Texture2D" uid="uid://bol37tybjqnvr" path="res://assets/parallax_bg/paralax_bg_7_nearBushes.png" id="9_3p2gp"]
+[ext_resource type="PackedScene" uid="uid://jubqgarq03kq" path="res://scenes/fog_layer.tscn" id="12_bjd11"]
+[ext_resource type="Shader" uid="uid://cq0tvmh3a0lof" path="res://shaders/god_rays.gdshader" id="13_qmy6f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_elqb8"]
-size = Vector2(1920, 196)
+size = Vector2(5504, 196)
 
 [sub_resource type="Gradient" id="Gradient_rvslj"]
 offsets = PackedFloat32Array(0)
@@ -15,20 +26,147 @@ gradient = SubResource("Gradient_rvslj")
 width = 1920
 height = 200
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
+shader = ExtResource("13_qmy6f")
+shader_parameter/light_pos = Vector2(0.5, 0.2)
+shader_parameter/decay = 0.95
+shader_parameter/samples = 30
+shader_parameter/weight = 0.5
+shader_parameter/threshold = 0.6
+
 [node name="Main" type="Node"]
 
 [node name="Player" parent="." instance=ExtResource("1")]
-position = Vector2(250, 393)
+position = Vector2(-1, 52)
+speed = 600.0
+metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+limit_smoothed = true
+position_smoothing_enabled = true
 
 [node name="Enemy" parent="." instance=ExtResource("2")]
-position = Vector2(456, 389)
+position = Vector2(328, 53)
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="Sky" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(-375, -973)
+motion_scale = Vector2(0.1, 0.4)
+motion_mirroring = Vector2(746, 0)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Sky"]
+texture = ExtResource("3_q8u5g")
+centered = false
+
+[node name="SmallClouds" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(-375, -973)
+motion_scale = Vector2(0.15, 0.5)
+motion_mirroring = Vector2(746, 0)
+script = ExtResource("4_wp0k4")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/SmallClouds"]
+texture = ExtResource("4_lhr70")
+centered = false
+
+[node name="Mountains" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(-375, -973)
+motion_scale = Vector2(0.2, 0.6)
+motion_mirroring = Vector2(746, 0)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Mountains"]
+texture = ExtResource("5_wp0k4")
+centered = false
+
+[node name="BigClouds" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(-453, -1183)
+motion_mirroring = Vector2(746, 0)
+script = ExtResource("6_lhr70")
+scroll_speed = Vector2(7, 0)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/BigClouds"]
+position = Vector2(0, 396)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("6_bjd11")
+centered = false
+
+[node name="Forest" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(-375, -973)
+motion_scale = Vector2(0.4, 0.7)
+motion_mirroring = Vector2(746, 0)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Forest"]
+texture = ExtResource("7_qmy6f")
+centered = false
+
+[node name="FarBushes" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(-375, -973)
+motion_scale = Vector2(0.5, 0.8)
+motion_mirroring = Vector2(746, 0)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/FarBushes"]
+texture = ExtResource("8_mwfav")
+centered = false
+
+[node name="NearBushes" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(-375, -985)
+motion_scale = Vector2(0.7, 0.9)
+motion_mirroring = Vector2(746, 0)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/NearBushes"]
+texture = ExtResource("9_3p2gp")
+centered = false
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(-375, -296)
+motion_scale = Vector2(0.7, 1)
+motion_mirroring = Vector2(746, 0)
+metadata/_edit_group_ = true
+
+[node name="FogLayer" parent="ParallaxBackground/ParallaxLayer" instance=ExtResource("12_bjd11")]
+texture_filter = 1
+texture_repeat = 3
+
+[node name="ParallaxForeground" type="ParallaxBackground" parent="."]
+layer = 1
+
+[node name="BigClouds" type="ParallaxLayer" parent="ParallaxForeground"]
+position = Vector2(-342, -1393)
+motion_mirroring = Vector2(746, 0)
+script = ExtResource("6_lhr70")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxForeground/BigClouds"]
+texture = ExtResource("6_bjd11")
+centered = false
 
 [node name="testing_floor" type="StaticBody2D" parent="."]
+z_index = -1
+position = Vector2(-1, 211)
+metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="testing_floor"]
-position = Vector2(580, 550)
+position = Vector2(234, 0)
 shape = SubResource("RectangleShape2D_elqb8")
 
 [node name="Sprite2D" type="Sprite2D" parent="testing_floor"]
-position = Vector2(582, 553)
+position = Vector2(237, 0)
+scale = Vector2(2.85313, 1)
 texture = SubResource("GradientTexture2D_0bbpv")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_mwfav")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
