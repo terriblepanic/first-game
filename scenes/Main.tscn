@@ -15,7 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://jubqgarq03kq" path="res://scenes/fog_layer.tscn" id="12_bjd11"]
 [ext_resource type="Shader" uid="uid://cq0tvmh3a0lof" path="res://shaders/god_rays.gdshader" id="13_qmy6f"]
 [ext_resource type="TileSet" uid="uid://cx0ix7fgfoa71" path="res://assets/tilesets/world_tiles.tres" id="14_mwfav"]
-[ext_resource type="Script" path="res://scripts/hud.gd" id="15_hud"]
+[ext_resource type="Script" uid="uid://3nnx4lkmvv7m" path="res://scripts/hud.gd" id="15_hud"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
 shader = ExtResource("13_qmy6f")
@@ -158,63 +158,153 @@ use_kinematic_bodies = true
 script = ExtResource("15_hud")
 
 [node name="HUD" type="Control" parent="HUDLayer"]
-
-[node name="HealthBar" type="ProgressBar" parent="HUD"]
+layout_mode = 3
 anchors_preset = 0
+
+[node name="HealthBar" type="ProgressBar" parent="HUDLayer/HUD"]
+layout_mode = 1
+anchors_preset = -1
 anchor_right = 0.3
+offset_right = 4.0
+offset_bottom = 4.0
 show_percentage = false
 
-[node name="ManaBar" type="ProgressBar" parent="HUD"]
-anchors_preset = 0
+[node name="ManaBar" type="ProgressBar" parent="HUDLayer/HUD"]
+layout_mode = 1
+anchors_preset = -1
 anchor_top = 0.1
-anchor_bottom = 0.1
 anchor_right = 0.3
-offset_top = 20.0
+anchor_bottom = 0.1
+offset_top = 61.9
+offset_right = 4.0
+offset_bottom = 65.9
 show_percentage = false
 
-[node name="QuickSlots" type="HBoxContainer" parent="HUD"]
-anchors_preset = 8
+[node name="QuickSlots" type="HBoxContainer" parent="HUDLayer/HUD"]
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.25
 anchor_right = 0.75
 anchor_bottom = 1.0
-offset_bottom = -10.0
-[node name="Slot1" type="TextureRect" parent="HUD/QuickSlots"]
-[node name="Slot2" type="TextureRect" parent="HUD/QuickSlots"]
-[node name="Slot3" type="TextureRect" parent="HUD/QuickSlots"]
-[node name="Slot4" type="TextureRect" parent="HUD/QuickSlots"]
-[node name="Slot5" type="TextureRect" parent="HUD/QuickSlots"]
-[node name="Slot6" type="TextureRect" parent="HUD/QuickSlots"]
-[node name="Slot7" type="TextureRect" parent="HUD/QuickSlots"]
-[node name="Slot8" type="TextureRect" parent="HUD/QuickSlots"]
-[node name="Slot9" type="TextureRect" parent="HUD/QuickSlots"]
-[node name="Slot10" type="TextureRect" parent="HUD/QuickSlots"]
+offset_left = 186.5
+offset_right = 186.5
 
-[node name="InventoryPanel" type="Panel" parent="HUD"]
-visible = false
-anchors_preset = 15
+[node name="Slot1" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
+layout_mode = 2
+
+[node name="Slot2" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
+layout_mode = 2
+
+[node name="Slot3" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
+layout_mode = 2
+
+[node name="Slot4" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
+layout_mode = 2
+
+[node name="Slot5" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
+layout_mode = 2
+
+[node name="Slot6" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
+layout_mode = 2
+
+[node name="Slot7" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
+layout_mode = 2
+
+[node name="Slot8" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
+layout_mode = 2
+
+[node name="Slot9" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
+layout_mode = 2
+
+[node name="Slot10" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
+layout_mode = 2
+
+[node name="MiniMap" type="TextureRect" parent="HUDLayer/HUD"]
+custom_minimum_size = Vector2(140, 80)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 596.0
+offset_top = 10.0
+offset_right = 746.0
+offset_bottom = 90.0
+
+[node name="InventoryPanel" type="Panel" parent="HUDLayer/HUD"]
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.25
 anchor_top = 0.25
 anchor_right = 0.75
 anchor_bottom = 0.75
+offset_left = 186.5
+offset_top = 104.75
+offset_right = 186.5
+offset_bottom = 104.75
 
-[node name="InventoryGrid" type="GridContainer" parent="HUD/InventoryPanel"]
+[node name="InventoryGrid" type="GridContainer" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
 columns = 5
-[node name="InvSlot1" type="TextureRect" parent="HUD/InventoryPanel/InventoryGrid"]
-[node name="InvSlot2" type="TextureRect" parent="HUD/InventoryPanel/InventoryGrid"]
-[node name="InvSlot3" type="TextureRect" parent="HUD/InventoryPanel/InventoryGrid"]
-[node name="InvSlot4" type="TextureRect" parent="HUD/InventoryPanel/InventoryGrid"]
-[node name="InvSlot5" type="TextureRect" parent="HUD/InventoryPanel/InventoryGrid"]
-[node name="InvSlot6" type="TextureRect" parent="HUD/InventoryPanel/InventoryGrid"]
-[node name="InvSlot7" type="TextureRect" parent="HUD/InventoryPanel/InventoryGrid"]
-[node name="InvSlot8" type="TextureRect" parent="HUD/InventoryPanel/InventoryGrid"]
-[node name="InvSlot9" type="TextureRect" parent="HUD/InventoryPanel/InventoryGrid"]
-[node name="InvSlot10" type="TextureRect" parent="HUD/InventoryPanel/InventoryGrid"]
 
-[node name="MiniMap" type="TextureRect" parent="HUD"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 0.0
-offset_left = -150
-offset_top = 10
-custom_minimum_size = Vector2(140, 80)
+[node name="InventoryGrid2" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
 
+[node name="InventoryGrid3" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
+
+[node name="InventoryGrid4" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
+
+[node name="InventoryGrid5" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
+
+[node name="InventoryGrid6" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
+
+[node name="InventoryGrid7" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
+
+[node name="InventoryGrid8" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
+
+[node name="InventoryGrid9" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
+
+[node name="InventoryGrid10" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
+
+[node name="InventoryGrid11" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
+offset_left = -186.5
+offset_top = -104.75
+offset_right = -186.5
+offset_bottom = -104.75
