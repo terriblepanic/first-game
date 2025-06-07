@@ -30,7 +30,7 @@ extends Node
 var _loaded_chunks := {}
 
 enum TerrainID { DIRT, GRASS, SAND, STONE, ORE_COPPER, ORE_IRON, ORE_GOLD }
-var SOURCE_ID = {
+const SOURCE_ID := {
     TerrainID.DIRT:       1,
     TerrainID.GRASS:      2,
     TerrainID.ORE_COPPER: 3,
