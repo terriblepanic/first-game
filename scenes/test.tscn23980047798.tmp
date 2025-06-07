@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://ovbiauquanfx"]
+
+[ext_resource type="TileSet" uid="uid://cx0ix7fgfoa71" path="res://assets/tilesets/world_tiles.tres" id="1_bl13t"]
+[ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="2_iyx0m"]
+[ext_resource type="Script" uid="uid://bo8rt7s20wgyr" path="res://scripts/test_world_map.gd" id="3_iyx0m"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("3_iyx0m")
+world_width = null
+world_height = null
+surface_base = null
+surface_variation = null
+
+[node name="Player" parent="." instance=ExtResource("2_iyx0m")]
+position = Vector2(132, -50)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="WorldMap" type="TileMapLayer" parent="."]
+tile_set = ExtResource("1_bl13t")
+use_kinematic_bodies = true

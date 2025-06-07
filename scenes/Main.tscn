@@ -1,6 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://citgr4h7kjmw2"]
+[gd_scene load_steps=17 format=3 uid="uid://citgr4h7kjmw2"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bo8rt7s20wgyr" path="res://scripts/world_map.gd" id="1_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://dkpppp5nyoaox" path="res://scenes/enemy.tscn" id="2"]
 [ext_resource type="Texture2D" uid="uid://dd63kst26r5ds" path="res://assets/parallax_bg/paralax_bg_1_sky.png" id="3_q8u5g"]
 [ext_resource type="Texture2D" uid="uid://bmn82hvqpj7sw" path="res://assets/parallax_bg/paralax_bg_2_smallClouds.png" id="4_lhr70"]
@@ -13,18 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://bol37tybjqnvr" path="res://assets/parallax_bg/paralax_bg_7_nearBushes.png" id="9_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://jubqgarq03kq" path="res://scenes/fog_layer.tscn" id="12_bjd11"]
 [ext_resource type="Shader" uid="uid://cq0tvmh3a0lof" path="res://shaders/god_rays.gdshader" id="13_qmy6f"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_elqb8"]
-size = Vector2(5504, 196)
-
-[sub_resource type="Gradient" id="Gradient_rvslj"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0.0784314, 0.419608, 0.12549, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_0bbpv"]
-gradient = SubResource("Gradient_rvslj")
-width = 1920
-height = 200
+[ext_resource type="TileSet" uid="uid://cx0ix7fgfoa71" path="res://assets/tilesets/world_tiles.tres" id="14_mwfav"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
 shader = ExtResource("13_qmy6f")
@@ -35,6 +25,7 @@ shader_parameter/weight = 0.5
 shader_parameter/threshold = 0.6
 
 [node name="Main" type="Node"]
+script = ExtResource("1_3p2gp")
 
 [node name="Player" parent="." instance=ExtResource("1")]
 position = Vector2(-1, 52)
@@ -147,20 +138,6 @@ metadata/_edit_group_ = true
 texture = ExtResource("6_bjd11")
 centered = false
 
-[node name="testing_floor" type="StaticBody2D" parent="."]
-z_index = -1
-position = Vector2(-1, 211)
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="testing_floor"]
-position = Vector2(234, 0)
-shape = SubResource("RectangleShape2D_elqb8")
-
-[node name="Sprite2D" type="Sprite2D" parent="testing_floor"]
-position = Vector2(237, 0)
-scale = Vector2(2.85313, 1)
-texture = SubResource("GradientTexture2D_0bbpv")
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
@@ -170,3 +147,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="WorldMap" type="TileMapLayer" parent="."]
+position = Vector2(-591, -480)
+tile_set = ExtResource("14_mwfav")
+use_kinematic_bodies = true

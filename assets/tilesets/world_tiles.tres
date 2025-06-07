@@ -1,0 +1,72 @@
+[gd_resource type="TileSet" load_steps=16 format=3 uid="uid://cx0ix7fgfoa71"]
+
+[ext_resource type="Texture2D" uid="uid://b8a6k8jbtmp8" path="res://assets/tiles/dirt.png" id="1_b21nk"]
+[ext_resource type="Texture2D" uid="uid://cyw8xtwflyq7h" path="res://assets/tiles/grass.png" id="2_m6k86"]
+[ext_resource type="Texture2D" uid="uid://ccvqn7gjurt3e" path="res://assets/tiles/ore_copper.png" id="3_agw15"]
+[ext_resource type="Texture2D" uid="uid://bkihreonptmhf" path="res://assets/tiles/ore_gold.png" id="4_jdg1c"]
+[ext_resource type="Texture2D" uid="uid://bamcq0hvpbg0h" path="res://assets/tiles/ore_iron.png" id="5_p6gei"]
+[ext_resource type="Texture2D" uid="uid://cqxewjvqkibf7" path="res://assets/tiles/sand.png" id="6_v8573"]
+[ext_resource type="Texture2D" uid="uid://dwinkvk4afpn0" path="res://assets/tiles/stone.png" id="7_ovlqv"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_b21nk"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cop4c"]
+resource_name = "dirt"
+texture = ExtResource("1_b21nk")
+texture_region_size = Vector2i(14, 14)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4fk2o"]
+resource_name = "grass"
+texture = ExtResource("2_m6k86")
+texture_region_size = Vector2i(14, 14)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_06i6p"]
+resource_name = "ore_copper"
+texture = ExtResource("3_agw15")
+texture_region_size = Vector2i(14, 14)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8oojv"]
+resource_name = "ore_gold"
+texture = ExtResource("4_jdg1c")
+texture_region_size = Vector2i(14, 14)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vvsum"]
+resource_name = "ore_iron"
+texture = ExtResource("5_p6gei")
+texture_region_size = Vector2i(14, 14)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vx1sf"]
+resource_name = "sand"
+texture = ExtResource("6_v8573")
+texture_region_size = Vector2i(14, 14)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5tofa"]
+resource_name = "stone"
+texture = ExtResource("7_ovlqv")
+texture_region_size = Vector2i(14, 14)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
+
+[resource]
+tile_size = Vector2i(14, 14)
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_b21nk")
+sources/1 = SubResource("TileSetAtlasSource_cop4c")
+sources/2 = SubResource("TileSetAtlasSource_4fk2o")
+sources/3 = SubResource("TileSetAtlasSource_06i6p")
+sources/4 = SubResource("TileSetAtlasSource_8oojv")
+sources/5 = SubResource("TileSetAtlasSource_vvsum")
+sources/6 = SubResource("TileSetAtlasSource_vx1sf")
+sources/7 = SubResource("TileSetAtlasSource_5tofa")
