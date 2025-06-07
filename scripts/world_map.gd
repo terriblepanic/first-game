@@ -10,6 +10,9 @@ extends Node
 @export var sea_level:      int = 20
 @export var beach_width:    int = 3
 
+# Порог для шума пещер: значения выше создают пустоты
+@export var cave_threshold: float = 0.5
+
 # Шансы руды
 @export var ore_chances := {
 	"copper": 0.015,   # 1.5%
@@ -72,14 +75,20 @@ func generate_world() -> void:
 
 	var ore_min_depth = surface_base + dirt_depth
 
-	for x in range(world_width):
-		var h = surface_base + int(noise_surface.get_noise_2d(x, 0) * surface_amp)
+        for x in range(world_width):
+                var h = surface_base + int(noise_surface.get_noise_2d(x, 0) * surface_amp)
 
-		for y in range(world_height):
-			if y < h:
-				continue
+                for y in range(world_height):
+                        if y < h:
+                                continue
 
-			var terrain: int
+                        # значение шума пещер
+                        var cave_val = noise_cave.get_noise_2d(x, y)
+                        if cave_val > cave_threshold:
+                                # пропускаем ячейки, где должен быть туннель
+                                continue
+
+                        var terrain: int
 
 			if y == h:
 				# пляж
