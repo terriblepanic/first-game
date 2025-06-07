@@ -21,7 +21,10 @@ extends Node
 }
 
 @export var world_tiles: TileSet
+@export var chunk_width: int = 100
+@export var player_path: NodePath = NodePath("Player")
 @onready var tilemap: TileMapLayer = $WorldMap
+@onready var player: Node2D = get_node(player_path)
 
 enum TerrainID { DIRT, GRASS, SAND, STONE, ORE_COPPER, ORE_IRON, ORE_GOLD }
 var SOURCE_ID = {
@@ -40,13 +43,13 @@ var noise_biome   := FastNoiseLite.new()
 var noise_cave    := FastNoiseLite.new()
 
 func _ready() -> void:
-	randomize()
-	_init_noises()
+        randomize()
+        _init_noises()
 
-	if world_tiles:
-		tilemap.tile_set = preload("res://assets/tilesets/world_tiles.tres") as TileSet
+        if world_tiles:
+                tilemap.tile_set = preload("res://assets/tilesets/world_tiles.tres") as TileSet
 
-	generate_world()
+        _generate_visible_chunk()
 
 func _init_noises() -> void:
 	var noise_seed = randi()
@@ -68,15 +71,26 @@ func _init_noises() -> void:
 	noise_cave.noise_type          = FastNoiseLite.TYPE_SIMPLEX
 	noise_cave.frequency           = 0.1
 	noise_cave.domain_warp_enabled = true
-	noise_cave.domain_warp_type    = FastNoiseLite.DOMAIN_WARP_SIMPLEX  # или BASIC_GRID
+        noise_cave.domain_warp_type    = FastNoiseLite.DOMAIN_WARP_SIMPLEX  # или BASIC_GRID
 
-func generate_world() -> void:
-	tilemap.clear()
+func _generate_visible_chunk() -> void:
+        var tile_size = tilemap.tile_set.tile_size.x
+        var player_cell = int(player.position.x / tile_size)
+        var half = chunk_width / 2
+        var start_x = clamp(player_cell - half, 0, world_width)
+        var end_x = clamp(player_cell + half, 0, world_width)
+        generate_world(start_x, end_x)
 
-	var ore_min_depth = surface_base + dirt_depth
+func generate_world(x_start: int = 0, x_end: int = world_width) -> void:
+        tilemap.clear()
 
-	for x in range(world_width):
-		var h = surface_base + int(noise_surface.get_noise_2d(x, 0) * surface_amp)
+        var ore_min_depth = surface_base + dirt_depth
+
+        var pattern := TileMapPattern.new()
+        pattern.set_size(Vector2i(x_end - x_start, world_height))
+
+        for x in range(x_start, x_end):
+                var h = surface_base + int(noise_surface.get_noise_2d(x, 0) * surface_amp)
 
 		for y in range(world_height):
 			if y < h:
@@ -117,4 +131,9 @@ func generate_world() -> void:
 			else:
 				terrain = TerrainID.STONE
 
-			tilemap.set_cell(Vector2i(x, y), SOURCE_ID[terrain], Vector2i(0, 0), 0)
+                        pattern.set_cell(Vector2i(x - x_start, y), SOURCE_ID[terrain], Vector2i(0, 0), 0)
+
+        tilemap.set_pattern(Vector2i(x_start, 0), pattern)
+
+        return
+
