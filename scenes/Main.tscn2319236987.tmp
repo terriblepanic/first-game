@@ -77,6 +77,7 @@ script = ExtResource("1_3p2gp")
 
 [node name="Player" parent="." instance=ExtResource("1")]
 position = Vector2(-1, 52)
+speed = 600.0
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
