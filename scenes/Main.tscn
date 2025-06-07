@@ -85,7 +85,7 @@ limit_smoothed = true
 position_smoothing_enabled = true
 
 [node name="Enemy" parent="." instance=ExtResource("2")]
-position = Vector2(328, 28)
+position = Vector2(328, 42)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 

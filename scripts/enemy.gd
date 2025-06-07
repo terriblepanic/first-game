@@ -1,9 +1,8 @@
-# Enemy.gd
-extends Area2D
+extends RigidBody2D
 
 @export var max_health := 10
-@export var attack_cooldown := 2.0  # время между атаками в секундах
-@export var attack_damage := 10      # урон за одну атаку
+@export var attack_cooldown := 2.0
+@export var attack_damage := 10
 
 @onready var health_bar        = $HPBar/ProgressBar
 @onready var health_bar_timer  = $HealthBarTimer
@@ -16,11 +15,8 @@ extends Area2D
 var health := max_health
 
 func _ready() -> void:
-	# прячем область атаки до первого удара
 	attack_area.monitoring = false
-	# сигналы
 	attack_area.body_entered.connect(_on_attack_area_body_entered)
-	# стартуем первый отсчёт
 	attack_timer.wait_time = attack_cooldown
 	attack_timer.start()
 
@@ -45,17 +41,14 @@ func _on_health_bar_timer_timeout() -> void:
 	$HPBar.visible = false
 
 func _on_attack_timer_timeout() -> void:
-	# проигрываем анимацию атаки и включаем зону удара
 	attack_animation.restart()
 	attack_area.monitoring = true
-
-	# ждём, пока частицы (эффект атаки) отработают
 	await get_tree().create_timer(attack_animation.lifetime).timeout
-
-	# выключаем зону удара и снова запускаем отсчёт до следующей атаки
 	attack_area.monitoring = false
 	attack_timer.start()
 
 func _on_attack_area_body_entered(body: Node) -> void:
+	if body == self:
+		return
 	if body.has_method("take_damage"):
 		body.take_damage(attack_damage)

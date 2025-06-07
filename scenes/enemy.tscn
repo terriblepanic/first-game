@@ -85,7 +85,8 @@ turbulence_influence_max = 0.169
 turbulence_initial_displacement_min = 1.49012e-06
 turbulence_initial_displacement_max = 5.4
 
-[node name="Enemy" type="Area2D"]
+[node name="Enemy" type="RigidBody2D"]
+z_index = 1
 script = ExtResource("1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

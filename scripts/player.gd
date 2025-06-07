@@ -28,7 +28,7 @@ var selected_slot: int = 0
 
 func _ready() -> void:
 	attack_area.monitoring = false
-	attack_area.area_entered.connect(_on_attack_area_entered)
+	attack_area.body_entered.connect(_on_attack_area_body_entered)
 	emit_signal("health_changed", health, max_health)
 	emit_signal("mana_changed", mana, max_mana)
 
@@ -65,9 +65,9 @@ func perform_attack() -> void:
 	_attack_timer = attack_cooldown
 	attack_area.monitoring = true
 
-func _on_attack_area_entered(area: Area2D) -> void:
-	if area.has_method("take_damage"):
-		area.take_damage(1)
+func _on_attack_area_body_entered(body: Node) -> void:
+	if body.has_method("take_damage"):
+		body.take_damage(1)
 
 func take_damage(amount: int) -> void:
 	health = clamp(health - amount, 0, max_health)
