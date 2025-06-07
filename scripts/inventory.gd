@@ -6,9 +6,9 @@ signal inventory_changed
 
 @export var slot_count := 20
 
-var items: Array = []
+var items: Array[Item] = []
 
-func add_item(item) -> bool:
+func add_item(item: Item) -> bool:
         if items.size() >= slot_count:
                 return false
         items.append(item)
@@ -32,8 +32,7 @@ func populate_grid(grid: GridContainer) -> void:
                 child.queue_free()
         for item in items:
                 var slot := TextureRect.new()
-                if item is Texture2D:
-                        slot.texture = item
+                slot.texture = item.icon
                 grid.add_child(slot)
         for _i in range(get_free_slots()):
                 grid.add_child(TextureRect.new())
