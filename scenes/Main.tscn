@@ -18,7 +18,7 @@
 [ext_resource type="Script" uid="uid://3nnx4lkmvv7m" path="res://scripts/hud.gd" id="15_hud"]
 [ext_resource type="Script" uid="uid://bqb1l0y2cyjop" path="res://scripts/mini_map_viewport.gd" id="17_ft6cd"]
 [ext_resource type="Texture2D" uid="uid://dn0qptp3d5uhe" path="res://assets/ui/minimap.png" id="18_bb450"]
-[ext_resource type="Script" uid="uid://g4b5lks2invnt" path="res://scripts/inventory.gd" id="19_inv"]
+[ext_resource type="Script" uid="uid://cspwhrut3nv8d" path="res://scripts/inventory.gd" id="19_inv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
 shader = ExtResource("13_qmy6f")
@@ -301,7 +301,6 @@ offset_top = -104.75
 offset_right = -186.5
 offset_bottom = -104.75
 columns = 5
-
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="HUDLayer/HUD"]
 clip_children = 2

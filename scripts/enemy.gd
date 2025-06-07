@@ -30,9 +30,9 @@ func take_damage(amount: int) -> void:
 	health = clamp(health, 0, max_health)
 	health_bar.value = health
 
-	if health == 0:
+	if health <= 0:
 		set_process(false)
-		$CollisionShape2D.disabled = true
+		$CollisionShape2D.set_deferred("disabled", true)
 		$Sprite2D.visible = false
 		death_animation.restart()
 		await get_tree().create_timer(death_animation.lifetime).timeout
