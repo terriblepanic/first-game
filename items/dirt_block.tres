@@ -1,0 +1,11 @@
+[gd_resource type="BlockItem" format=3 uid="uid://zpug9vo7y7cm"]
+
+[ext_resource type="Script" path="res://scripts/block_item.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/tiles/dirt.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+name = "Dirt Block"
+icon = ExtResource("2")
+stack_size = 99
+terrain_id = 0
