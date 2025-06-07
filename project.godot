@@ -25,7 +25,7 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/BurstParticles2D/plugin.cfg")
+enabled=PackedStringArray()
 
 [input]
 
