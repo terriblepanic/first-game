@@ -25,8 +25,8 @@ var mana := max_mana
 # Reference to the world map script (parent node)
 @onready var world_map := get_parent()
 
-# Currently selected quick-slot index
-var selected_slot: int = 0
+# Reference to the quick slots controller
+@onready var quick_slots: QuickSlots = get_parent().get_node("HUDLayer/HUD/QuickSlots")
 
 func _ready() -> void:
 		attack_area.monitoring = false
@@ -78,8 +78,8 @@ func use_mana(amount: int) -> void:
                emit_signal("mana_changed", mana, max_mana)
 
 func _get_selected_item() -> Item:
-       if inventory and selected_slot >= 0 and selected_slot < inventory.items.size():
-               return inventory.items[selected_slot]
+       if quick_slots:
+               return quick_slots.get_selected_item()
        return null
 
 func _use_selected_item() -> void:
@@ -99,4 +99,4 @@ func _place_selected_block() -> void:
        if item is BlockItem:
                var cell := world_map.position_to_cell(get_global_mouse_position())
                world_map.place_block(cell, item.terrain_id)
-               inventory.remove_item(selected_slot)
+               inventory.remove_item(quick_slots.selected_index)
