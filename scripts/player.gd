@@ -12,6 +12,8 @@ signal mana_changed(value: int, max_value: int)
 
 @onready var attack_area: Area2D = $AttackArea
 @onready var attack_animation: GPUParticles2D = $AttackAnimation
+@onready var attack_animation_2: GPUParticles2D = $AttackAnimation2
+@onready var take_damage_animation: GPUParticles2D = $TakeDamgeAnimation
 
 var _attack_timer := 0.0
 var _is_attacking := false
@@ -47,6 +49,7 @@ func _physics_process(delta: float) -> void:
 func perform_attack() -> void:
 	_is_attacking = true
 	attack_animation.restart()
+	attack_animation_2.restart()
 	_attack_timer = attack_cooldown
 	attack_area.monitoring = true
 
@@ -56,6 +59,7 @@ func _on_attack_area_entered(area: Area2D) -> void:
 
 func take_damage(amount: int) -> void:
 		health = clamp(health - amount, 0, max_health)
+		take_damage_animation.restart()
 		emit_signal("health_changed", health, max_health)
 
 func use_mana(amount: int) -> void:
