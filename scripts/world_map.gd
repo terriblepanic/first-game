@@ -143,3 +143,26 @@ func _process(delta: float) -> void:
 
 	for ci in to_remove:
 		_loaded_chunks.erase(ci)
+
+# Удаляет блок и возвращает его тип TerrainID
+func remove_block(cell: Vector2i) -> int:
+	var source_id := tilemap.get_cell_source_id(cell)
+	if source_id == -1:
+		return -1
+	tilemap.erase_cell(cell)
+	for terrain in SOURCE_ID.keys():
+		if SOURCE_ID[terrain] == source_id:
+			return terrain
+	return -1
+
+# Ставит блок указанного типа
+func place_block(cell: Vector2i, terrain_id: int) -> void:
+	if not SOURCE_ID.has(terrain_id):
+		return
+	tilemap.set_cell(cell, SOURCE_ID[terrain_id], Vector2i(0, 0), 0)
+
+# Конвертирует глобальную позицию в координаты клетки
+func position_to_cell(global_pos: Vector2) -> Vector2i:
+	var local := tilemap.to_local(global_pos)
+	var ts := tilemap.tile_set.tile_size
+	return Vector2i(floor(local.x / ts.x), floor(local.y / ts.y))
