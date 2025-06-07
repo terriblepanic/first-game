@@ -707,7 +707,7 @@ trail_sections = 120
 trail_section_subdivisions = 120
 process_material = SubResource("ShaderMaterial_smehm")
 
-[node name="TakeDamgeAnimation" type="GPUParticles2D" parent="."]
+[node name="TakeDamageAnimation" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 20
 lifetime = 0.5

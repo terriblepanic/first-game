@@ -76,7 +76,8 @@ ProgressBar/styles/fill = SubResource("StyleBoxFlat_1nqs0")
 script = ExtResource("1_3p2gp")
 
 [node name="Player" parent="." instance=ExtResource("1")]
-position = Vector2(-1, 52)
+position = Vector2(-1, -13)
+speed = 200.0
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -84,7 +85,7 @@ limit_smoothed = true
 position_smoothing_enabled = true
 
 [node name="Enemy" parent="." instance=ExtResource("2")]
-position = Vector2(328, 53)
+position = Vector2(328, 28)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
