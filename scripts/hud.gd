@@ -11,6 +11,9 @@ func _ready() -> void:
 			player.health_changed.connect(_on_player_health_changed)
 		if player.has_signal("mana_changed"):
 			player.mana_changed.connect(_on_player_mana_changed)
+		_on_player_health_changed(player.health, player.max_health)
+		_on_player_mana_changed(player.mana, player.max_mana)
+	inventory_panel.visible = false
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("open_inventory"):
