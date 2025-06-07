@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://citgr4h7kjmw2"]
+[gd_scene load_steps=27 format=3 uid="uid://citgr4h7kjmw2"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1"]
 [ext_resource type="Script" uid="uid://bo8rt7s20wgyr" path="res://scripts/world_map.gd" id="1_3p2gp"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://3nnx4lkmvv7m" path="res://scripts/hud.gd" id="15_hud"]
 [ext_resource type="Script" uid="uid://bqb1l0y2cyjop" path="res://scripts/mini_map_viewport.gd" id="17_ft6cd"]
 [ext_resource type="Texture2D" uid="uid://dn0qptp3d5uhe" path="res://assets/ui/minimap.png" id="18_bb450"]
+[ext_resource type="Script" uid="uid://g4b5lks2invnt" path="res://scripts/inventory.gd" id="19_inv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
 shader = ExtResource("13_qmy6f")
@@ -203,6 +204,9 @@ use_kinematic_bodies = true
 [node name="HUDLayer" type="CanvasLayer" parent="."]
 script = ExtResource("15_hud")
 
+[node name="Inventory" type="Node" parent="HUDLayer"]
+script = ExtResource("19_inv")
+
 [node name="HUD" type="Control" parent="HUDLayer"]
 layout_mode = 3
 anchors_preset = 15
@@ -298,75 +302,6 @@ offset_right = -186.5
 offset_bottom = -104.75
 columns = 5
 
-[node name="InventoryGrid2" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
-
-[node name="InventoryGrid3" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
-
-[node name="InventoryGrid4" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
-
-[node name="InventoryGrid5" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
-
-[node name="InventoryGrid6" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
-
-[node name="InventoryGrid7" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
-
-[node name="InventoryGrid8" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
-
-[node name="InventoryGrid9" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
-
-[node name="InventoryGrid10" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
-
-[node name="InventoryGrid11" type="TextureRect" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="HUDLayer/HUD"]
 clip_children = 2
