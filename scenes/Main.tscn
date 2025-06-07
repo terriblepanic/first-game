@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://citgr4h7kjmw2"]
+[gd_scene load_steps=28 format=3 uid="uid://citgr4h7kjmw2"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1"]
 [ext_resource type="Script" uid="uid://bo8rt7s20wgyr" path="res://scripts/world_map.gd" id="1_3p2gp"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://bqb1l0y2cyjop" path="res://scripts/mini_map_viewport.gd" id="17_ft6cd"]
 [ext_resource type="Texture2D" uid="uid://dn0qptp3d5uhe" path="res://assets/ui/minimap.png" id="18_bb450"]
 [ext_resource type="Script" uid="uid://cspwhrut3nv8d" path="res://scripts/inventory.gd" id="19_inv"]
+[ext_resource type="Script" path="res://scripts/quick_slots.gd" id="20_qs"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
 shader = ExtResource("13_qmy6f")
@@ -249,6 +250,7 @@ anchor_right = 0.75
 anchor_bottom = 1.0
 offset_left = 186.5
 offset_right = 186.5
+script = ExtResource("20_qs")
 
 [node name="Slot1" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
 layout_mode = 2
