@@ -29,10 +29,10 @@ var mana := max_mana
 @onready var quick_slots: QuickSlots = get_parent().get_node("HUDLayer/HUD/QuickSlots")
 
 func _ready() -> void:
-        attack_area.monitoring = false
-        attack_area.area_entered.connect(_on_attack_area_entered)
-        emit_signal("health_changed", health, max_health)
-        emit_signal("mana_changed", mana, max_mana)
+    attack_area.monitoring = false
+    attack_area.area_entered.connect(_on_attack_area_entered)
+    emit_signal("health_changed", health, max_health)
+    emit_signal("mana_changed", mana, max_mana)
 
 func _physics_process(delta: float) -> void:
     var direction := Input.get_axis("move_left", "move_right")
@@ -50,10 +50,10 @@ func _physics_process(delta: float) -> void:
             _is_attacking = false
 
     if Input.is_action_just_pressed("attack") and not _is_attacking:
-    _use_selected_item()
+        _use_selected_item()
 
     if Input.is_action_just_pressed("place_block"):
-    _place_selected_block()
+        _place_selected_block()
 
     move_and_slide()
 
@@ -65,13 +65,13 @@ func perform_attack() -> void:
     attack_area.monitoring = true
 
 func _on_attack_area_entered(area: Area2D) -> void:
-        if area.has_method("take_damage"):
-                area.take_damage(1)
+    if area.has_method("take_damage"):
+        area.take_damage(1)
 
 func take_damage(amount: int) -> void:
-        health = clamp(health - amount, 0, max_health)
-        take_damage_animation.restart()
-        emit_signal("health_changed", health, max_health)
+    health = clamp(health - amount, 0, max_health)
+    take_damage_animation.restart()
+    emit_signal("health_changed", health, max_health)
 
 func use_mana(amount: int) -> void:
     mana = clamp(mana - amount, 0, max_mana)
