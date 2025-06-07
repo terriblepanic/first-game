@@ -26,8 +26,8 @@ func _process(_delta: float) -> void:
                         inventory.populate_grid(inventory_grid)
 
 func _on_player_health_changed(value: int, max_value: int) -> void:
-	health_bar.max_value = max_value
-	health_bar.value = value
+        health_bar.max_value = max_value
+        health_bar.value = value
 
 func _on_player_mana_changed(value: int, max_value: int) -> void:
         mana_bar.max_value = max_value
