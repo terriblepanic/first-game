@@ -41,8 +41,6 @@ func _ready() -> void:
 	_init_noises()
 
 	if world_tiles:
-		tilemap.tile_set = world_tiles
-	else:
 		tilemap.tile_set = preload("res://assets/tilesets/world_tiles.tres") as TileSet
 
 	generate_world()
@@ -51,31 +49,31 @@ func _init_noises() -> void:
 	var noise_seed = randi()
 
 	# Поверхностный шум
-	noise_surface.seed         = noise_seed
-	noise_surface.noise_type   = FastNoiseLite.TYPE_PERLIN
-	noise_surface.frequency    = 0.015
-	noise_surface.fractal_type = FastNoiseLite.FRACTAL_FBM
+	noise_surface.seed            = noise_seed
+	noise_surface.noise_type      = FastNoiseLite.TYPE_PERLIN
+	noise_surface.frequency       = 0.015
+	noise_surface.fractal_type    = FastNoiseLite.FRACTAL_FBM
 	noise_surface.fractal_octaves = 4
 
-	# Биомный шум
+	# Биомный шум (можно использовать для разных биомов)
 	noise_biome.seed       = noise_seed + 1
 	noise_biome.noise_type = FastNoiseLite.TYPE_SIMPLEX
-	noise_biome.frequency  = 0.008
+	noise_biome.frequency  = 0.001
 
 	# Пещерный шум
-	noise_cave.seed               = noise_seed + 2
-	noise_cave.noise_type         = FastNoiseLite.TYPE_SIMPLEX
-	noise_cave.frequency          = 0.1
+	noise_cave.seed                = noise_seed + 2
+	noise_cave.noise_type          = FastNoiseLite.TYPE_SIMPLEX
+	noise_cave.frequency           = 0.1
 	noise_cave.domain_warp_enabled = true
-	noise_cave.domain_warp_type   = FastNoiseLite.DOMAIN_WARP_SIMPLEX  # или BASIC_GRID
+	noise_cave.domain_warp_type    = FastNoiseLite.DOMAIN_WARP_SIMPLEX  # или BASIC_GRID
 
 func generate_world() -> void:
-        tilemap.clear()
+	tilemap.clear()
 
-        var ore_min_depth = surface_base + dirt_depth
+	var ore_min_depth = surface_base + dirt_depth
 
-        for x in range(world_width):
-                var h = surface_base + int(noise_surface.get_noise_2d(x, 0) * surface_amp)
+	for x in range(world_width):
+		var h = surface_base + int(noise_surface.get_noise_2d(x, 0) * surface_amp)
 
 		for y in range(world_height):
 			if y < h:
@@ -85,14 +83,12 @@ func generate_world() -> void:
 
 			if y == h:
 				# пляж
-				if h <= sea_level + beach_width and h >= sea_level:
+				if h >= sea_level and h <= sea_level + beach_width:
 					terrain = TerrainID.SAND
 				else:
 					terrain = TerrainID.GRASS
-
 			elif y <= h + dirt_depth:
 				terrain = TerrainID.DIRT
-
 			elif y > ore_min_depth:
 				# единый бросок
 				var r = randf()
