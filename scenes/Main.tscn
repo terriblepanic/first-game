@@ -199,7 +199,7 @@ grow_vertical = 2
 [node name="WorldMap" type="TileMapLayer" parent="."]
 position = Vector2(-591, -480)
 tile_set = ExtResource("14_mwfav")
-use_kinematic_bodies = true
+use_kinematic_bodies = false
 
 [node name="HUDLayer" type="CanvasLayer" parent="."]
 script = ExtResource("15_hud")
