@@ -13,8 +13,8 @@ void fragment() {
 
     // 2) маска по высоте: снизу (y→1) полная сила, кверху (y→0) → 0
     //    параметров smoothstep можно подбирать
-    float height_mask = smoothstep(0.3, 1.0, UV.y);
+    float height_mask = smoothstep(0.1, 0.5, UV.y);
 
     float alpha = base_alpha * height_mask;
-    COLOR = vec4(0.0, 0.0, 0.0, alpha);
+    COLOR = vec4(1.0, 1.0, 1.0, alpha);
 }

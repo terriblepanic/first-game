@@ -9,8 +9,7 @@ shader_parameter/fog_strength = 0.2
 shader_parameter/time_scale = 0.2
 
 [sub_resource type="Gradient" id="Gradient_2k633"]
-offsets = PackedFloat32Array(0.24026, 1)
-colors = PackedColorArray(1.20327e-08, 0, 0.3219, 1, 1, 1, 1, 0)
+colors = PackedColorArray(1, 1, 1, 0, 0, 0, 0, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_6p8ea"]
 fractal_weighted_strength = 1.0
@@ -20,7 +19,7 @@ domain_warp_fractal_type = 2
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hmtuf"]
 width = 746
-height = 419
+height = 838
 invert = true
 seamless = true
 seamless_blend_skirt = 0.46
