@@ -1,6 +1,10 @@
 # First Game
 
-This repository contains a Godot project. Below are the default input actions defined in `project.godot`:
+This is a small 2D block-based adventure built with Godot. Players explore a procedurally generated world, collect resources and fight simple enemies. An inventory and quick slots system lets you manage items like blocks and tools while you explore.
+
+## Controls
+
+Below are the default input actions defined in `project.godot`:
 
 - **attack**: `J` key or Left Mouse Button
 - **move_left**: `A` key
@@ -11,3 +15,7 @@ This repository contains a Godot project. Below are the default input actions de
 - **place_block**: Right Mouse Button
 
 These bindings can be adjusted in the Godot project settings under `Input Map`.
+
+## Building
+
+The project targets **Godot 4.4.1**. Open the repository with that version of the engine and run the game from the editor. To create a Windows executable, use the provided `export_presets.cfg` preset named **Windows Desktop**.
