@@ -16,8 +16,6 @@ extends Node
 	"iron":   0.0075,  # 0.75%
 	"gold":   0.003    # 0.3%
 }
-# Минимальная глубина для руды
-@export var ore_min_depth:  int = (surface_base + dirt_depth)
 
 @export var world_tiles: TileSet
 @onready var tilemap: TileMapLayer = $WorldMap
@@ -72,10 +70,12 @@ func _init_noises() -> void:
 	noise_cave.domain_warp_type   = FastNoiseLite.DOMAIN_WARP_SIMPLEX  # или BASIC_GRID
 
 func generate_world() -> void:
-	tilemap.clear()
+        tilemap.clear()
 
-	for x in range(world_width):
-		var h = surface_base + int(noise_surface.get_noise_2d(x, 0) * surface_amp)
+        var ore_min_depth = surface_base + dirt_depth
+
+        for x in range(world_width):
+                var h = surface_base + int(noise_surface.get_noise_2d(x, 0) * surface_amp)
 
 		for y in range(world_height):
 			if y < h:
