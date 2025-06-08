@@ -1,6 +1,9 @@
 extends Object
 class_name WorldGenerator
 
+const TerrainID = TerrainData.TerrainID  # из Autoload
+var SOURCE_ID: Dictionary  # будет установлен в setup()
+
 # world parameters
 var world_height: int
 var surface_base: int
@@ -14,42 +17,50 @@ var beach_width: int
 var cave_threshold: float
 var cave_threshold_depth_factor: float
 var ore_chances: Dictionary
-var SOURCE_ID: Dictionary
 
 const ORE_DEPTH := {"copper": 30, "iron": 40, "gold": 50}
 
-var noise_surface := FastNoiseLite.new()
-var noise_biome := FastNoiseLite.new()
-var noise_cave := FastNoiseLite.new()
-var noise_cave2 := FastNoiseLite.new()
+var noise_surface: FastNoiseLite
+var noise_biome: FastNoiseLite
+var noise_cave: FastNoiseLite
+var noise_cave2: FastNoiseLite
 
 
 func setup(params: Dictionary) -> void:
+	SOURCE_ID = TerrainData.SOURCE_ID  # инициализация
+
 	for key in params.keys():
-		if has_property(key):
+		if key in self:
 			self.set(key, params[key])
+
+	noise_surface = FastNoiseLite.new()
+	noise_biome = FastNoiseLite.new()
+	noise_cave = FastNoiseLite.new()
+	noise_cave2 = FastNoiseLite.new()
+
 	_init_noises()
 
 
 func _init_noises() -> void:
-	var seed := randi()
-	noise_surface.seed = seed
+	var seed_val := randi()
+
+	noise_surface.seed = seed_val
 	noise_surface.noise_type = FastNoiseLite.TYPE_PERLIN
 	noise_surface.frequency = 0.015
 	noise_surface.fractal_type = FastNoiseLite.FRACTAL_FBM
 	noise_surface.fractal_octaves = 4
 
-	noise_biome.seed = seed + 1
+	noise_biome.seed = seed_val + 1
 	noise_biome.noise_type = FastNoiseLite.TYPE_SIMPLEX
 	noise_biome.frequency = 0.001
 
-	noise_cave.seed = seed + 2
+	noise_cave.seed = seed_val + 2
 	noise_cave.noise_type = FastNoiseLite.TYPE_SIMPLEX
 	noise_cave.frequency = 0.1
 	noise_cave.domain_warp_enabled = true
 	noise_cave.domain_warp_type = FastNoiseLite.DOMAIN_WARP_SIMPLEX
 
-	noise_cave2.seed = seed + 3
+	noise_cave2.seed = seed_val + 3
 	noise_cave2.noise_type = FastNoiseLite.TYPE_SIMPLEX
 	noise_cave2.frequency = 0.05
 	noise_cave2.domain_warp_enabled = true
@@ -57,6 +68,8 @@ func _init_noises() -> void:
 
 
 func get_biome(x: int) -> String:
+	if noise_biome == null:
+		return "forest"
 	var val := noise_biome.get_noise_2d(x, 0)
 	if val < -0.3:
 		return "desert"
@@ -66,6 +79,8 @@ func get_biome(x: int) -> String:
 
 
 func surface_height(x: int, biome: String) -> int:
+	if noise_surface == null:
+		return surface_base
 	var amp := surface_amp
 	match biome:
 		"desert":
@@ -76,11 +91,13 @@ func surface_height(x: int, biome: String) -> int:
 
 
 func is_cave(x: int, y: int) -> bool:
+	if noise_cave == null or noise_cave2 == null:
+		return false
 	var threshold := cave_threshold - cave_threshold_depth_factor * float(y) / float(world_height)
 	return noise_cave.get_noise_2d(x, y) > threshold or noise_cave2.get_noise_2d(x, y) > threshold
 
 
-func terrain_for_cell(x: int, y: int, surface_h: int, ore_start: int, biome: String) -> int:
+func terrain_for_cell(_x: int, y: int, surface_h: int, ore_start: int, biome: String) -> int:
 	if y == surface_h:
 		match biome:
 			"desert":
@@ -90,9 +107,9 @@ func terrain_for_cell(x: int, y: int, surface_h: int, ore_start: int, biome: Str
 			_:
 				if surface_h >= sea_level and surface_h <= sea_level + beach_width:
 					return TerrainID.SAND
-				return TerrainID.GRASS
+				return TerrainID.DIRT
 	elif biome == "forest" and y <= surface_h + dirt_depth:
-		return TerrainID.DIRT
+		return TerrainID.GRASS
 	elif biome == "desert" and y <= surface_h + sand_depth:
 		return TerrainID.SAND
 	elif y >= ore_start:
