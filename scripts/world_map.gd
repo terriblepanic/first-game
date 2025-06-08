@@ -62,6 +62,7 @@ func _ready() -> void:
 	if world_tiles:
 		tilemap.tile_set = world_tiles
 	_process(0.0)
+	player.player_died.connect(_on_player_died)
 
 func _init_noises() -> void:
 	var noise_seed: int = randi()  # переименовали, чтобы не тенью встроенную seed()
@@ -122,7 +123,12 @@ func _create_chunk_pattern(x_start: int, x_end: int) -> TileMapPattern:
 
 func _process(_delta: float) -> void:
 	var tile_size: float = tilemap.tile_set.tile_size.x
+	
+	if !is_instance_valid(player):
+		return
+
 	var player_cell: int = int(player.position.x / tile_size)
+	
 	@warning_ignore("integer_division")
 	var current_ci: int  = int(player_cell / chunk_width)   # целочисленное деление без предупреждений
 
@@ -167,3 +173,6 @@ func position_to_cell(global_pos: Vector2) -> Vector2i:
 	var local: Vector2 = tilemap.to_local(global_pos)
 	var ts: Vector2    = tilemap.tile_set.tile_size
 	return Vector2i(floor(local.x / ts.x), floor(local.y / ts.y))
+
+func _on_player_died():
+	player = null

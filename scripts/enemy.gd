@@ -2,7 +2,7 @@ extends RigidBody2D
 
 @export var max_health := 10
 @export var attack_cooldown := 2.0
-@export var attack_damage := 10
+@export var attack_damage := 50
 
 @onready var health_bar        = $HPBar/ProgressBar
 @onready var health_bar_timer  = $HealthBarTimer

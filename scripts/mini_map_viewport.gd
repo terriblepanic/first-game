@@ -12,4 +12,5 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	# Let camera move with player
-	camera_node.position = player_node.position
+	if is_instance_valid(player_node):
+		camera_node.position = player_node.position
