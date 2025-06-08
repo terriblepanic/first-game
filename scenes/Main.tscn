@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://citgr4h7kjmw2"]
+[gd_scene load_steps=30 format=3 uid="uid://citgr4h7kjmw2"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1"]
 [ext_resource type="Script" uid="uid://bo8rt7s20wgyr" path="res://scripts/world_map.gd" id="1_3p2gp"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://bqb1l0y2cyjop" path="res://scripts/mini_map_viewport.gd" id="17_ft6cd"]
 [ext_resource type="Texture2D" uid="uid://dn0qptp3d5uhe" path="res://assets/ui/minimap.png" id="18_bb450"]
 [ext_resource type="Script" uid="uid://cspwhrut3nv8d" path="res://scripts/inventory.gd" id="19_inv"]
+[ext_resource type="Script" uid="uid://b3h4lpeh81nkb" path="res://scripts/debug_hud.gd" id="20_1nqs0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
 shader = ExtResource("13_qmy6f")
@@ -72,17 +73,29 @@ anti_aliasing = false
 ProgressBar/styles/background = SubResource("StyleBoxFlat_nfivy")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_1nqs0")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1iba3"]
+bg_color = Color(0, 0, 0, 0.360784)
+
+[sub_resource type="Theme" id="Theme_yxlcp"]
+Label/font_sizes/font_size = 16
+Label/styles/normal = SubResource("StyleBoxFlat_1iba3")
+
 [node name="Main" type="Node"]
 script = ExtResource("1_3p2gp")
+surface_base = 10
 
 [node name="Player" parent="." instance=ExtResource("1")]
 position = Vector2(-1, -13)
-speed = 200.0
+speed = 2000.0
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 limit_smoothed = true
 position_smoothing_enabled = true
+drag_left_margin = 0.0
+drag_top_margin = 0.0
+drag_right_margin = 0.0
+drag_bottom_margin = 0.0
 
 [node name="Enemy" parent="." instance=ExtResource("2")]
 position = Vector2(328, 42)
@@ -197,7 +210,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="WorldMap" type="TileMapLayer" parent="."]
-position = Vector2(-2481, -416)
 tile_set = ExtResource("14_mwfav")
 
 [node name="HUDLayer" type="CanvasLayer" parent="."]
@@ -227,15 +239,10 @@ show_percentage = false
 
 [node name="ManaBar" type="ProgressBar" parent="HUDLayer/HUD"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
 offset_left = 6.0
-offset_top = 26.0
-offset_right = -600.0
-offset_bottom = -378.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_top = 29.0
+offset_right = 146.0
+offset_bottom = 44.0
 theme = SubResource("Theme_1iba3")
 max_value = 50.0
 step = 1.0
@@ -329,7 +336,6 @@ player_node = NodePath("../../../../Player")
 [node name="MiniMapCamera" type="Camera2D" parent="HUDLayer/HUD/SubViewportContainer/MiniMapViewport"]
 zoom = Vector2(0.1, 0.1)
 limit_smoothed = true
-position_smoothing_enabled = true
 
 [node name="TextureRect" type="TextureRect" parent="HUDLayer/HUD/SubViewportContainer"]
 z_index = -1
@@ -338,6 +344,17 @@ layout_mode = 2
 size_flags_stretch_ratio = 0.14
 texture = ExtResource("18_bb450")
 stretch_mode = 3
+
+[node name="DebugInfo" type="Label" parent="HUDLayer/HUD"]
+visible = false
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 1
+offset_left = 6.0
+offset_top = 52.0
+offset_right = 146.0
+offset_bottom = 192.0
+theme = SubResource("Theme_yxlcp")
+script = ExtResource("20_1nqs0")
 
 [node name="DeathLabel" type="Label" parent="HUDLayer"]
 visible = false

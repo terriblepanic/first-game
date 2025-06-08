@@ -13,13 +13,13 @@ enum TerrainID {
 }
 
 # — Параметры мира —
-@export var world_width: int    = 2000
-@export var world_height: int   = 100
-@export var surface_base: int   = 40
-@export var surface_amp: int    = 8
-@export var dirt_depth: int     = 5
-@export var sea_level: int      = 20
-@export var beach_width: int    = 3
+@export var world_width: int = 2000
+@export var world_height: int = 100
+@export var surface_base: int = 0
+@export var surface_amp: int = 8
+@export var dirt_depth: int = 5
+@export var sea_level: int = 20
+@export var beach_width: int = 3
 
 # Порог для шума пещер
 @export var cave_threshold: float = 0.6
@@ -61,11 +61,34 @@ func _ready() -> void:
 	_init_noises()
 	if world_tiles:
 		tilemap.tile_set = world_tiles
+
+	# 1) Рассчитываем тайловую точку спавна и конвертируем в пиксели
+	var spawn_tile: Vector2i = get_safe_spawn_tile(2)
+	var ts: Vector2 = tilemap.tile_set.tile_size
+	var spawn_pos: Vector2 = Vector2(spawn_tile.x * ts.x, spawn_tile.y * ts.y)
+
+	# 2) Спавним игрока и сбрасываем сглаживание камеры
+	if player.has_method("set_spawn_position"):
+		player.set_spawn_position(spawn_pos)
+
+	# 3) Спавним врага на 1 тайл правее
+	if has_node("Enemy") and $Enemy.has_method("set_spawn_position"):
+		var enemy_spawn: Vector2i = spawn_tile + Vector2i(1, 0)
+		var enemy_pos: Vector2 = Vector2(enemy_spawn.x * ts.x, enemy_spawn.y * ts.y)
+		$Enemy.set_spawn_position(enemy_pos)
+
+	# 4) Загружаем чанки вокруг игрока
 	_process(0.0)
-	player.player_died.connect(_on_player_died)
+
+	# 5) Подписываемся на сигнал смерти
+	$Player.player_died.connect(_on_player_died)
+
+func _on_player_died() -> void:
+	await get_tree().create_timer(2).timeout
+	get_tree().reload_current_scene()
 
 func _init_noises() -> void:
-	var noise_seed: int = randi()  # переименовали, чтобы не тенью встроенную seed()
+	var noise_seed: int = randi()
 	noise_surface.seed            = noise_seed
 	noise_surface.noise_type      = FastNoiseLite.TYPE_PERLIN
 	noise_surface.frequency       = 0.015
@@ -97,14 +120,15 @@ func _create_chunk_pattern(x_start: int, x_end: int) -> TileMapPattern:
 
 			var terrain: int
 			if y == h:
-				terrain = TerrainID.SAND if (h >= sea_level and h <= sea_level + beach_width) else TerrainID.GRASS
+				terrain = (TerrainID.SAND if h >= sea_level and h <= sea_level + beach_width
+						   else TerrainID.GRASS)
 			elif y <= h + dirt_depth:
 				terrain = TerrainID.DIRT
 			elif y > ore_min_depth:
-				var r: float   = randf()
-				var p_gold: float   = ore_chances["gold"]
-				var p_iron: float   = p_gold + ore_chances["iron"]
-				var p_copper: float = p_iron + ore_chances["copper"]
+				var r: float = randf()
+				var p_gold: float   = float(ore_chances["gold"])
+				var p_iron: float   = p_gold + float(ore_chances["iron"])
+				var p_copper: float = p_iron + float(ore_chances["copper"])
 
 				if r < p_gold:
 					terrain = TerrainID.ORE_GOLD
@@ -122,21 +146,13 @@ func _create_chunk_pattern(x_start: int, x_end: int) -> TileMapPattern:
 	return pattern
 
 func _process(_delta: float) -> void:
-	var tile_size: float = tilemap.tile_set.tile_size.x
-	
-	if !is_instance_valid(player):
-		return
-
-	var player_cell: int = int(player.position.x / tile_size)
-	
-	@warning_ignore("integer_division")
-	var current_ci: int  = int(player_cell / chunk_width)   # целочисленное деление без предупреждений
+	var ts: Vector2 = tilemap.tile_set.tile_size
+	var player_cell: int = int(player.global_position.x / ts.x)
+	var current_ci: int = (player_cell / chunk_width)
 
 	var min_ci: int = max(current_ci - 1, 0)
-	@warning_ignore("integer_division")
 	var max_ci: int = min(current_ci + 2, int((world_width - 1) / chunk_width))
 
-	# загрузка новых чанков
 	for ci in range(min_ci, max_ci + 1):
 		if not _loaded_chunks.has(ci):
 			var xs: int = ci * chunk_width
@@ -145,8 +161,8 @@ func _process(_delta: float) -> void:
 			tilemap.set_pattern(Vector2i(xs, 0), patt)
 			_loaded_chunks[ci] = true
 
-	# выгрузка устаревших чанков
-	var to_remove: Array = []
+	# удаляем устаревшие чанки
+	var to_remove := []
 	for ci in _loaded_chunks.keys():
 		if ci < min_ci or ci > max_ci:
 			tilemap.set_pattern(Vector2i(ci * chunk_width, 0), TileMapPattern.new())
@@ -155,13 +171,13 @@ func _process(_delta: float) -> void:
 		_loaded_chunks.erase(ci)
 
 func remove_block(cell: Vector2i) -> int:
-	var source_id: int = tilemap.get_cell_source_id(cell)
-	if source_id == -1:
+	var sid: int = tilemap.get_cell_source_id(cell)
+	if sid == -1:
 		return -1
 	tilemap.erase_cell(cell)
-	for terrain_key in SOURCE_ID.keys():
-		if SOURCE_ID[terrain_key] == source_id:
-			return terrain_key
+	for t in SOURCE_ID.keys():
+		if SOURCE_ID[t] == sid:
+			return t
 	return -1
 
 func place_block(cell: Vector2i, terrain_id: int) -> void:
@@ -171,8 +187,18 @@ func place_block(cell: Vector2i, terrain_id: int) -> void:
 
 func position_to_cell(global_pos: Vector2) -> Vector2i:
 	var local: Vector2 = tilemap.to_local(global_pos)
-	var ts: Vector2    = tilemap.tile_set.tile_size
+	var ts: Vector2  = tilemap.tile_set.tile_size
 	return Vector2i(floor(local.x / ts.x), floor(local.y / ts.y))
 
-func _on_player_died():
-	player = null
+# возвращает тайловые координаты спавна
+func get_safe_spawn_tile(offset_blocks: int = 2) -> Vector2i:
+	var center_x: int = world_width / 2
+	# базовая поверхность
+	var base_h: int = surface_base + int(noise_surface.get_noise_2d(center_x, 0) * surface_amp)
+	var spawn_y: int = base_h - offset_blocks
+	# если попадает в пещеру, поднимаем вверх
+	while spawn_y >= 0:
+		if noise_cave.get_noise_2d(center_x, spawn_y) <= cave_threshold:
+			return Vector2i(center_x, spawn_y)
+		spawn_y -= 1
+	return Vector2i(center_x, base_h - offset_blocks)

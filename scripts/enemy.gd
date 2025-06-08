@@ -7,9 +7,8 @@ extends RigidBody2D
 @onready var health_bar        = $HPBar/ProgressBar
 @onready var health_bar_timer  = $HealthBarTimer
 @onready var death_animation   : GPUParticles2D = $DeathAnimation
-
 @onready var attack_timer      = $AttackTimer
-@onready var attack_area       : Area2D       = $AttackArea
+@onready var attack_area       : Area2D = $AttackArea
 @onready var attack_animation  : GPUParticles2D = $AttackAnimation
 
 var health := max_health
@@ -19,6 +18,9 @@ func _ready() -> void:
 	attack_area.body_entered.connect(_on_attack_area_body_entered)
 	attack_timer.wait_time = attack_cooldown
 	attack_timer.start()
+
+func set_spawn_position(pos: Vector2) -> void:
+	global_position = pos
 
 func take_damage(amount: int) -> void:
 	$HPBar.visible = true
