@@ -4,7 +4,7 @@ extends Node
 enum TerrainID { AIR, GRASS, DIRT, ORE_COPPER, ORE_GOLD, ORE_IRON, SAND, STONE }
 
 # — Параметры мира —
-@export var world_width: int = 2000
+@export var world_width: int = 6000
 @export var world_height: int = 100
 @export var surface_base: int = 0
 @export var surface_amp: int = 8

@@ -1,6 +1,6 @@
-extends Node  # важно для Autoload
+extends Node
 
-# Определение enum для всех типов террейна
+## Enum всех типов террейна
 enum TerrainID {
 	AIR,
 	DIRT,
@@ -12,8 +12,8 @@ enum TerrainID {
 	STONE
 }
 
-# Словарь сопоставления типа террейна с ID тайлов
-var SOURCE_ID := {
+## Сопоставление типа террейна с ID в TileSet
+static var SOURCE_ID: Dictionary = {
 	TerrainID.AIR: 0,
 	TerrainID.DIRT: 1,
 	TerrainID.GRASS: 2,
