@@ -82,7 +82,7 @@ Label/font_sizes/font_size = 16
 Label/styles/normal = SubResource("StyleBoxFlat_1iba3")
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_shadow"]
-light_mode = 2
+light_mode = 1
 
 [node name="Main" type="Node"]
 script = ExtResource("1_3p2gp")
