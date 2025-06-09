@@ -134,8 +134,8 @@ func _process(_delta: float) -> void:
 		_loaded_chunks.erase(ci)
 
 func _generate_chunk_shadows(xs: int, xe: int) -> void:
-	var shadow_pattern := TileMapPattern.new()
-	shadow_pattern.set_size(Vector2i(xe - xs, world_height))
+        var shadow_pattern := TileMapPattern.new()
+        shadow_pattern.set_size(Vector2i(xe - xs, world_height))
 
 	for x in range(xs, xe):
 		var biome = generator.get_biome(x)
@@ -151,4 +151,37 @@ func _generate_chunk_shadows(xs: int, xe: int) -> void:
 			var local_pos = Vector2i(x - xs, y)
 			shadow_pattern.set_cell(local_pos, SHADE_ID_OFFSET + shade_idx)
 
-	shadow_map.set_pattern(Vector2i(xs, 0), shadow_pattern)
+        shadow_map.set_pattern(Vector2i(xs, 0), shadow_pattern)
+
+# --- Utilities ---------------------------------------------------------------
+
+# Удаляет блок и возвращает его TerrainID или -1, если ничего нет
+func remove_block(cell: Vector2i) -> int:
+       var sid: int = tilemap.get_cell_source_id(cell)
+       if sid == -1:
+               return -1
+       tilemap.erase_cell(cell)
+       _update_shadow_for_cell(cell)
+       for t in SOURCE_ID.keys():
+               if SOURCE_ID[t] == sid:
+                       return t
+       return -1
+
+# Ставит блок указанного типа
+func place_block(cell: Vector2i, terrain_id: int) -> void:
+       if not SOURCE_ID.has(terrain_id):
+               return
+       tilemap.set_cell(cell, SOURCE_ID[terrain_id], Vector2i.ZERO, 0)
+       _update_shadow_for_cell(cell)
+
+# Преобразует глобальные координаты в координаты тайла
+func position_to_cell(global_pos: Vector2) -> Vector2i:
+       var local: Vector2 = tilemap.to_local(global_pos)
+       var ts: Vector2 = tilemap.tile_set.tile_size
+       return Vector2i(floor(local.x / ts.x), floor(local.y / ts.y))
+
+# Пересчёт теней для чанка, в котором расположен указанный тайл
+func _update_shadow_for_cell(cell: Vector2i) -> void:
+       var xs = int(floor(float(cell.x) / chunk_width)) * chunk_width
+       var xe = min(xs + chunk_width, world_width)
+       _generate_chunk_shadows(xs, xe)
