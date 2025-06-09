@@ -81,6 +81,9 @@ bg_color = Color(0, 0, 0, 0.360784)
 Label/font_sizes/font_size = 16
 Label/styles/normal = SubResource("StyleBoxFlat_1iba3")
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_shadow"]
+light_mode = 2
+
 [node name="Main" type="Node"]
 script = ExtResource("1_3p2gp")
 surface_base = 10
@@ -213,6 +216,7 @@ grow_vertical = 2
 [node name="ShadowMap" type="TileMapLayer" parent="."]
 z_index = 1
 tile_set = ExtResource("16_1iba3")
+material = SubResource("CanvasItemMaterial_shadow")
 
 [node name="WorldMap" type="TileMapLayer" parent="."]
 tile_set = ExtResource("14_mwfav")
