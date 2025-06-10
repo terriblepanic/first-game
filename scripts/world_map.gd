@@ -124,7 +124,6 @@ func _process(_delta: float) -> void:
 			tilemap.set_pattern(Vector2i(xs, 0), patt)
 
 			# тени
-			_generate_chunk_shadows(xs, xe)
 			_loaded_chunks[ci] = true
 
 	# удаление старых чанков
@@ -146,7 +145,6 @@ func remove_block(cell: Vector2i) -> int:
 	if sid == -1:
 		return - 1
 	tilemap.erase_cell(cell)
-	_update_shadow_for_cell(cell)
 	for t in SOURCE_ID.keys():
 		if SOURCE_ID[t] == sid:
 			return t
@@ -158,7 +156,6 @@ func place_block(cell: Vector2i, terrain_id: int) -> void:
 	if not SOURCE_ID.has(terrain_id):
 		return
 	tilemap.set_cell(cell, SOURCE_ID[terrain_id], Vector2i.ZERO, 0)
-	_update_shadow_for_cell(cell)
 
 
 # Преобразует глобальные координаты в координаты тайла
@@ -171,31 +168,3 @@ func position_to_cell(global_pos: Vector2) -> Vector2i:
 func _on_player_died() -> void:
 	await get_tree().create_timer(2).timeout
 	get_tree().reload_current_scene()
-
-
-func _generate_chunk_shadows(xs: int, xe: int) -> void:
-	var shadow_pattern := TileMapPattern.new()
-	shadow_pattern.set_size(Vector2i(xe - xs, world_height))
-
-	for x in range(xs, xe):
-		var biome = generator.get_biome(x)
-		var h = generator.surface_height(x, biome)
-		for y in range(world_height):
-			var depth = y - h
-			if depth <= 0:
-				continue
-			if generator.is_cave(x, y):
-				continue
-			var t = clamp(float(depth) / MAX_DARK_DEPTH, 0.0, 1.0)
-			var shade_idx = int(round(t * float(SHADE_TILES - 1)))
-			var local_pos = Vector2i(x - xs, y)
-			shadow_pattern.set_cell(local_pos, SHADE_ID_OFFSET + shade_idx)
-
-		shadow_map.set_pattern(Vector2i(xs, 0), shadow_pattern)
-
-
-# Пересчёт теней для чанка, в котором расположен указанный тайл
-func _update_shadow_for_cell(cell: Vector2i) -> void:
-	var xs = int(floor(float(cell.x) / chunk_width)) * chunk_width
-	var xe = min(xs + chunk_width, world_width)
-	_generate_chunk_shadows(xs, xe)
