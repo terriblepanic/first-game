@@ -14,6 +14,7 @@ config/name="first_game"
 run/main_scene="uid://citgr4h7kjmw2"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=60
+boot_splash/show_image=false
 
 [autoload]
 
@@ -30,7 +31,7 @@ window/main_scene="res://scenes/Main.tscn"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/coyote_jump/plugin.cfg", "res://addons/gdpeg/plugin.cfg", "res://addons/simple_gdscript_formatter/plugin.cfg")
+enabled=PackedStringArray("res://addons/coyote_jump/plugin.cfg", "res://addons/fastnoiselite-configurator/plugin.cfg", "res://addons/gdpeg/plugin.cfg", "res://addons/simple_gdscript_formatter/plugin.cfg")
 
 [input]
 

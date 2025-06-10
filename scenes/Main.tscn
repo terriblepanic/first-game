@@ -14,8 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://bol37tybjqnvr" path="res://assets/parallax_bg/paralax_bg_7_nearBushes.png" id="9_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://jubqgarq03kq" path="res://scenes/fog_layer.tscn" id="12_bjd11"]
 [ext_resource type="Shader" uid="uid://cq0tvmh3a0lof" path="res://shaders/god_rays.gdshader" id="13_qmy6f"]
-[ext_resource type="TileSet" uid="uid://cx0ix7fgfoa71" path="res://assets/tilesets/world_tiles.tres" id="14_mwfav"]
 [ext_resource type="Script" uid="uid://3nnx4lkmvv7m" path="res://scripts/hud.gd" id="15_hud"]
+[ext_resource type="TileSet" uid="uid://c863tgpflukmr" path="res://assets/tilesets/nature.tres" id="15_nfivy"]
 [ext_resource type="Script" uid="uid://bqb1l0y2cyjop" path="res://scripts/mini_map_viewport.gd" id="17_ft6cd"]
 [ext_resource type="Script" uid="uid://cspwhrut3nv8d" path="res://scripts/inventory.gd" id="19_inv"]
 [ext_resource type="Script" uid="uid://b3h4lpeh81nkb" path="res://scripts/debug_hud.gd" id="20_1nqs0"]
@@ -81,7 +81,6 @@ Label/styles/normal = SubResource("StyleBoxFlat_1iba3")
 
 [node name="Main" type="Node"]
 script = ExtResource("1_3p2gp")
-world_width = 100
 
 [node name="Player" parent="." instance=ExtResource("1")]
 position = Vector2(-1, -13)
@@ -208,7 +207,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="WorldMap" type="TileMapLayer" parent="."]
-tile_set = ExtResource("14_mwfav")
+tile_set = ExtResource("15_nfivy")
 
 [node name="HUDLayer" type="CanvasLayer" parent="."]
 script = ExtResource("15_hud")

@@ -50,12 +50,10 @@ const SHADE_ID_OFFSET := 0 # смещение, если тайлы идут с �
 
 @export var chunk_width: int = 100
 @export var world_tiles: TileSet
-@export var shadow_tiles: TileSet # ShadowMap.tres
 
 var generator: WorldGenerator = WorldGenerator.new()
 
 @onready var tilemap: TileMapLayer = $WorldMap
-@onready var shadow_map: TileMapLayer = $ShadowMap
 @onready var player: Node2D = $Player
 
 var _loaded_chunks: Dictionary = {}
@@ -69,8 +67,6 @@ func _ready() -> void:
 	# назначаем основные тайлсеты
 	if world_tiles:
 		tilemap.tile_set = world_tiles
-	if shadow_tiles:
-		shadow_map.tile_set = shadow_tiles
 
 	# инициализируем генератор
 	generator.setup({
@@ -131,7 +127,6 @@ func _process(_delta: float) -> void:
 	for ci in _loaded_chunks.keys():
 		if ci < min_ci or ci > max_ci:
 			tilemap.set_pattern(Vector2i(ci * chunk_width, 0), TileMapPattern.new())
-			shadow_map.set_pattern(Vector2i(ci * chunk_width, 0), TileMapPattern.new())
 			to_remove.append(ci)
 	for ci in to_remove:
 		_loaded_chunks.erase(ci)
