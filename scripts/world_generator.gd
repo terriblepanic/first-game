@@ -139,36 +139,12 @@ func get_tile_id(grid: Array, x: int, y: int) -> int:
 			if TerrainData.is_solid(below) and below != TerrainID.GRASS:
 				is_surface = true
 		if is_surface:
-			var left: bool = x > 0 and grid[x - 1][y] == TerrainID.GRASS
-			var right: bool = x < grid.size() - 1 and grid[x + 1][y] == TerrainID.GRASS
-			var up: bool = y > 0 and grid[x][y - 1] == TerrainID.GRASS
-			var down: bool = y < grid[x].size() - 1 and grid[x][y + 1] == TerrainID.GRASS
-			# Углы
-			if left and not right:
-				return TerrainData.BITMASK_IDS[t][TerrainData.DIR_S | TerrainData.DIR_W]
-			if right and not left:
-				return TerrainData.BITMASK_IDS[t][TerrainData.DIR_S | TerrainData.DIR_E]
-			# Гориз. полоса
-			if left and right:
-				return TerrainData.BITMASK_IDS[t][TerrainData.DIR_E | TerrainData.DIR_W]
-			# Вертикальные полосы и кромки
-			if up and down:
-				return TerrainData.BITMASK_IDS[t][TerrainData.DIR_N | TerrainData.DIR_S]
-			if up and not down:
-				return TerrainData.BITMASK_IDS[t][TerrainData.DIR_N]
-			if down and not up:
-				return TerrainData.BITMASK_IDS[t][TerrainData.DIR_S]
-			# Spurs
-			if up and x > 0 and y > 0 and grid[x - 1][y - 1] == TerrainID.GRASS:
-				return TerrainData.SPUR_IDS[t]["NW"]
-			if up and x < grid.size() - 1 and y > 0 and grid[x + 1][y - 1] == TerrainID.GRASS:
-				return TerrainData.SPUR_IDS[t]["NE"]
-			if down and x < grid.size() - 1 and y < grid[x].size() - 1 and grid[x + 1][y + 1] == TerrainID.GRASS:
-				return TerrainData.SPUR_IDS[t]["SE"]
-			if down and x > 0 and y < grid[x].size() - 1 and grid[x - 1][y + 1] == TerrainID.GRASS:
-				return TerrainData.SPUR_IDS[t]["SW"]
-			# Изолированная
-			return TerrainData.SOURCE_ID[t]
+			# Временно считаем нижний блок травой и используем стандартный автотайлинг
+			var orig = grid[x][y + 1]
+			grid[x][y + 1] = TerrainID.GRASS
+			var tile := _default_tile_id(grid, x, y)
+			grid[x][y + 1] = orig
+			return tile
 	# 2) Все остальные случаи — дефолтная битмаска-логика
 	return _default_tile_id(grid, x, y)
 
@@ -252,10 +228,10 @@ func _default_tile_id(grid: Array, x: int, y: int) -> int:
 	var inner_corner_tiles = TerrainData.INNER_MASK_IDS.get(current_type, {})
 
 	# Проверяем 4 диагонали (NW, NE, SE, SW)
-	var has_nw = x > 0 and y > 0 and grid[x - 1][y - 1] == current_type and TerrainData.is_solid(grid[x - 1][y - 1])
-	var has_ne = x < grid.size() - 1 and y > 0 and grid[x + 1][y - 1] == current_type and TerrainData.is_solid(grid[x + 1][y - 1])
-	var has_se = x < grid.size() - 1 and y < grid[x].size() - 1 and grid[x + 1][y + 1] == current_type and TerrainData.is_solid(grid[x + 1][y + 1])
-	var has_sw = x > 0 and y < grid[x].size() - 1 and grid[x - 1][y + 1] == current_type and TerrainData.is_solid(grid[x - 1][y + 1])
+	var has_nw = x > 0 and y > 0 and grid[x][y - 1] == current_type and TerrainData.is_solid(grid[x][y - 1])
+	var has_ne = x < grid.size() - 1 and y > 0 and grid[x][y - 1] == current_type and TerrainData.is_solid(grid[x][y - 1])
+	var has_se = x < grid.size() - 1 and y < grid[x].size() - 1 and grid[x][y + 1] == current_type and TerrainData.is_solid(grid[x][y + 1])
+	var has_sw = x > 0 and y < grid[x].size() - 1 and grid[x][y + 1] == current_type and TerrainData.is_solid(grid[x][y + 1])
 
 	# Если, например, блок сверху и слева есть, и ещё и по диагонали (северо-запад) — ставим специальный угол
 	if mask == (TerrainData.DIR_N | TerrainData.DIR_W) and has_nw and inner_corner_tiles.has(TerrainData.DIR_N | TerrainData.DIR_W):
@@ -273,10 +249,10 @@ func _default_tile_id(grid: Array, x: int, y: int) -> int:
 	# Шаг 4: Если вообще нет соседей по прямым, но есть по диагонали — проверим "выступающие диагонали"
 	if mask == 0 and TerrainData.SPUR_IDS.has(current_type):
 		var spurs = TerrainData.SPUR_IDS[current_type]
-		if has_ne: return spurs["SW"]
-		if has_se: return spurs["NW"]
-		if has_sw: return spurs["NE"]
-		if has_nw: return spurs["SE"]
+		if has_ne: return spurs["NE"]
+		if has_se: return spurs["SE"]
+		if has_sw: return spurs["SW"]
+		if has_nw: return spurs["NW"]
 
 	# Шаг 5: Вернём нужный ID блока, исходя из маски
 	# Если для маски есть спрайт — используем его. Если нет — берём стандартный.

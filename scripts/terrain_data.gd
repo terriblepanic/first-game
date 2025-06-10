@@ -58,20 +58,20 @@ static var BITMASK_IDS := {
 	# GRASS
 	TerrainID.GRASS: {
 		0: 17, # grass_isolated
-		DIR_S | DIR_E | DIR_W: 18, # grass_edge_n
-		DIR_W | DIR_N | DIR_S: 19, # grass_edge_e
-		DIR_N | DIR_W | DIR_E: 20, # grass_edge_s
-		DIR_E | DIR_N | DIR_S: 21, # grass_edge_w
-		DIR_S | DIR_W: 22, # grass_corner_ne (neighbors south+west)
-		DIR_N | DIR_W: 23, # grass_corner_se (neighbors north+west)
-		DIR_N | DIR_E: 24, # grass_corner_sw (neighbors north+east)
-		DIR_S | DIR_E: 25, # grass_corner_nw (neighbors south+east)
+		DIR_E | DIR_N | DIR_W: 18, # grass_edge_n
+		DIR_N | DIR_S | DIR_E: 19, # grass_edge_e
+		DIR_S | DIR_E | DIR_W: 20, # grass_edge_s
+		DIR_N | DIR_W | DIR_S: 21, # grass_edge_w
+		DIR_N | DIR_E: 22, # grass_corner_ne (neighbors south+west) nw ne
+		DIR_E | DIR_S: 23, # grass_corner_se (neighbors north+west)
+		DIR_W | DIR_S: 24, # grass_corner_sw (neighbors north+east)
+		DIR_N | DIR_W: 25, # grass_corner_nw (neighbors south+east)
 		DIR_E | DIR_W: 30, # grass_strip_h
 		DIR_N | DIR_S: 31, # grass_strip_v
-		DIR_S: 32, # grass_t_up   (missing north)
-		DIR_W: 33, # grass_t_right (missing east)
-		DIR_N: 34, # grass_t_down  (missing south)
-		DIR_E: 35, # grass_t_left  (missing west)
+		DIR_N: 32, # grass_t_up   (missing north)
+		DIR_E: 33, # grass_t_right (missing east)
+		DIR_S: 34, # grass_t_down  (missing south)
+		DIR_W: 35, # grass_t_left  (missing west)
 		DIR_N | DIR_E | DIR_S | DIR_W: 36, # grass_cross
 	} ,
 }
@@ -85,10 +85,10 @@ static var INNER_MASK_IDS := {
 		DIR_S | DIR_W: 15,
 	} ,
 	TerrainID.GRASS: {
-		DIR_S | DIR_W: 26, # grass_inner_corner_ne
-		DIR_E | DIR_S: 27, # grass_inner_corner_nw
-		DIR_N | DIR_W: 28, # grass_inner_corner_se
-		DIR_E | DIR_N: 29, # grass_inner_corner_sw
+		DIR_N | DIR_E: 26, # grass_inner_corner_ne
+		DIR_N | DIR_W: 27, # grass_inner_corner_nw
+		DIR_S | DIR_E: 28, # grass_inner_corner_se
+		DIR_S | DIR_W: 29, # grass_inner_corner_sw
 	} ,
 }
 

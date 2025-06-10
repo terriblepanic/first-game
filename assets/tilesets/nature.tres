@@ -61,63 +61,70 @@ resource_name = "leaf_t_right"
 texture = ExtResource("7_jx4sw")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 4.2, -7, 7, -4.2, 7, 4.2, 4.2, 7, -7, 7)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 4, -7, 7, -4, 7, 4, 4, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rsbe7"]
 resource_name = "leaf_t_down"
 texture = ExtResource("5_adwol")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 4.2, 4.2, 7, -4.2, 7, -7, 4.2)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 4, 4, 7, -4, 7, -7, 4)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kic12"]
 resource_name = "leaf_t_left"
 texture = ExtResource("6_u2iji")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4.2, -7, 7, -7, 7, 7, -4.2, 7, -7, 4.2, -7, -4.2)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(7, -7, 7, 7, -4, 7, -7, 4, -7, -4, -4, -7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h5tei"]
 resource_name = "leaf_corner_ne"
 texture = ExtResource("38_soins")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 4, -7, 7, -4, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kafjl"]
 resource_name = "leaf_corner_se"
 texture = ExtResource("40_qrkwx")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 4, 4, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2ym8g"]
 resource_name = "leaf_corner_sw"
 texture = ExtResource("3_di51c")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -4, 7, -7, 4)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3aip2"]
 resource_name = "leaf_corner_nw"
 texture = ExtResource("39_3k25m")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -4, -4, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7lw6y"]
 resource_name = "grass_isolated"
 texture = ExtResource("23_t2eod")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -5, -5, -7, 5, -7, 7, -5, 7, 5, 5, 7, -5, 7, -7, 5)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_onkek"]
 resource_name = "grass_edge_n"
 texture = ExtResource("16_oj104")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_neneh"]
 resource_name = "grass_edge_e"
 texture = ExtResource("15_wh6df")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t1n48"]
 resource_name = "stone"
@@ -131,60 +138,70 @@ resource_name = "grass_edge_s"
 texture = ExtResource("17_t5sb3")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nrdqg"]
 resource_name = "grass_edge_w"
 texture = ExtResource("18_7xua6")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e7obu"]
 resource_name = "grass_corner_ne"
 texture = ExtResource("9_g7tgn")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 5, -7, 7, -5, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mm15g"]
 resource_name = "grass_corner_se"
 texture = ExtResource("11_rlw7h")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 5, 5, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uai1k"]
 resource_name = "grass_corner_sw"
 texture = ExtResource("12_7f1lv")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -5, 7, -7, 5)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nww0d"]
 resource_name = "grass_corner_nw"
 texture = ExtResource("10_1vunu")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -5, -5, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_utguc"]
 resource_name = "grass_inner_corner_ne"
 texture = ExtResource("19_24tds")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gaad4"]
 resource_name = "grass_inner_corner_nw"
 texture = ExtResource("20_bcvo7")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1w2ve"]
 resource_name = "grass_inner_corner_se"
 texture = ExtResource("21_a63ca")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rr4rg"]
 resource_name = "grass_inner_corner_sw"
 texture = ExtResource("22_iat5o")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o84sc"]
 resource_name = "wood"
@@ -197,60 +214,70 @@ resource_name = "grass_strip_h"
 texture = ExtResource("29_36pts")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wjpuj"]
 resource_name = "grass_strip_v"
 texture = ExtResource("30_v11ex")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ruhqi"]
 resource_name = "grass_t_up"
 texture = ExtResource("34_jhcp1")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -5, -5, -7, 5, -7, 7, -5, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ja1he"]
 resource_name = "grass_t_right"
 texture = ExtResource("33_6mh7t")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 5, -7, 7, -5, 7, 5, 5, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oywy1"]
 resource_name = "grass_t_down"
 texture = ExtResource("31_hx3x4")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 5, 5, 7, -5, 7, -7, 5)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v3uvk"]
 resource_name = "grass_t_left"
 texture = ExtResource("32_fwwp1")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(7, -7, 7, 7, -5, 7, -7, 5, -7, -5, -5, -7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_b8128"]
 resource_name = "grass_cross"
 texture = ExtResource("14_6afvd")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s74dl"]
 resource_name = "grass_spur_ne"
 texture = ExtResource("25_wtntn")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 5, -7, 7, -5, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kcurr"]
 resource_name = "grass_spur_se"
 texture = ExtResource("27_7slml")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 5, 5, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hfwf1"]
 resource_name = "grass_spur_sw"
 texture = ExtResource("28_p54y5")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -5, 7, -7, 5)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o8uc6"]
 resource_name = "ore_copper"
@@ -264,6 +291,7 @@ resource_name = "grass_spur_nw"
 texture = ExtResource("26_00hr7")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -5, -5, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nvda8"]
 resource_name = "ore_gold"
@@ -284,7 +312,7 @@ resource_name = "leaf_isolated"
 texture = ExtResource("9_x07dh")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4.2, -7, 4.2, -7, 7, -4.2, 7, 4.2, 4.2, 7, -4.2, 7, -7, 4.2, -7, -4.2)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -4, -4, -7, 4, -7, 7, -4, 7, 4, 4, 7, -4, 7, -7, 4)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hppud"]
 resource_name = "leaf_full"
@@ -298,7 +326,7 @@ resource_name = "leaf_t_up"
 texture = ExtResource("8_1kk8r")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -4.2, -4.2, -7, 4.2, -7, 7, -4.2, 7, 7, -7, 7)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -4, -4, -7, 4, -7, 7, -4, 7, 7, -7, 7)
 
 [resource]
 tile_size = Vector2i(14, 14)
