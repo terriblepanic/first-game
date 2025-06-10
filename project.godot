@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="first_game"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="uid://citgr4h7kjmw2"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=60
 
@@ -26,10 +26,11 @@ window/size/viewport_height=419
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
+window/main_scene="res://scenes/Main.tscn"
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/coyote_jump/plugin.cfg", "res://addons/gdpeg/plugin.cfg", "res://addons/simple_gdscript_formatter/plugin.cfg")
 
 [input]
 

@@ -1,18 +1,27 @@
 extends CharacterBody2D
 
+@export var mana_cost_attack: int = 10
+
+signal health_changed(value: int, max_value: int)
+signal mana_changed(value: int, max_value: int)
+signal player_died
+
 @export var speed: float = 300.0
-@export var jump_velocity: float = -400.0
+@export var jump_force := 400.0
 @export var gravity: float = 1200.0
 @export var attack_cooldown: float = 0.2
 @export var max_health: float = 100
 @export var health_regen_rate: float = 1.0
 @export var max_mana: float = 50
 @export var mana_regen_rate: float = 5.0
-@export var mana_cost_attack: int = 10
 
-signal health_changed(value: int, max_value: int)
-signal mana_changed(value: int, max_value: int)
-signal player_died
+var health: float = max_health
+var mana: float = max_mana
+var mana_regen_delay: float = 2.0
+var mana_regen_timer: float = 0.0
+var selected_slot: int = 0
+
+var _is_attacking: bool = false
 
 # Ссылка на камеру, чтобы сбрасывать сглаживание
 @onready var camera: Camera2D = $Camera2D
@@ -21,17 +30,14 @@ signal player_died
 @onready var attack_animation: GPUParticles2D = $AttackAnimation
 @onready var attack_animation_2: GPUParticles2D = $AttackAnimation2
 @onready var take_damage_animation: GPUParticles2D = $TakeDamageAnimation
-@onready var world_map := get_parent()               # узел world_map.gd
+@onready var world_map := get_parent() # узел world_map.gd
 @onready var inventory: Inventory = $"../HUDLayer/Inventory"
 @onready var death_label: Label = $"../HUDLayer/DeathLabel"
 
+@onready var jump_handler: Node = $CoyoteJump
+
 var _attack_timer: float = 0.0
-var _is_attacking: bool = false
-var health: float = max_health
-var mana: float = max_mana
-var mana_regen_delay: float = 2.0
-var mana_regen_timer: float = 0.0
-var selected_slot: int = 0
+
 
 func _ready() -> void:
 	attack_area.monitoring = false
@@ -39,11 +45,6 @@ func _ready() -> void:
 	emit_signal("health_changed", int(health), max_health)
 	emit_signal("mana_changed", int(mana), max_mana)
 
-# Вызывается извне для спавна
-func set_spawn_position(pos: Vector2) -> void:
-	global_position = pos
-	if camera:
-		camera.reset_smoothing()
 
 func _physics_process(delta: float) -> void:
 	var direction: float = Input.get_axis("move_left", "move_right")
@@ -52,7 +53,12 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	elif Input.is_action_just_pressed("jump"):
-		velocity.y = jump_velocity
+		velocity.y = 0.0
+
+	jump_handler.set_on_floor(is_on_floor())
+
+	if jump_handler.consume_jump():
+		velocity.y = -jump_force
 
 	if _attack_timer > 0.0:
 		_attack_timer -= delta
@@ -70,6 +76,14 @@ func _physics_process(delta: float) -> void:
 	health_regen(delta)
 	move_and_slide()
 
+
+# Вызывается извне для спавна
+func set_spawn_position(pos: Vector2) -> void:
+	global_position = pos
+	if camera:
+		camera.reset_smoothing()
+
+
 func perform_attack() -> void:
 	_is_attacking = true
 	attack_animation.restart()
@@ -77,11 +91,6 @@ func perform_attack() -> void:
 	_attack_timer = attack_cooldown
 	attack_area.monitoring = true
 
-func _on_attack_area_body_entered(body: Node) -> void:
-	if body == self:
-		return
-	if body.has_method("take_damage"):
-		body.take_damage(1)
 
 func take_damage(amount: int) -> void:
 	health = clamp(health - amount, 0, max_health)
@@ -91,16 +100,6 @@ func take_damage(amount: int) -> void:
 		emit_signal("player_died")
 		_die()
 
-func _die() -> void:
-	set_process(false)
-	hide()
-	if is_instance_valid(death_label):
-		death_label.text = "Вы умерли!"
-		death_label.visible = true
-	await get_tree().create_timer(2).timeout
-	if is_instance_valid(death_label):
-		death_label.visible = false
-	respawn()
 
 func respawn() -> void:
 	health = max_health
@@ -110,6 +109,7 @@ func respawn() -> void:
 	show()
 	set_process(true)
 
+
 func health_regen(delta: float) -> void:
 	if health >= max_health:
 		return
@@ -118,10 +118,12 @@ func health_regen(delta: float) -> void:
 	if int(health) != prev:
 		emit_signal("health_changed", int(health), max_health)
 
+
 func use_mana(amount: int) -> void:
 	mana = clamp(mana - amount, 0, max_mana)
 	emit_signal("mana_changed", int(mana), max_mana)
 	mana_regen_timer = mana_regen_delay
+
 
 func mana_regen(delta: float) -> void:
 	if mana >= max_mana:
@@ -134,10 +136,31 @@ func mana_regen(delta: float) -> void:
 		if int(mana) != prev:
 			emit_signal("mana_changed", int(mana), max_mana)
 
+
+func _on_attack_area_body_entered(body: Node) -> void:
+	if body == self:
+		return
+	if body.has_method("take_damage"):
+		body.take_damage(1)
+
+
+func _die() -> void:
+	set_process(false)
+	hide()
+	if is_instance_valid(death_label):
+		death_label.text = "Вы умерли!"
+		death_label.visible = true
+	await get_tree().create_timer(2).timeout
+	if is_instance_valid(death_label):
+		death_label.visible = false
+	respawn()
+
+
 func _get_selected_item() -> Item:
 	if inventory and selected_slot >= 0 and selected_slot < inventory.items.size():
 		return inventory.items[selected_slot]
 	return null
+
 
 func _use_selected_item() -> void:
 	var item := _get_selected_item()
@@ -151,6 +174,7 @@ func _use_selected_item() -> void:
 	elif mana >= mana_cost_attack:
 		use_mana(mana_cost_attack)
 		perform_attack()
+
 
 func _place_selected_block() -> void:
 	var item := _get_selected_item()

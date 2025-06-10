@@ -4,14 +4,15 @@ extends RigidBody2D
 @export var attack_cooldown := 2.0
 @export var attack_damage := 50
 
-@onready var health_bar        = $HPBar/ProgressBar
-@onready var health_bar_timer  = $HealthBarTimer
-@onready var death_animation   : GPUParticles2D = $DeathAnimation
-@onready var attack_timer      = $AttackTimer
-@onready var attack_area       : Area2D = $AttackArea
-@onready var attack_animation  : GPUParticles2D = $AttackAnimation
-
 var health := max_health
+
+@onready var health_bar = $HPBar/ProgressBar
+@onready var health_bar_timer = $HealthBarTimer
+@onready var death_animation: GPUParticles2D = $DeathAnimation
+@onready var attack_timer = $AttackTimer
+@onready var attack_area: Area2D = $AttackArea
+@onready var attack_animation: GPUParticles2D = $AttackAnimation
+
 
 func _ready() -> void:
 	attack_area.monitoring = false
@@ -19,8 +20,10 @@ func _ready() -> void:
 	attack_timer.wait_time = attack_cooldown
 	attack_timer.start()
 
+
 func set_spawn_position(pos: Vector2) -> void:
 	global_position = pos
+
 
 func take_damage(amount: int) -> void:
 	$HPBar.visible = true
@@ -39,8 +42,10 @@ func take_damage(amount: int) -> void:
 
 	health_bar_timer.start()
 
+
 func _on_health_bar_timer_timeout() -> void:
 	$HPBar.visible = false
+
 
 func _on_attack_timer_timeout() -> void:
 	attack_animation.restart()
@@ -48,6 +53,7 @@ func _on_attack_timer_timeout() -> void:
 	await get_tree().create_timer(attack_animation.lifetime).timeout
 	attack_area.monitoring = false
 	attack_timer.start()
+
 
 func _on_attack_area_body_entered(body: Node) -> void:
 	if body == self:

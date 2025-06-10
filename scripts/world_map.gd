@@ -1,30 +1,41 @@
 extends Node
 
 # — ID ландшафта —
-enum TerrainID { AIR, GRASS, DIRT, ORE_COPPER, ORE_GOLD, ORE_IRON, SAND, STONE }
-
-# — Параметры мира —
-@export var world_width: int = 50
-@export var world_height: int = 100
-@export var surface_base: int = 0
-@export var surface_amp: int = 8
-@export var surface_amp_desert: int = 6
-@export var surface_amp_mountain: int = 12
-@export var dirt_depth: int = 5
-@export var sand_depth: int = 4
-@export var sea_level: int = 20
-@export var beach_width: int = 3
-
-# Порог для шума пещер
-@export var cave_threshold: float = 0.6
-@export var cave_threshold_depth_factor: float = 0.2
-
-# Шансы руды
-@export var ore_chances: Dictionary = {"copper": 0.015, "iron": 0.007, "gold": 0.003}
+enum TerrainID {
+	AIR,
+	GRASS,
+	DIRT,
+	ORE_COPPER,
+	ORE_GOLD,
+	ORE_IRON,
+	SAND,
+	STONE,
+}
 
 # минимальная глубина появления руды
-const ORE_DEPTH := {"copper": 30, "iron": 40, "gold": 50}
+const ORE_DEPTH := { "copper": 30, "iron": 40, "gold": 50 }
 
+# Настройки градиента тени
+const MAX_DARK_DEPTH := 20.0 # глубина до полного затемнения в тайлах
+const SHADE_TILES := 20 # количество теневых тайлов (ID 0…19)
+const SHADE_ID_OFFSET := 0 # смещение, если тайлы идут с другого ID
+
+# — Параметры мира —
+@export var world_width: int = 1000
+@export var world_height: int = 50
+@export var surface_base: int = 10
+@export var surface_amp: int = 8
+@export var surface_amp_desert: int = 6
+@export var surface_amp_mountain: int = 40
+@export var dirt_depth: int = 10
+@export var sand_depth: int = 10
+@export var sea_level: int = 20
+@export var beach_width: int = 3
+# Порог для шума пещер
+@export var cave_threshold: float = 0.7
+@export var cave_threshold_depth_factor: float = 0.2
+# Шансы руды
+@export var ore_chances: Dictionary = { "copper": 0.015, "iron": 0.007, "gold": 0.003 }
 # Соответствие TerrainID → ID тайла в TileSet
 @export var SOURCE_ID: Dictionary = {
 	TerrainID.AIR: 0,
@@ -39,20 +50,16 @@ const ORE_DEPTH := {"copper": 30, "iron": 40, "gold": 50}
 
 @export var chunk_width: int = 100
 @export var world_tiles: TileSet
-@export var shadow_tiles: TileSet   # ShadowMap.tres
+@export var shadow_tiles: TileSet # ShadowMap.tres
 
 var generator: WorldGenerator = WorldGenerator.new()
 
-@onready var tilemap:   TileMapLayer = $WorldMap
+@onready var tilemap: TileMapLayer = $WorldMap
 @onready var shadow_map: TileMapLayer = $ShadowMap
-@onready var player:    Node2D       = $Player
-
-# Настройки градиента тени
-const MAX_DARK_DEPTH := 20.0    # глубина до полного затемнения в тайлах
-const SHADE_TILES     := 20     # количество теневых тайлов (ID 0…19)
-const SHADE_ID_OFFSET := 0      # смещение, если тайлы идут с другого ID
+@onready var player: Node2D = $Player
 
 var _loaded_chunks: Dictionary = {}
+
 
 func _ready() -> void:
 	randomize()
@@ -80,10 +87,10 @@ func _ready() -> void:
 		"cave_threshold_depth_factor": cave_threshold_depth_factor,
 		"ore_chances": ore_chances,
 		"SOURCE_ID": SOURCE_ID
-	})
+		})
 
 	# спавн игрока и врага
-		# спавн игрока и врага
+	# спавн игрока и врага
 	var spawn_tile: Vector2i = generator.safe_spawn_tile(world_width, 2)
 	var ts: Vector2 = tilemap.tile_set.tile_size
 	var spawn_pos: Vector2 = Vector2(spawn_tile.x * ts.x, spawn_tile.y * ts.y)
@@ -98,9 +105,6 @@ func _ready() -> void:
 	_process(0.0)
 	$Player.player_died.connect(_on_player_died)
 
-func _on_player_died() -> void:
-	await get_tree().create_timer(2).timeout
-	get_tree().reload_current_scene()
 
 func _process(_delta: float) -> void:
 	var ts: Vector2 = tilemap.tile_set.tile_size
@@ -133,13 +137,49 @@ func _process(_delta: float) -> void:
 	for ci in to_remove:
 		_loaded_chunks.erase(ci)
 
+		# --- Utilities ---------------------------------------------------------------
+
+
+# Удаляет блок и возвращает его TerrainID или -1, если ничего нет
+func remove_block(cell: Vector2i) -> int:
+	var sid: int = tilemap.get_cell_source_id(cell)
+	if sid == -1:
+		return - 1
+	tilemap.erase_cell(cell)
+	_update_shadow_for_cell(cell)
+	for t in SOURCE_ID.keys():
+		if SOURCE_ID[t] == sid:
+			return t
+	return - 1
+
+
+# Ставит блок указанного типа
+func place_block(cell: Vector2i, terrain_id: int) -> void:
+	if not SOURCE_ID.has(terrain_id):
+		return
+	tilemap.set_cell(cell, SOURCE_ID[terrain_id], Vector2i.ZERO, 0)
+	_update_shadow_for_cell(cell)
+
+
+# Преобразует глобальные координаты в координаты тайла
+func position_to_cell(global_pos: Vector2) -> Vector2i:
+	var local: Vector2 = tilemap.to_local(global_pos)
+	var ts: Vector2 = tilemap.tile_set.tile_size
+	return Vector2i(floor(local.x / ts.x), floor(local.y / ts.y))
+
+
+func _on_player_died() -> void:
+	await get_tree().create_timer(2).timeout
+	get_tree().reload_current_scene()
+
+
 func _generate_chunk_shadows(xs: int, xe: int) -> void:
-        var shadow_pattern := TileMapPattern.new()
-        shadow_pattern.set_size(Vector2i(xe - xs, world_height))
+	var shadow_pattern := TileMapPattern.new()
+	shadow_pattern.set_size(Vector2i(xe - xs, world_height))
 
 	for x in range(xs, xe):
 		var biome = generator.get_biome(x)
-		var h     = generator.surface_height(x, biome)
+		var h = generator.surface_height(x, biome)
 		for y in range(world_height):
 			var depth = y - h
 			if depth <= 0:
@@ -151,37 +191,11 @@ func _generate_chunk_shadows(xs: int, xe: int) -> void:
 			var local_pos = Vector2i(x - xs, y)
 			shadow_pattern.set_cell(local_pos, SHADE_ID_OFFSET + shade_idx)
 
-        shadow_map.set_pattern(Vector2i(xs, 0), shadow_pattern)
+		shadow_map.set_pattern(Vector2i(xs, 0), shadow_pattern)
 
-# --- Utilities ---------------------------------------------------------------
-
-# Удаляет блок и возвращает его TerrainID или -1, если ничего нет
-func remove_block(cell: Vector2i) -> int:
-       var sid: int = tilemap.get_cell_source_id(cell)
-       if sid == -1:
-               return -1
-       tilemap.erase_cell(cell)
-       _update_shadow_for_cell(cell)
-       for t in SOURCE_ID.keys():
-               if SOURCE_ID[t] == sid:
-                       return t
-       return -1
-
-# Ставит блок указанного типа
-func place_block(cell: Vector2i, terrain_id: int) -> void:
-       if not SOURCE_ID.has(terrain_id):
-               return
-       tilemap.set_cell(cell, SOURCE_ID[terrain_id], Vector2i.ZERO, 0)
-       _update_shadow_for_cell(cell)
-
-# Преобразует глобальные координаты в координаты тайла
-func position_to_cell(global_pos: Vector2) -> Vector2i:
-       var local: Vector2 = tilemap.to_local(global_pos)
-       var ts: Vector2 = tilemap.tile_set.tile_size
-       return Vector2i(floor(local.x / ts.x), floor(local.y / ts.y))
 
 # Пересчёт теней для чанка, в котором расположен указанный тайл
 func _update_shadow_for_cell(cell: Vector2i) -> void:
-       var xs = int(floor(float(cell.x) / chunk_width)) * chunk_width
-       var xe = min(xs + chunk_width, world_width)
-       _generate_chunk_shadows(xs, xe)
+	var xs = int(floor(float(cell.x) / chunk_width)) * chunk_width
+	var xe = min(xs + chunk_width, world_width)
+	_generate_chunk_shadows(xs, xe)

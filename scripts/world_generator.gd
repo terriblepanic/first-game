@@ -1,8 +1,11 @@
-extends Object
 class_name WorldGenerator
+extends Object
 
-const TerrainID = TerrainData.TerrainID  # из Autoload
-var SOURCE_ID: Dictionary  # будет установлен в setup()
+const TerrainID = TerrainData.TerrainID # из Autoload
+
+const ORE_DEPTH := { "copper": 15, "iron": 25, "gold": 35 }
+
+var SOURCE_ID: Dictionary # будет установлен в setup()
 
 # world parameters
 var world_height: int
@@ -18,27 +21,10 @@ var cave_threshold: float
 var cave_threshold_depth_factor: float
 var ore_chances: Dictionary
 
-const ORE_DEPTH := {"copper": 30, "iron": 40, "gold": 50}
-
 var noise_surface: FastNoiseLite
 var noise_biome: FastNoiseLite
 var noise_cave: FastNoiseLite
 var noise_cave2: FastNoiseLite
-
-
-func setup(params: Dictionary) -> void:
-	SOURCE_ID = TerrainData.SOURCE_ID  # инициализация
-
-	for key in params.keys():
-		if key in self:
-			self.set(key, params[key])
-
-	noise_surface = FastNoiseLite.new()
-	noise_biome = FastNoiseLite.new()
-	noise_cave = FastNoiseLite.new()
-	noise_cave2 = FastNoiseLite.new()
-
-	_init_noises()
 
 
 func _init_noises() -> void:
@@ -65,6 +51,21 @@ func _init_noises() -> void:
 	noise_cave2.frequency = 0.05
 	noise_cave2.domain_warp_enabled = true
 	noise_cave2.domain_warp_type = FastNoiseLite.DOMAIN_WARP_SIMPLEX
+
+
+func setup(params: Dictionary) -> void:
+	SOURCE_ID = TerrainData.SOURCE_ID # инициализация
+
+	for key in params.keys():
+		if key in self:
+			self.set(key, params[key])
+
+	noise_surface = FastNoiseLite.new()
+	noise_biome = FastNoiseLite.new()
+	noise_cave = FastNoiseLite.new()
+	noise_cave2 = FastNoiseLite.new()
+
+	_init_noises()
 
 
 func get_biome(x: int) -> String:

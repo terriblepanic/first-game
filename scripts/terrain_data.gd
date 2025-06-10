@@ -9,7 +9,7 @@ enum TerrainID {
 	ORE_GOLD,
 	ORE_IRON,
 	SAND,
-	STONE
+	STONE,
 }
 
 ## Сопоставление типа террейна с ID в TileSet

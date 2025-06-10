@@ -1,17 +1,13 @@
 extends Label
 
+var debug_visible: bool = false
+
 @onready var world_map := get_node("/root/Main")
 @onready var player := world_map.get_node("Player")
 @onready var enemy := world_map.get_node("Enemy")
 @onready var tilemap := world_map.get_node("WorldMap")
 @onready var generator: WorldGenerator = world_map.generator
 
-var debug_visible: bool = false
-
-func _input(event):
-	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:
-		debug_visible = !debug_visible
-		visible = debug_visible
 
 func _process(_delta):
 	if not debug_visible:
@@ -24,7 +20,6 @@ func _process(_delta):
 	var top_right: Vector2i = Vector2i(W - 1, 0)
 	var bottom_left: Vector2i = Vector2i(0, H - 1)
 	var bottom_right: Vector2i = Vector2i(W - 1, H - 1)
-
 	var player_tile: Vector2i = world_map.position_to_cell(player.global_position)
 	var enemy_tile: Vector2i = world_map.position_to_cell(enemy.global_position)
 
@@ -67,3 +62,9 @@ func _process(_delta):
 	text += "🧱 Видимые тайлы:        %d\n" % visible_tiles_x
 	text += "🚀 FPS:                  %d\n" % fps
 	text += "🖱 Курсор (тайл):        %s" % str(cursor_tile)
+
+
+func _input(event):
+	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:
+		debug_visible = !debug_visible
+		visible = debug_visible
