@@ -75,7 +75,7 @@ void fragment() {
 
 		if (height == 1. || height == 0.) {
 
-			COLOR = vec4(water_color.rgb,height);
+			COLOR = vec4(water_color.rgb, 1.0);
 
 			if (height == 0.) {
 
@@ -89,7 +89,7 @@ void fragment() {
 					COLOR = vec4(water_color*water_back_lightness)*0.5;
 				} else {
 
-					COLOR = vec4(water_color.rgb,height);
+					COLOR = vec4(water_color.rgb, 1.0);
 				}
 			} else {
 
@@ -142,5 +142,6 @@ void fragment() {
 		if (light_effect) {L = cos(distance(UV, sin(suv*suv) + NTIME*ball_light_speed))*0.25;}
 
 		COLOR = border_exclusion_effect ? exclusion(COLOR, vec4(vec3(1.),pow(distance(UV, vec2(0.5,0.5))*2.,ball_border_ci) + L)*ball_color) : ontop(COLOR, vec4(vec3(1.),pow(distance(UV, vec2(0.5,0.5))*2.,ball_border_ci) + L)*ball_color);
+	COLOR.a = 1.0;
 	}
 }
