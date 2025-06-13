@@ -2,9 +2,9 @@ extends Label
 
 var debug_visible: bool = false
 
-@onready var world_map := get_node("/root/Main")
-@onready var player := world_map.get_node("Player")
-@onready var enemy := world_map.get_node("Enemy")
+@onready var world_map := get_node("/root/Main")  
+@onready var player := get_node("/root/Main/Player/Player")
+@onready var enemy := get_node("/root/Main/Enemy/Enemy")
 @onready var tilemap := world_map.get_node("WorldMap")
 @onready var generator: WorldGenerator = world_map.generator
 

@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7htbu4a30wt2"]
+
+[ext_resource type="Script" uid="uid://7354lsoscqmg" path="res://scripts/OrbUIController.gd" id="1_ctuxr"]
+[ext_resource type="Shader" uid="uid://dekiscjgiybj6" path="res://shaders/health_orb.gdshader" id="2_2p2p8"]
+[ext_resource type="Texture2D" uid="uid://bq04l2qfeg0b3" path="res://assets/ui/orb.png" id="3_4d4y3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vgbrp"]
+shader = ExtResource("2_2p2p8")
+shader_parameter/light_effect = true
+shader_parameter/border_exclusion_effect = false
+shader_parameter/wave_fix_on_border = true
+shader_parameter/water_color = Color(1, 0, 0, 1)
+shader_parameter/water_wave_speed = 2.0
+shader_parameter/water_wave_ci = 0.05
+shader_parameter/water_back_lightness = 0.8
+shader_parameter/ball_color = Color(1, 1, 1, 1)
+shader_parameter/ball_border_ci = 5.0
+shader_parameter/ball_light_speed = 2.0
+shader_parameter/wave_num = 3.0
+shader_parameter/plane_inclined_effect = false
+shader_parameter/plane_inclined_ratio = 0.05
+shader_parameter/iniTime = 0.0
+shader_parameter/height = 0.5
+shader_parameter/oheight = 0.5
+shader_parameter/vibration_effect = true
+shader_parameter/vibration_time = 0.0
+shader_parameter/vibration_effect_timelength = 0.01
+shader_parameter/vibration_speed = 8.0
+shader_parameter/vibration_magnitude = 1.29
+shader_parameter/vibration_wave_ci = 0.31
+shader_parameter/refraction_ratio_glass = 0.2
+shader_parameter/refraction_ratio_water = 0.6
+
+[node name="OrbBar" type="Node2D"]
+script = ExtResource("1_ctuxr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_vgbrp")
+texture = ExtResource("3_4d4y3")

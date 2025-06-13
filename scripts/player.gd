@@ -31,8 +31,8 @@ var _is_attacking: bool = false
 @onready var attack_animation_2: GPUParticles2D = $AttackAnimation2
 @onready var take_damage_animation: GPUParticles2D = $TakeDamageAnimation
 @onready var world_map := get_parent() # узел world_map.gd
-@onready var inventory: Inventory = $"../HUDLayer/Inventory"
-@onready var death_label: Label = $"../HUDLayer/DeathLabel"
+@onready var inventory: Inventory = $"../../HUD/Inventory"
+@onready var death_label: Label = $"../../HUD/DeathLabel"
 
 @onready var jump_handler: Node = $CoyoteJump
 

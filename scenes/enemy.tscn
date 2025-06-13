@@ -1,6 +1,19 @@
-[gd_scene load_steps=14 format=3 uid="uid://dkpppp5nyoaox"]
+[gd_scene load_steps=16 format=3 uid="uid://dkpppp5nyoaox"]
 
 [ext_resource type="Script" uid="uid://dy2htt0do5l76" path="res://scripts/enemy.gd" id="1"]
+[ext_resource type="Shader" uid="uid://bsla35snqxt2w" path="res://shaders/radial_shine.gdshader" id="2_md0e3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_md0e3"]
+shader = ExtResource("2_md0e3")
+shader_parameter/amplitude = 100.0
+shader_parameter/frequency = 8.0
+shader_parameter/light_magnitude = 18.0
+shader_parameter/color_spread = 0.0
+shader_parameter/light_distance = 0.18
+shader_parameter/speed = 0.0199776
+shader_parameter/cut_angle = true
+shader_parameter/angle = 53.0
+shader_parameter/yshift = -0.59
 
 [sub_resource type="Gradient" id="Gradient_7p1mj"]
 offsets = PackedFloat32Array(0)
@@ -88,6 +101,17 @@ turbulence_initial_displacement_max = 5.4
 [node name="Enemy" type="RigidBody2D"]
 z_index = 1
 script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+z_index = 1
+material = SubResource("ShaderMaterial_md0e3")
+offset_left = -184.0
+offset_top = -228.0
+offset_right = 66.0
+offset_bottom = 22.0
+scale = Vector2(1.47525, 1.04053)
+color = Color(1, 1, 1, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("GradientTexture2D_md0e3")

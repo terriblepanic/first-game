@@ -54,7 +54,7 @@ const SHADE_ID_OFFSET := 0 # смещение, если тайлы идут с �
 var generator: WorldGenerator = WorldGenerator.new()
 
 @onready var tilemap: TileMapLayer = $WorldMap
-@onready var player: Node2D = $Player
+@onready var player: Node2D = $Player/Player
 
 var _loaded_chunks: Dictionary = {}
 
@@ -92,14 +92,14 @@ func _ready() -> void:
 	var spawn_pos: Vector2 = Vector2(spawn_tile.x * ts.x, spawn_tile.y * ts.y)
 	if player.has_method("set_spawn_position"):
 		player.set_spawn_position(spawn_pos)
-	if has_node("Enemy") and $Enemy.has_method("set_spawn_position"):
+	if has_node("Enemy") and $Enemy/Enemy.has_method("set_spawn_position"):
 		var enemy_spawn: Vector2i = spawn_tile + Vector2i(1, 0)
 		var enemy_pos: Vector2 = Vector2(enemy_spawn.x * ts.x, enemy_spawn.y * ts.y)
-		$Enemy.set_spawn_position(enemy_pos)
+		$Enemy/Enemy.set_spawn_position(enemy_pos)
 
 	# первый вызов _process, чтобы сразу отрисовать чанки и тени
 	_process(0.0)
-	$Player.player_died.connect(_on_player_died)
+	$Player/Player.player_died.connect(_on_player_died)
 
 
 func _process(_delta: float) -> void:

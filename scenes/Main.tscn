@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://citgr4h7kjmw2"]
+[gd_scene load_steps=19 format=3 uid="uid://citgr4h7kjmw2"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1"]
 [ext_resource type="Script" uid="uid://bo8rt7s20wgyr" path="res://scripts/world_map.gd" id="1_3p2gp"]
@@ -12,13 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://du2iwna3rn7ak" path="res://assets/parallax_bg/paralax_bg_5_forest.png" id="7_qmy6f"]
 [ext_resource type="Texture2D" uid="uid://d05y3myd7kinb" path="res://assets/parallax_bg/paralax_bg_6_farBushes.png" id="8_mwfav"]
 [ext_resource type="Texture2D" uid="uid://bol37tybjqnvr" path="res://assets/parallax_bg/paralax_bg_7_nearBushes.png" id="9_3p2gp"]
+[ext_resource type="Material" uid="uid://g2dorm25n1m5" path="res://shaders/wind_material.tres" id="10_1nqs0"]
 [ext_resource type="PackedScene" uid="uid://jubqgarq03kq" path="res://scenes/fog_layer.tscn" id="12_bjd11"]
 [ext_resource type="Shader" uid="uid://cq0tvmh3a0lof" path="res://shaders/god_rays.gdshader" id="13_qmy6f"]
-[ext_resource type="Script" uid="uid://3nnx4lkmvv7m" path="res://scripts/hud.gd" id="15_hud"]
 [ext_resource type="TileSet" uid="uid://c863tgpflukmr" path="res://assets/tilesets/nature.tres" id="15_nfivy"]
-[ext_resource type="Script" uid="uid://bqb1l0y2cyjop" path="res://scripts/mini_map_viewport.gd" id="17_ft6cd"]
-[ext_resource type="Script" uid="uid://cspwhrut3nv8d" path="res://scripts/inventory.gd" id="19_inv"]
-[ext_resource type="Script" uid="uid://b3h4lpeh81nkb" path="res://scripts/debug_hud.gd" id="20_1nqs0"]
+[ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="17_ft6cd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
 shader = ExtResource("13_qmy6f")
@@ -28,66 +26,20 @@ shader_parameter/samples = 30
 shader_parameter/weight = 0.5
 shader_parameter/threshold = 0.6
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ft6cd"]
-bg_color = Color(0.924661, 0.267028, 0.11904, 0.392157)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 2
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bb450"]
-bg_color = Color(0.968627, 0.364706, 0.160784, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 2
-anti_aliasing = false
-
-[sub_resource type="Theme" id="Theme_1iba3"]
-ProgressBar/styles/background = SubResource("StyleBoxFlat_ft6cd")
-ProgressBar/styles/fill = SubResource("StyleBoxFlat_bb450")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfivy"]
-bg_color = Color(0.5213, 0.419961, 0.991063, 0.392157)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 2
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1nqs0"]
-bg_color = Color(0.587762, 0.741107, 0.971693, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 2
-anti_aliasing = false
-
-[sub_resource type="Theme" id="Theme_yxlcp"]
-ProgressBar/styles/background = SubResource("StyleBoxFlat_nfivy")
-ProgressBar/styles/fill = SubResource("StyleBoxFlat_1nqs0")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1iba3"]
-bg_color = Color(0, 0, 0, 0.360784)
-
-[sub_resource type="Theme" id="Theme_ebg2g"]
-Label/font_sizes/font_size = 16
-Label/styles/normal = SubResource("StyleBoxFlat_1iba3")
-
 [node name="Main" type="Node"]
 script = ExtResource("1_3p2gp")
 
-[node name="Player" parent="." instance=ExtResource("1")]
+[node name="Player" type="CanvasLayer" parent="."]
+layer = 2
+follow_viewport_enabled = true
+
+[node name="Player" parent="Player" instance=ExtResource("1")]
+z_index = 2
 position = Vector2(-1, -13)
 speed = 800.0
 metadata/_edit_group_ = true
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Camera2D" type="Camera2D" parent="Player/Player"]
 limit_smoothed = true
 position_smoothing_enabled = true
 drag_left_margin = 0.0
@@ -95,7 +47,11 @@ drag_top_margin = 0.0
 drag_right_margin = 0.0
 drag_bottom_margin = 0.0
 
-[node name="Enemy" parent="." instance=ExtResource("2")]
+[node name="Enemy" type="CanvasLayer" parent="."]
+layer = 2
+follow_viewport_enabled = true
+
+[node name="Enemy" parent="Enemy" instance=ExtResource("2")]
 position = Vector2(328, 42)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
@@ -151,6 +107,7 @@ motion_mirroring = Vector2(746, 0)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Forest"]
+material = ExtResource("10_1nqs0")
 texture = ExtResource("7_qmy6f")
 centered = false
 
@@ -161,6 +118,7 @@ motion_mirroring = Vector2(746, 0)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/FarBushes"]
+material = ExtResource("10_1nqs0")
 texture = ExtResource("8_mwfav")
 centered = false
 
@@ -171,6 +129,7 @@ motion_mirroring = Vector2(746, 0)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/NearBushes"]
+material = ExtResource("10_1nqs0")
 texture = ExtResource("9_3p2gp")
 centered = false
 
@@ -209,158 +168,5 @@ grow_vertical = 2
 [node name="WorldMap" type="TileMapLayer" parent="."]
 tile_set = ExtResource("15_nfivy")
 
-[node name="HUDLayer" type="CanvasLayer" parent="."]
-script = ExtResource("15_hud")
-
-[node name="Inventory" type="Node" parent="HUDLayer"]
-script = ExtResource("19_inv")
-
-[node name="HUD" type="Control" parent="HUDLayer"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HealthBar" type="ProgressBar" parent="HUDLayer/HUD"]
-layout_mode = 1
-offset_left = 6.0
-offset_top = 5.0
-offset_right = 146.0
-offset_bottom = 20.0
-theme = SubResource("Theme_1iba3")
-step = 1.0
-value = 100.0
-show_percentage = false
-
-[node name="ManaBar" type="ProgressBar" parent="HUDLayer/HUD"]
-layout_mode = 1
-offset_left = 6.0
-offset_top = 29.0
-offset_right = 146.0
-offset_bottom = 44.0
-theme = SubResource("Theme_yxlcp")
-max_value = 50.0
-step = 1.0
-value = 50.0
-show_percentage = false
-
-[node name="QuickSlots" type="HBoxContainer" parent="HUDLayer/HUD"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.25
-anchor_right = 0.75
-anchor_bottom = 1.0
-offset_left = 186.5
-offset_right = 186.5
-
-[node name="Slot1" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
-layout_mode = 2
-
-[node name="Slot2" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
-layout_mode = 2
-
-[node name="Slot3" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
-layout_mode = 2
-
-[node name="Slot4" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
-layout_mode = 2
-
-[node name="Slot5" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
-layout_mode = 2
-
-[node name="Slot6" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
-layout_mode = 2
-
-[node name="Slot7" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
-layout_mode = 2
-
-[node name="Slot8" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
-layout_mode = 2
-
-[node name="Slot9" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
-layout_mode = 2
-
-[node name="Slot10" type="TextureRect" parent="HUDLayer/HUD/QuickSlots"]
-layout_mode = 2
-
-[node name="InventoryPanel" type="Panel" parent="HUDLayer/HUD"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.25
-anchor_top = 0.25
-anchor_right = 0.75
-anchor_bottom = 0.75
-offset_left = 186.5
-offset_top = 104.75
-offset_right = 186.5
-offset_bottom = 104.75
-
-[node name="InventoryGrid" type="GridContainer" parent="HUDLayer/HUD/InventoryPanel"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
-columns = 5
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="HUDLayer/HUD"]
-clip_children = 2
-clip_contents = true
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -106.0
-offset_top = 5.0
-offset_right = 918.0
-offset_bottom = 517.0
-grow_horizontal = 0
-scale = Vector2(0.1, 0.1)
-stretch = true
-
-[node name="MiniMapViewport" type="SubViewport" parent="HUDLayer/HUD/SubViewportContainer" node_paths=PackedStringArray("camera_node", "player_node")]
-transparent_bg = true
-handle_input_locally = false
-canvas_item_default_texture_filter = 0
-size = Vector2i(1024, 512)
-size_2d_override_stretch = true
-render_target_update_mode = 4
-script = ExtResource("17_ft6cd")
-camera_node = NodePath("MiniMapCamera")
-player_node = NodePath("../../../../Player")
-
-[node name="MiniMapCamera" type="Camera2D" parent="HUDLayer/HUD/SubViewportContainer/MiniMapViewport"]
-zoom = Vector2(0.3, 0.3)
-limit_smoothed = true
-
-[node name="DebugInfo" type="Label" parent="HUDLayer/HUD"]
-visible = false
-custom_minimum_size = Vector2(140, 140)
-layout_mode = 1
-offset_left = 6.0
-offset_top = 52.0
-offset_right = 146.0
-offset_bottom = 192.0
-theme = SubResource("Theme_ebg2g")
-script = ExtResource("20_1nqs0")
-
-[node name="DeathLabel" type="Label" parent="HUDLayer"]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -47.0
-offset_top = -11.5
-offset_right = 47.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "Вы умерли!"
+[node name="HUD" parent="." instance=ExtResource("17_ft6cd")]
+layer = 100

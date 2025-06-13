@@ -208,7 +208,7 @@ func _default_tile_id(grid: Array, x: int, y: int) -> int:
 	# Шаг 2: Начинаем определять, какие стороны у блока заняты такими же блоками
 	var mask = 0 # это как флажки: каждая сторона = 1 бит
 
-	# Смотрим ВВЕРХ: если там такой же и он твёрдый — добавляем верхний бит
+	# Смотрим ВВЕРХ: если там такой же и он твёрдый — добавляем северный бит
 	if y > 0 and TerrainData.is_same_type(grid[x][y - 1], current_type) and TerrainData.is_solid(grid[x][y - 1]):
 		mask |= TerrainData.DIR_S
 
@@ -228,23 +228,23 @@ func _default_tile_id(grid: Array, x: int, y: int) -> int:
 	var inner_corner_tiles = TerrainData.INNER_MASK_IDS.get(current_type, {})
 
 	# Проверяем 4 диагонали (NW, NE, SE, SW)
-	var has_nw = x > 0 and y > 0 and grid[x][y - 1] == current_type and TerrainData.is_solid(grid[x][y - 1])
-	var has_ne = x < grid.size() - 1 and y > 0 and grid[x][y - 1] == current_type and TerrainData.is_solid(grid[x][y - 1])
-	var has_se = x < grid.size() - 1 and y < grid[x].size() - 1 and grid[x][y + 1] == current_type and TerrainData.is_solid(grid[x][y + 1])
-	var has_sw = x > 0 and y < grid[x].size() - 1 and grid[x][y + 1] == current_type and TerrainData.is_solid(grid[x][y + 1])
+	var has_sw = x > 0 and y > 0 and TerrainData.is_same_type(grid[x - 1][y - 1], current_type) and TerrainData.is_solid(grid[x - 1][y + 1])
+	var has_se = x < grid.size() - 1 and y > 0 and TerrainData.is_same_type(grid[x + 1][y - 1], current_type) and TerrainData.is_solid(grid[x + 1][y + 1])
+	var has_nw = x < grid.size() - 1 and y < grid[x].size() - 1 and TerrainData.is_same_type(grid[x + 1][y + 1], current_type) and TerrainData.is_solid(grid[x + 1][y - 1])
+	var has_ne = x > 0 and y < grid[x].size() - 1 and TerrainData.is_same_type(grid[x - 1][y + 1], current_type) and TerrainData.is_solid(grid[x - 1][y - 1])
 
 	# Если, например, блок сверху и слева есть, и ещё и по диагонали (северо-запад) — ставим специальный угол
 	if mask == (TerrainData.DIR_N | TerrainData.DIR_W) and has_nw and inner_corner_tiles.has(TerrainData.DIR_N | TerrainData.DIR_W):
-		return inner_corner_tiles[TerrainData.DIR_E | TerrainData.DIR_S]
+		return inner_corner_tiles[TerrainData.DIR_N | TerrainData.DIR_W]
 
 	if mask == (TerrainData.DIR_N | TerrainData.DIR_E) and has_ne and inner_corner_tiles.has(TerrainData.DIR_N | TerrainData.DIR_E):
-		return inner_corner_tiles[TerrainData.DIR_S | TerrainData.DIR_W]
+		return inner_corner_tiles[TerrainData.DIR_N | TerrainData.DIR_E]
 
 	if mask == (TerrainData.DIR_E | TerrainData.DIR_S) and has_se and inner_corner_tiles.has(TerrainData.DIR_E | TerrainData.DIR_S):
-		return inner_corner_tiles[TerrainData.DIR_W | TerrainData.DIR_N]
+		return inner_corner_tiles[TerrainData.DIR_E | TerrainData.DIR_S]
 
 	if mask == (TerrainData.DIR_S | TerrainData.DIR_W) and has_sw and inner_corner_tiles.has(TerrainData.DIR_S | TerrainData.DIR_W):
-		return inner_corner_tiles[TerrainData.DIR_E | TerrainData.DIR_N]
+		return inner_corner_tiles[TerrainData.DIR_S | TerrainData.DIR_W]
 
 	# Шаг 4: Если вообще нет соседей по прямым, но есть по диагонали — проверим "выступающие диагонали"
 	if mask == 0 and TerrainData.SPUR_IDS.has(current_type):
