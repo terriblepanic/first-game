@@ -1,7 +1,6 @@
 shader_type canvas_item;
 render_mode blend_mix, unshaded;
 
-uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 
 uniform bool light_effect = false;
 uniform bool border_exclusion_effect = false;
@@ -56,18 +55,6 @@ vec2 shiftuv(vec2 uv, float shiftratio) {
 	return (suv + sign(suv)*suv*suv*-1.*shiftratio)*0.5 + 0.5;
 }
 
-vec2 UVtoSreenUV(vec2 uv, bool is_camera_center, vec2 texture_pixel_size, vec2 screen_pixel_size, vec4 fragcoord) {
-
-	vec2 suv = (uv - 0.5)*2.;
-
-	if (is_camera_center) {
-
-		return (fragcoord.xy + suv/texture_pixel_size)*screen_pixel_size*0.5;
-	} else {
-
-		return (fragcoord.xy + suv/texture_pixel_size)*screen_pixel_size;
-	}
-}
 
 void fragment() {
 
@@ -78,8 +65,8 @@ void fragment() {
 
 	float a = wave_fix_on_border ? 2. : 1.;
 	float b = wave_fix_on_border ? 1. : 0.5;
-	vec4 Cw = textureLod(screen_texture, UVtoSreenUV(shiftuv(UV, refraction_ratio_water), false, TEXTURE_PIXEL_SIZE, SCREEN_PIXEL_SIZE, FRAGCOORD), 0.0);//vec4(0.);
-	vec4 Cg = textureLod(screen_texture, UVtoSreenUV(shiftuv(UV, refraction_ratio_glass), false, TEXTURE_PIXEL_SIZE, SCREEN_PIXEL_SIZE, FRAGCOORD), 0.0);//vec4(0.);
+       vec4 Cw = vec4(0.);
+       vec4 Cg = vec4(0.);
 
 	if (distance(UV, vec2(0.5,0.5)) > 1.0/2.0) {
 
@@ -97,19 +84,15 @@ void fragment() {
 				if ((1. - oH) < UV.y) { 
 
 					COLOR = vec4(water_color)*0.5;
-					COLOR.rgb = mix(COLOR.rgb, Cw.rgb, 0.5);
 				} else if ((1. - oH) < UV.y) { 
 
 					COLOR = vec4(water_color*water_back_lightness)*0.5;
-					COLOR.rgb = mix(COLOR.rgb, Cw.rgb, 0.5);
 				} else {
 
 					COLOR = vec4(water_color.rgb,height);
-					COLOR.rgb = mix(COLOR.rgb, Cg.rgb, 0.5);
 				}
 			} else {
 
-				COLOR.rgb = mix(COLOR.rgb, Cw.rgb, 0.5);
 			}
 		} else {
 
@@ -130,33 +113,27 @@ void fragment() {
 					if (sin((cos(suv.x*PI*a + PI*b) + NTIME*water_wave_speed)*wave_num)*CI + (1. - oH) < UV.y + dH) { 
 
 						COLOR = vec4(water_color)*0.5;
-						COLOR.rgb = mix(COLOR.rgb, Cw.rgb, 0.5);
 					} else if (sin((cos(suv.x*PI*a) + NTIME*water_wave_speed)*wave_num)*CI + (1. - oH) < UV.y + dHo) { 
 
 						COLOR = vec4(water_color*water_back_lightness)*0.5;
-						COLOR.rgb = mix(COLOR.rgb, Cw.rgb, 0.5);
 					} else {
 
 						COLOR = vec4(0.);
-						COLOR.rgb = mix(COLOR.rgb, Cg.rgb, 0.5);
 					}
 				} else {
 
 					COLOR = vec4(0.);
-					COLOR.rgb = mix(COLOR.rgb, Cg.rgb, 0.5);
 				}
 			}
 
 			if (sin((cos(suv.x*PI*a + PI*b) + NTIME*water_wave_speed)*wave_num)*CI + (1. - H) < UV.y + dH) { 
 
 				COLOR = vec4(water_color);
-				COLOR.rgb = mix(COLOR.rgb, Cw.rgb, 0.5);
 			}
 
 			if (plane_inclined_effect && plane_inclined_ratio != 0. && UV.y <= 1. - height + 0.005 && UV.y >= 1. - height - 0.005) {
 
 				COLOR = COLOR + (sin(UV.x + TIME) + 1.)*0.08;
-				COLOR.rgb = mix(COLOR.rgb, Cw.rgb, 0.5);
 			}
 		}
 
