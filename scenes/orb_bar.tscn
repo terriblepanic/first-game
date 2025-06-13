@@ -28,8 +28,8 @@ shader_parameter/vibration_effect_timelength = 0.01
 shader_parameter/vibration_speed = 8.0
 shader_parameter/vibration_magnitude = 1.29
 shader_parameter/vibration_wave_ci = 0.31
-shader_parameter/refraction_ratio_glass = 0.2
-shader_parameter/refraction_ratio_water = 0.6
+shader_parameter/refraction_ratio_glass = 0.1
+shader_parameter/refraction_ratio_water = 0.3
 
 [node name="OrbBar" type="Node2D"]
 script = ExtResource("1_ctuxr")
