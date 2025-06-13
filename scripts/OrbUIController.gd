@@ -19,8 +19,8 @@ var vibration_trans_type = Tween.TRANS_LINEAR
 var vibration_ease_type = Tween.EASE_IN_OUT
 
 # Параметры «поглощения» (уменьшения высоты)
-var consume_delay = 1.0
-var consume_timelength = 4.0
+var consume_delay = 0.0
+var consume_timelength = 0.0
 var consume_timelength_fordeath = 1.0
 var consume_trans_type = Tween.TRANS_SPRING
 var consume_ease_type = Tween.EASE_IN_OUT
@@ -88,13 +88,10 @@ func SetShader(mat: Material):
 
 # Обработка «удара» (изменение текущей/предыдущей высоты и запуск эффектов)
 func GetHit(P: float, oP: float, MAXP: float):
-	# Вычисляем новую нормализованную высоту
-	H = max(P / MAXP, 0.0)
-
-	# Обновляем предыдущую высоту, если P выросло
-	if P - oP > 0:
-		oH = max(oP / MAXP, 0.0)
-		target_material.set_shader_parameter('oheight', oH)
+        # Вычисляем новую нормализованную высоту
+        H = max(P / MAXP, 0.0)
+        oH = H
+        target_material.set_shader_parameter('oheight', oH)
 
 	# Если шар «умер»
 	if H <= 0.0:
@@ -123,23 +120,10 @@ func GetHit(P: float, oP: float, MAXP: float):
 		vibration_tween = newtween()
 		vibration_tween.tween_method(get_hit_vbm, 0.0, vibration_effect_timelength, vibration_effect_timelength).set_trans(vibration_trans_type).set_ease(vibration_ease_type)
 
-	# Создаем/перезапускаем твины «поглощения»
-	if H <= 0.0:
-		if consume_tween:
-			consume_tween.kill()
-			consume_tween = newtween()
-			consume_tween.tween_method(get_hit_oHconsume, oH, H, 1).set_trans(consume_trans_type)
-		else:
-			consume_tween = newtween()
-			consume_tween.tween_method(get_hit_oHconsume, oH, H, 1).set_trans(consume_trans_type)
-	else:
-		if consume_tween:
-			consume_tween.kill()
-			consume_tween = newtween()
-			consume_tween.tween_method(get_hit_oHconsume, oH + consume_delay, H, consume_timelength + consume_delay).set_trans(consume_trans_type).set_ease(consume_ease_type)
-		else:
-			consume_tween = newtween()
-			consume_tween.tween_method(get_hit_oHconsume, oH + consume_delay, H, consume_timelength + consume_delay).set_trans(consume_trans_type).set_ease(consume_ease_type)
+        # Убираем твин «поглощения», если он активен
+        if consume_tween:
+                consume_tween.kill()
+                consume_tween = null
 
 
 # Эффект ускорения: наклон плоскости «вверх»
@@ -197,12 +181,6 @@ func get_hit_vbm(i: float):
 	if i >= vibration_effect_timelength - 0.0001: target_material.set_shader_parameter('vibration_effect', false)
 
 
-# Callback для плавного уменьшения предыдущей высоты (эффект «поглощения»)
-func get_hit_oHconsume(i: float):
-	if i < oH:
-		target_material.set_shader_parameter('oheight', i)
-		oH = i
-	if i <= H - 0.0001: oH = H
 
 
 # Плавное обновление значения без вибрации, для регенерации
