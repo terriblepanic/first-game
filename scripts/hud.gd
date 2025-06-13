@@ -26,22 +26,22 @@ func _ready() -> void:
 	hp_orb.SetShader(hp_material)
 	hp_orb.ball_color = Color(1, 1, 1, 1)
 	hp_orb.alert_ball_color = Color(1, 0.3, 0.1, 1)
-        hp_orb.Reset()
-        hp_material.set_shader_parameter("water_color", Color(1, 0.3, 0.3, 1))
-        hp_material.set_shader_parameter("transparent_empty", true)
+	hp_orb.Reset()
+	hp_material.set_shader_parameter("water_color", Color(1, 0.3, 0.3, 1))
+	hp_material.set_shader_parameter("transparent_empty", true)
 
 	var mp_material: ShaderMaterial = orb_mp_sprite.material.duplicate()
 	orb_mp_sprite.material = mp_material
 
-        mp_orb = OrbUIController.new()
-        mp_orb.SetOwner(self)
-        mp_orb.SetShader(mp_material)
-        mp_orb.ball_color = Color(1, 1, 1, 1)
-        mp_orb.alert_ball_color = Color(0.2, 0.2, 1.0, 1)
-        mp_orb.Reset()
-        mp_orb.SetDeathStateEnabled(false)
-        mp_material.set_shader_parameter("water_color", Color(0.2, 0.5, 1, 1))
-        mp_material.set_shader_parameter("transparent_empty", true)
+	mp_orb = OrbUIController.new()
+	mp_orb.SetOwner(self)
+	mp_orb.SetShader(mp_material)
+	mp_orb.ball_color = Color(1, 1, 1, 1)
+	mp_orb.alert_ball_color = Color(0.2, 0.2, 1.0, 1)
+	mp_orb.Reset()
+	mp_orb.SetDeathStateEnabled(false)
+	mp_material.set_shader_parameter("water_color", Color(0.2, 0.5, 1, 1))
+	mp_material.set_shader_parameter("transparent_empty", true)
 
 	# === Подключение сигналов после инициализации орбов ===
 	if player:

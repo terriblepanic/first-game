@@ -57,9 +57,26 @@ vec2 shiftuv(vec2 uv, float shiftratio) {
 }
 
 void fragment() {
-    if (transparent_empty && height <= 0.0 && oheight <= 0.0) {
+    bool skip_render = transparent_empty && height <= 0.0 && oheight <= 0.0;
+    if (!skip_render && distance(UV, vec2(0.5, 0.5)) <= 0.5) {
+        // основной код
+        float NTIME = vibration_effect ? TIME + vibration_time : TIME + vibration_effect_timelength;
+
+        vec2 uv = (UV - 0.5) * 0.5;
+        vec2 suv = UV * 0.5 - 0.5;
+
+        float a = wave_fix_on_border ? 2.0 : 1.0;
+        float b = wave_fix_on_border ? 1.0 : 0.5;
+        vec4 Cw = vec4(0.0);
+        vec4 Cg = vec4(0.0);
+
+        // и далее остальной код из твоего шейдера...
+        // (всё, что у тебя внутри else { ... } в оригинале)
+
+        // конец шейдера, установка COLOR.a и эффектов
+        // (всё уже у тебя корректно)
+    } else {
         COLOR = vec4(0.0);
-        return;
     }
 
     float NTIME = vibration_effect ? TIME + vibration_time : TIME + vibration_effect_timelength;

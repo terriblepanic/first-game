@@ -58,15 +58,15 @@ var target_material: Material = null
 
 # Сброс всех эффектов и параметров к начальным
 func Reset():
-        H = 1.0
-        oH = 1.0
-        target_material.set_shader_parameter('height', H)
-        target_material.set_shader_parameter('oheight', H)
-        target_material.set_shader_parameter('vibration_effect', false)
-        target_material.set_shader_parameter('light_effect', false)
-        target_material.set_shader_parameter('ball_color', ball_color)
-        if base_water_color:
-                target_material.set_shader_parameter('water_color', base_water_color)
+		H = 1.0
+		oH = 1.0
+		target_material.set_shader_parameter('height', H)
+		target_material.set_shader_parameter('oheight', H)
+		target_material.set_shader_parameter('vibration_effect', false)
+		target_material.set_shader_parameter('light_effect', false)
+		target_material.set_shader_parameter('ball_color', ball_color)
+		if base_water_color:
+				target_material.set_shader_parameter('water_color', base_water_color)
 
 
 # Установить высоту заполнения (например, при инициализации)
@@ -86,39 +86,39 @@ func SetH(P: float, MAXP: float):
 
 # Задать родительский узел для создания твинов
 func SetOwner(node: Node):
-        p_node = node
+		p_node = node
 
 # Включить/выключить состояние «смерти»
 func SetDeathStateEnabled(enabled: bool) -> void:
-        death_state_enabled = enabled
+		death_state_enabled = enabled
 
 
 # Привязать материал шара, параметры которого будем менять
 func SetShader(mat: Material):
-        target_material = mat
-        if target_material:
-                base_water_color = target_material.get_shader_parameter("water_color")
+		target_material = mat
+		if target_material:
+				base_water_color = target_material.get_shader_parameter("water_color")
 
 
 # Обработка «удара» (изменение текущей/предыдущей высоты и запуск эффектов)
 func GetHit(P: float, oP: float, MAXP: float):
-        if not target_material:
-                return
+	if not target_material:
+		return
 
-        # Вычисляем новую нормализованную высоту
-        H = max(P / MAXP, 0.0)
-        oH = H
-        target_material.set_shader_parameter('oheight', oH)
+	# Вычисляем новую нормализованную высоту
+	H = max(P / MAXP, 0.0)
+	oH = H
+	target_material.set_shader_parameter('oheight', oH)
 
-        # Если шар «умер»
-        if H <= 0.0:
-                target_material.set_shader_parameter('light_effect', false)
-                if death_state_enabled:
-                        target_material.set_shader_parameter('ball_color', death_ball_color)
-                        if base_water_color:
-                                target_material.set_shader_parameter('water_color', base_water_color)
-                else:
-                        target_material.set_shader_parameter('ball_color', ball_color)
+		# Если шар «умер»
+	if H <= 0.0:
+		target_material.set_shader_parameter('light_effect', false)
+		if death_state_enabled:
+			target_material.set_shader_parameter('ball_color', death_ball_color)
+			if base_water_color:
+				target_material.set_shader_parameter('water_color', base_water_color)
+		else:
+			target_material.set_shader_parameter('ball_color', ball_color)
 	# Иначе проверяем состояние предупреждения
 	elif alert_effect:
 		if H <= alert_height:
@@ -194,9 +194,9 @@ func Transition(from: float, to: float, time_length: float, trans_type: Tween.Tr
 
 # Вспомогательный метод создания твина через родительский узел
 func newtween():
-        if p_node:
-                return p_node.create_tween()
-        return create_tween()
+		if p_node:
+				return p_node.create_tween()
+		return create_tween()
 
 
 # Callback для обновления параметра вибрации в шейдере
@@ -207,12 +207,12 @@ func get_hit_vbm(i: float):
 
 # Плавное обновление значения без вибрации, для регенерации
 func SetSmooth(P: float, MAXP: float):
-        if not target_material:
-                return
+	if not target_material:
+		return
 
-        var new_H: float = clamp(P / MAXP, 0.0, 1.0)
-        if abs(new_H - H) < 0.001:
-                return
+	var new_H: float = clamp(P / MAXP, 0.0, 1.0)
+	if abs(new_H - H) < 0.001:
+		return
 
 	oH = target_material.get_shader_parameter("height") # читаем актуальное значение
 	H = new_H
