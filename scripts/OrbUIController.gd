@@ -88,10 +88,10 @@ func SetShader(mat: Material):
 
 # Обработка «удара» (изменение текущей/предыдущей высоты и запуск эффектов)
 func GetHit(P: float, oP: float, MAXP: float):
-        # Вычисляем новую нормализованную высоту
-        H = max(P / MAXP, 0.0)
-        oH = H
-        target_material.set_shader_parameter('oheight', oH)
+	# Вычисляем новую нормализованную высоту
+	H = max(P / MAXP, 0.0)
+	oH = H
+	target_material.set_shader_parameter('oheight', oH)
 
 	# Если шар «умер»
 	if H <= 0.0:
@@ -120,10 +120,10 @@ func GetHit(P: float, oP: float, MAXP: float):
 		vibration_tween = newtween()
 		vibration_tween.tween_method(get_hit_vbm, 0.0, vibration_effect_timelength, vibration_effect_timelength).set_trans(vibration_trans_type).set_ease(vibration_ease_type)
 
-        # Убираем твин «поглощения», если он активен
-        if consume_tween:
-                consume_tween.kill()
-                consume_tween = null
+		# Убираем твин «поглощения», если он активен
+		if consume_tween:
+			consume_tween.kill()
+			consume_tween = null
 
 
 # Эффект ускорения: наклон плоскости «вверх»
@@ -181,8 +181,6 @@ func get_hit_vbm(i: float):
 	if i >= vibration_effect_timelength - 0.0001: target_material.set_shader_parameter('vibration_effect', false)
 
 
-
-
 # Плавное обновление значения без вибрации, для регенерации
 func SetSmooth(P: float, MAXP: float):
 	var new_H: float = clamp(P / MAXP, 0.0, 1.0)
@@ -202,7 +200,7 @@ func SetSmooth(P: float, MAXP: float):
 	consume_tween = newtween()
 	consume_tween.tween_method(
 		func(value: float):
-			target_material.set_shader_parameter("height", value),
+		target_material.set_shader_parameter("height", value),
 		oH, H, 0.4
 	).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 
