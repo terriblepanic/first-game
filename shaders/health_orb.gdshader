@@ -6,6 +6,8 @@ uniform bool light_effect = false;
 uniform bool border_exclusion_effect = false;
 uniform bool wave_fix_on_border = false;
 
+uniform bool transparent_empty = false;
+
 uniform vec4 water_color: source_color = vec4(1, 0, 0, 1);
 uniform float water_wave_speed : hint_range(-100, 100, 0.01) = 2;
 uniform float water_wave_ci: hint_range(0, 2, 0.01) = 0.05;
@@ -55,6 +57,11 @@ vec2 shiftuv(vec2 uv, float shiftratio) {
 }
 
 void fragment() {
+    if (transparent_empty && height <= 0.0 && oheight <= 0.0) {
+        COLOR = vec4(0.0);
+        return;
+    }
+
     float NTIME = vibration_effect ? TIME + vibration_time : TIME + vibration_effect_timelength;
 
     vec2 uv = (UV - 0.5) * 0.5;
