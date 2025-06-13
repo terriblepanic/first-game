@@ -81,13 +81,13 @@ void fragment() {
 
 				float oH = oheight;
 
-				if ((1. - oH) < UV.y) { 
+                               if ((1. - oH) < UV.y) {
 
-					COLOR = vec4(water_color)*0.5;
-				} else if ((1. - oH) < UV.y) { 
+                                       COLOR = vec4(water_color)*0.5;
+                               } else if ((1. - oH) <= UV.y) {
 
-					COLOR = vec4(water_color*water_back_lightness)*0.5;
-				} else {
+                                       COLOR = vec4(water_color*water_back_lightness)*0.5;
+                               } else {
 
 					COLOR = vec4(water_color.rgb, 1.0);
 				}
