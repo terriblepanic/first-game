@@ -3,7 +3,13 @@
 extends Node
 
 # Возможные состояния орба
-enum OrbState { IDLE, DECREASING, INCREASING, EMPTY, FULL }
+enum OrbState {
+	IDLE,
+	DECREASING,
+	INCREASING,
+	EMPTY,
+	FULL,
+}
 
 # Текущее состояние
 var state: OrbState = OrbState.FULL
@@ -48,7 +54,7 @@ var alert_ball_color = Color(1.0, 0.3, 0.1, 1.0) # цвет при предуп�
 var death_ball_color = Color(0.1, 0.1, 0.1, 0.5) # цвет при «смерти» (H <= 0)
 
 # Включить или отключить состояние «смерти»
-var death_state_enabled := true
+var death_state_enabled := false
 
 # Базовый цвет воды, используется для сброса
 var base_water_color: Color
@@ -62,37 +68,27 @@ var inclined_tween: Tween
 var target_material: Material = null
 
 
-# Обновление внутреннего состояния в зависимости от заполнения
-func _apply_base_state(value: float) -> void:
-        if value <= 0.0:
-                state = OrbState.EMPTY
-        elif value >= 1.0:
-                state = OrbState.FULL
-        elif state != OrbState.INCREASING and state != OrbState.DECREASING:
-                state = OrbState.IDLE
-
-
 # Сброс всех эффектов и параметров к начальным
 func Reset():
-                H = 1.0
-                oH = 1.0
-                state = OrbState.FULL
-                target_material.set_shader_parameter('height', H)
-		target_material.set_shader_parameter('oheight', H)
-		target_material.set_shader_parameter('vibration_effect', false)
-		target_material.set_shader_parameter('light_effect', false)
-		target_material.set_shader_parameter('ball_color', ball_color)
-		if base_water_color:
-				target_material.set_shader_parameter('water_color', base_water_color)
+	H = 1.0
+	oH = 1.0
+	state = OrbState.FULL
+	target_material.set_shader_parameter('height', H)
+	target_material.set_shader_parameter('oheight', H)
+	target_material.set_shader_parameter('vibration_effect', false)
+	target_material.set_shader_parameter('light_effect', false)
+	target_material.set_shader_parameter('ball_color', ball_color)
+	if base_water_color:
+		target_material.set_shader_parameter('water_color', base_water_color)
 
 
 # Установить высоту заполнения (например, при инициализации)
 func SetH(P: float, MAXP: float):
-        H = P / MAXP
-        oH = H
-        _apply_base_state(H)
-        target_material.set_shader_parameter('height', H)
-        target_material.set_shader_parameter('oheight', H)
+	H = P / MAXP
+	oH = H
+	_apply_base_state(H)
+	target_material.set_shader_parameter('height', H)
+	target_material.set_shader_parameter('oheight', H)
 	target_material.set_shader_parameter('light_effect', false)
 	target_material.set_shader_parameter('ball_color', ball_color)
 
@@ -104,70 +100,60 @@ func SetH(P: float, MAXP: float):
 
 # Задать родительский узел для создания твинов
 func SetOwner(node: Node):
-		p_node = node
+	p_node = node
+
 
 # Включить/выключить состояние «смерти»
 func SetDeathStateEnabled(enabled: bool) -> void:
-		death_state_enabled = enabled
+	death_state_enabled = enabled
 
 
 # Привязать материал шара, параметры которого будем менять
 func SetShader(mat: Material):
-		target_material = mat
-		if target_material:
-				base_water_color = target_material.get_shader_parameter("water_color")
+	target_material = mat
+	if target_material:
+		base_water_color = target_material.get_shader_parameter("water_color")
 
 
 # Обработка «удара» (изменение текущей/предыдущей высоты и запуск эффектов)
 func GetHit(P: float, oP: float, MAXP: float):
-        if not target_material:
-                return
+	if not target_material:
+		return
 
-        # Вычисляем новую нормализованную высоту
-        var prev_h: float = target_material.get_shader_parameter('height')
-        H = max(P / MAXP, 0.0)
-        oH = H
-        target_material.set_shader_parameter('oheight', oH)
-        state = H < prev_h ? OrbState.DECREASING : state
+	var prev_h = target_material.get_shader_parameter('height')
+	H = max(P / MAXP, 0.0)
+	oH = H
+	target_material.set_shader_parameter('oheight', oH)
+	state = OrbState.DECREASING if H < prev_h else state
 
-		# Если шар «умер»
 	if H <= 0.0:
 		target_material.set_shader_parameter('light_effect', false)
-		if death_state_enabled:
-			target_material.set_shader_parameter('ball_color', death_ball_color)
-			if base_water_color:
-				target_material.set_shader_parameter('water_color', base_water_color)
-		else:
-			target_material.set_shader_parameter('ball_color', ball_color)
-	# Иначе проверяем состояние предупреждения
-	elif alert_effect:
-		if H <= alert_height:
-			target_material.set_shader_parameter('light_effect', true)
-			target_material.set_shader_parameter('ball_color', alert_ball_color)
-		else:
-			target_material.set_shader_parameter('light_effect', false)
-			target_material.set_shader_parameter('ball_color', ball_color)
+		if death_state_enabled and base_water_color:
+			target_material.set_shader_parameter('water_color', base_water_color)
+	else:
+		_update_alert()
 
-	# Обновляем высоту и вибрацию в шейдере
+	# всегда обновляем высоту
 	target_material.set_shader_parameter('height', H)
 	target_material.set_shader_parameter('vibration_effect', vibration_effect)
 	target_material.set_shader_parameter('vibration_effect_timelength', vibration_effect_timelength)
 
-	# Создаем/перезапускаем твины вибрации
+	# вибрация
+
 	if vibration_tween:
 		vibration_tween.kill()
-		vibration_tween = newtween()
-		vibration_tween.tween_method(get_hit_vbm, 0.0, vibration_effect_timelength, vibration_effect_timelength).set_trans(vibration_trans_type).set_ease(vibration_ease_type)
-	else:
-		vibration_tween = newtween()
-		vibration_tween.tween_method(get_hit_vbm, 0.0, vibration_effect_timelength, vibration_effect_timelength).set_trans(vibration_trans_type).set_ease(vibration_ease_type)
+	vibration_tween = newtween()
+	# теперь разбиваем без висячих точек
+	vibration_tween.tween_method(get_hit_vbm, 0.0, vibration_effect_timelength, vibration_effect_timelength)
+	vibration_tween.set_trans(vibration_trans_type)
+	vibration_tween.set_ease(vibration_ease_type)
 
-		# Убираем твин «поглощения», если он активен
-                if consume_tween:
-                        consume_tween.kill()
-                        consume_tween = null
+	# всегда убираем твин поглощения
+	if consume_tween:
+		consume_tween.kill()
+		consume_tween = null
 
-        _apply_base_state(H)
+	_apply_base_state(H)
 
 
 # Эффект ускорения: наклон плоскости «вверх»
@@ -216,9 +202,9 @@ func Transition(from: float, to: float, time_length: float, trans_type: Tween.Tr
 
 # Вспомогательный метод создания твина через родительский узел
 func newtween():
-		if p_node:
-				return p_node.create_tween()
-		return create_tween()
+	if p_node:
+		return p_node.create_tween()
+	return create_tween()
 
 
 # Callback для обновления параметра вибрации в шейдере
@@ -229,35 +215,71 @@ func get_hit_vbm(i: float):
 
 # Плавное обновление значения без вибрации, для регенерации
 func SetSmooth(P: float, MAXP: float):
-        if not target_material:
-                return
+	if not target_material:
+		return
 
-        var new_H: float = clamp(P / MAXP, 0.0, 1.0)
-        if abs(new_H - H) < 0.001:
-                return
+	var new_H = clamp(P / MAXP, 0.0, 1.0)
+	if abs(new_H - H) < 0.001:
+		return
 
-        oH = target_material.get_shader_parameter("height") # читаем актуальное значение
-        H = new_H
-        state = H > oH ? OrbState.INCREASING : state
-        _apply_base_state(H)
+	oH = target_material.get_shader_parameter("height")
+	H = new_H
+	state = OrbState.INCREASING if H > oH else state
+	_apply_base_state(H)
+	_update_alert()
 
-        if consume_tween:
-                consume_tween.kill()
+	if consume_tween:
+		consume_tween.kill()
 
-        # Сначала вручную обновим oheight (старый уровень)
-        target_material.set_shader_parameter("oheight", oH)
+	target_material.set_shader_parameter("oheight", oH)
 
-        # А теперь анимируем до нового уровня
-        var tween_time := max(0.1, abs(H - oH) * 0.25)
-        consume_tween = newtween()
-        consume_tween.tween_method(
-                func(value: float):
-                target_material.set_shader_parameter("height", value),
-                oH, H, tween_time
-        ).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-        consume_tween.tween_callback(Callable(self, "_apply_base_state").bind(H))
+	# рассчитываем время твина
+	var tween_time = max(0.1, abs(H - oH) * 0.25)
+
+	# уничтожаем старый consume_tween, если есть
+	if consume_tween:
+		consume_tween.kill()
+		consume_tween = null
+
+	# сохраняем старую высоту
+	target_material.set_shader_parameter("oheight", oH)
+
+	# создаём локальную функцию-обновлятор
+	var height_updater = func(value):
+		target_material.set_shader_parameter("height", value)
+
+	# запускаем твин поглощения
+	consume_tween = newtween()
+	consume_tween.tween_method(height_updater, oH, H, tween_time)
+	consume_tween.set_trans(Tween.TRANS_LINEAR)
+	consume_tween.set_ease(Tween.EASE_IN_OUT)
+
+	# после завершения анимации применяем базовое состояние и проверяем alert
+	consume_tween.tween_callback(Callable(self, "_apply_base_state").bind(H))
+	consume_tween.tween_callback(Callable(self, "_update_alert"))
 
 
 # Callback для обновления параметра наклона плоскости
 func tween_inclined_ratio(i: float):
 	target_material.set_shader_parameter('plane_inclined_ratio', float("%10.2f" % i))
+
+
+# Обновление внутреннего состояния в зависимости от заполнения
+func _apply_base_state(value: float) -> void:
+	if value <= 0.0:
+		state = OrbState.EMPTY
+	elif value >= 1.0:
+		state = OrbState.FULL
+	elif state != OrbState.INCREASING and state != OrbState.DECREASING:
+		state = OrbState.IDLE
+
+
+func _update_alert() -> void:
+	if not alert_effect:
+		return
+	if H <= alert_height:
+		target_material.set_shader_parameter('light_effect', true)
+		target_material.set_shader_parameter('ball_color', alert_ball_color)
+	else:
+		target_material.set_shader_parameter('light_effect', false)
+		target_material.set_shader_parameter('ball_color', ball_color)
