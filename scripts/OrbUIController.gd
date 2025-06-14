@@ -2,6 +2,12 @@
 # Контроллер визуального отображения орба (шарика) с эффектами вибрации, предупреждения и «поглощения»
 extends Node
 
+# Возможные состояния орба
+enum OrbState { IDLE, DECREASING, INCREASING, EMPTY, FULL }
+
+# Текущее состояние
+var state: OrbState = OrbState.FULL
+
 # Узел, в котором создаются твины (анимации)
 var p_node: Node
 
@@ -56,11 +62,22 @@ var inclined_tween: Tween
 var target_material: Material = null
 
 
+# Обновление внутреннего состояния в зависимости от заполнения
+func _apply_base_state(value: float) -> void:
+        if value <= 0.0:
+                state = OrbState.EMPTY
+        elif value >= 1.0:
+                state = OrbState.FULL
+        elif state != OrbState.INCREASING and state != OrbState.DECREASING:
+                state = OrbState.IDLE
+
+
 # Сброс всех эффектов и параметров к начальным
 func Reset():
-		H = 1.0
-		oH = 1.0
-		target_material.set_shader_parameter('height', H)
+                H = 1.0
+                oH = 1.0
+                state = OrbState.FULL
+                target_material.set_shader_parameter('height', H)
 		target_material.set_shader_parameter('oheight', H)
 		target_material.set_shader_parameter('vibration_effect', false)
 		target_material.set_shader_parameter('light_effect', false)
@@ -71,10 +88,11 @@ func Reset():
 
 # Установить высоту заполнения (например, при инициализации)
 func SetH(P: float, MAXP: float):
-	H = P / MAXP
-	oH = H
-	target_material.set_shader_parameter('height', H)
-	target_material.set_shader_parameter('oheight', H)
+        H = P / MAXP
+        oH = H
+        _apply_base_state(H)
+        target_material.set_shader_parameter('height', H)
+        target_material.set_shader_parameter('oheight', H)
 	target_material.set_shader_parameter('light_effect', false)
 	target_material.set_shader_parameter('ball_color', ball_color)
 
@@ -102,13 +120,15 @@ func SetShader(mat: Material):
 
 # Обработка «удара» (изменение текущей/предыдущей высоты и запуск эффектов)
 func GetHit(P: float, oP: float, MAXP: float):
-	if not target_material:
-		return
+        if not target_material:
+                return
 
-	# Вычисляем новую нормализованную высоту
-	H = max(P / MAXP, 0.0)
-	oH = H
-	target_material.set_shader_parameter('oheight', oH)
+        # Вычисляем новую нормализованную высоту
+        var prev_h: float = target_material.get_shader_parameter('height')
+        H = max(P / MAXP, 0.0)
+        oH = H
+        target_material.set_shader_parameter('oheight', oH)
+        state = H < prev_h ? OrbState.DECREASING : state
 
 		# Если шар «умер»
 	if H <= 0.0:
@@ -143,9 +163,11 @@ func GetHit(P: float, oP: float, MAXP: float):
 		vibration_tween.tween_method(get_hit_vbm, 0.0, vibration_effect_timelength, vibration_effect_timelength).set_trans(vibration_trans_type).set_ease(vibration_ease_type)
 
 		# Убираем твин «поглощения», если он активен
-		if consume_tween:
-			consume_tween.kill()
-			consume_tween = null
+                if consume_tween:
+                        consume_tween.kill()
+                        consume_tween = null
+
+        _apply_base_state(H)
 
 
 # Эффект ускорения: наклон плоскости «вверх»
@@ -207,29 +229,33 @@ func get_hit_vbm(i: float):
 
 # Плавное обновление значения без вибрации, для регенерации
 func SetSmooth(P: float, MAXP: float):
-	if not target_material:
-		return
+        if not target_material:
+                return
 
-	var new_H: float = clamp(P / MAXP, 0.0, 1.0)
-	if abs(new_H - H) < 0.001:
-		return
+        var new_H: float = clamp(P / MAXP, 0.0, 1.0)
+        if abs(new_H - H) < 0.001:
+                return
 
-	oH = target_material.get_shader_parameter("height") # читаем актуальное значение
-	H = new_H
+        oH = target_material.get_shader_parameter("height") # читаем актуальное значение
+        H = new_H
+        state = H > oH ? OrbState.INCREASING : state
+        _apply_base_state(H)
 
-	if consume_tween:
-		consume_tween.kill()
+        if consume_tween:
+                consume_tween.kill()
 
-	# Сначала вручную обновим oheight (старый уровень)
-	target_material.set_shader_parameter("oheight", oH)
+        # Сначала вручную обновим oheight (старый уровень)
+        target_material.set_shader_parameter("oheight", oH)
 
-	# А теперь анимируем до нового уровня
-	consume_tween = newtween()
-	consume_tween.tween_method(
-		func(value: float):
-		target_material.set_shader_parameter("height", value),
-		oH, H, 0.4
-	).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+        # А теперь анимируем до нового уровня
+        var tween_time := max(0.1, abs(H - oH) * 0.25)
+        consume_tween = newtween()
+        consume_tween.tween_method(
+                func(value: float):
+                target_material.set_shader_parameter("height", value),
+                oH, H, tween_time
+        ).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+        consume_tween.tween_callback(Callable(self, "_apply_base_state").bind(H))
 
 
 # Callback для обновления параметра наклона плоскости
