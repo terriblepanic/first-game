@@ -1,9 +1,8 @@
-[gd_scene load_steps=30 format=4 uid="uid://ja0rruw8weub"]
+[gd_scene load_steps=19 format=4 uid="uid://ja0rruw8weub"]
 
 [ext_resource type="TileSet" uid="uid://ctxbcpswxbrha" path="res://assets/tilesets/kingdom_king.tres" id="1_uybik"]
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="2_jhoyw"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="3_sn8u8"]
-[ext_resource type="Shader" uid="uid://cg8gbwyql1p36" path="res://scenes/Levels/fire_distortion.gdshader" id="4_5a2w1"]
 
 [sub_resource type="Gradient" id="Gradient_7b03i"]
 offsets = PackedFloat32Array(0)
@@ -63,51 +62,6 @@ width = 256
 height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
-
-[sub_resource type="Gradient" id="Gradient_lvkt7"]
-colors = PackedColorArray(0, 0, 0, 1, 1, 0.333333, 0.0666667, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_olvp1"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fwsy5"]
-width = 32
-height = 32
-in_3d_space = true
-color_ramp = SubResource("Gradient_lvkt7")
-noise = SubResource("FastNoiseLite_olvp1")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_pdvh7"]
-noise_type = 3
-frequency = 0.15
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_u2yx4"]
-width = 32
-height = 32
-noise = SubResource("FastNoiseLite_pdvh7")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_g5c1c"]
-frequency = 0.15
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tafii"]
-width = 32
-height = 32
-noise = SubResource("FastNoiseLite_g5c1c")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_kt3jn"]
-noise_type = 0
-frequency = 0.15
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lblg3"]
-width = 32
-height = 32
-noise = SubResource("FastNoiseLite_kt3jn")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lvkt7"]
-shader = ExtResource("4_5a2w1")
-shader_parameter/flame1_texture = SubResource("NoiseTexture2D_u2yx4")
-shader_parameter/flame2_texture = SubResource("NoiseTexture2D_tafii")
-shader_parameter/flame3_texture = SubResource("NoiseTexture2D_lblg3")
-shader_parameter/color_gradient = SubResource("NoiseTexture2D_fwsy5")
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -248,12 +202,16 @@ polygon = PackedVector2Array(160, 0, 160, 508, 512, 508, 512, 0)
 light_mask = 9
 z_index = 2
 y_sort_enabled = true
-position = Vector2(371, 161)
+position = Vector2(336, 112)
 view_mode = 1
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(2, 2)
+zoom = Vector2(2.12, 2.12)
+limit_left = 160
+limit_top = -220
+limit_right = 512
+limit_bottom = 512
 position_smoothing_enabled = true
 
 [node name="PointLight2D" type="PointLight2D" parent="Player"]
@@ -276,15 +234,3 @@ position = Vector2(399, -47)
 energy = 13.0
 range_item_cull_mask = 9
 texture = SubResource("GradientTexture2D_lvkt7")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 3
-follow_viewport_enabled = true
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-material = SubResource("ShaderMaterial_lvkt7")
-offset_left = 264.0
-offset_top = -68.0
-offset_right = 326.0
-offset_bottom = -28.0
-scale = Vector2(0.2, 0.56)

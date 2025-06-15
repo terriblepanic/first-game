@@ -40,6 +40,7 @@ speed = 800.0
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player/Player"]
+position = Vector2(0, -62)
 limit_smoothed = true
 position_smoothing_enabled = true
 drag_left_margin = 0.0
@@ -133,6 +134,14 @@ material = ExtResource("10_1nqs0")
 texture = ExtResource("9_3p2gp")
 centered = false
 
+[node name="ColorRect" type="ColorRect" parent="ParallaxBackground"]
+material = SubResource("ShaderMaterial_mwfav")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="ParallaxForeground" type="ParallaxBackground" parent="."]
 layer = 1
 
@@ -156,14 +165,6 @@ texture_filter = 1
 texture_repeat = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-material = SubResource("ShaderMaterial_mwfav")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="WorldMap" type="TileMapLayer" parent="."]
 tile_set = ExtResource("15_nfivy")
