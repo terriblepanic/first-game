@@ -22,8 +22,8 @@ height = 28
 fill_from = Vector2(0, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qhqgy"]
-radius = 6.0
-height = 27.0
+radius = 2.61
+height = 13.3
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
 radius = 83.0542
@@ -677,12 +677,16 @@ script = ExtResource("1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_dqkch")
+position = Vector2(0, -14)
 texture = SubResource("GradientTexture2D_g2els")
 
 [node name="CollisionShape2D_body" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+rotation = 1.5708
 shape = SubResource("CapsuleShape2D_qhqgy")
 
 [node name="AttackArea" type="Area2D" parent="."]
+position = Vector2(0, -14)
 monitoring = false
 
 [node name="CollisionShape2D_attack" type="CollisionShape2D" parent="AttackArea"]
@@ -691,6 +695,7 @@ shape = SubResource("CircleShape2D_3vyb7")
 [node name="AttackAnimation" type="GPUParticles2D" parent="."]
 z_index = 1
 material = SubResource("CanvasItemMaterial_g2els")
+position = Vector2(0, -14)
 emitting = false
 amount = 160
 texture = ExtResource("2_qhqgy")
@@ -705,6 +710,7 @@ process_material = SubResource("ParticleProcessMaterial_dqkch")
 [node name="AttackAnimation2" type="GPUParticles2D" parent="."]
 texture_filter = 1
 material = SubResource("CanvasItemMaterial_qhqgy")
+position = Vector2(0, -14)
 emitting = false
 amount = 20
 one_shot = true
@@ -717,6 +723,7 @@ trail_section_subdivisions = 120
 process_material = SubResource("ShaderMaterial_smehm")
 
 [node name="TakeDamageAnimation" type="GPUParticles2D" parent="."]
+position = Vector2(0, -14)
 emitting = false
 amount = 20
 lifetime = 0.5
