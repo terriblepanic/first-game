@@ -53,7 +53,7 @@ fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="Gradient" id="Gradient_5a2w1"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.559524)
+offsets = PackedFloat32Array(0, 0.663043)
 colors = PackedColorArray(0.965014, 0.0700551, 0, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_lvkt7"]
@@ -225,12 +225,20 @@ visible = false
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(271, -47)
-energy = 13.0
+color = Color(0.867665, 0.833188, 0.836847, 1)
+energy = 15.07
 range_item_cull_mask = 9
 texture = SubResource("GradientTexture2D_lvkt7")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6949
+metadata/color_filter = Color(1, 0.537255, 0, 0.403922)
 
 [node name="PointLight2D2" type="PointLight2D" parent="."]
-position = Vector2(399, -47)
-energy = 13.0
+position = Vector2(399, -46)
+color = Color(0.867665, 0.833188, 0.836847, 1)
+energy = 15.07
 range_item_cull_mask = 9
 texture = SubResource("GradientTexture2D_lvkt7")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6949
+metadata/color_filter = Color(1, 0.537255, 0, 0.403922)

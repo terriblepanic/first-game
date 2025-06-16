@@ -1,8 +1,9 @@
 shader_type canvas_item;
 render_mode blend_mix;
 
-uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
-uniform sampler2D gradient;
+// hint_screen_texture с nearest фильтрацией для резкости пикселей
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_nearest;
+uniform sampler2D gradient; // чтобы градиент был "шаговым"
 uniform float spread = 0.5;
 uniform float cutoff = 0.1;
 uniform float size = 1.0;
@@ -34,9 +35,21 @@ vec4 screen(vec4 base, vec4 blend){
 }
 
 void fragment() {
+    // Получаем размер экрана в пикселях
+    vec2 screen_size = vec2(textureSize(SCREEN_TEXTURE, 0));
+    
+    // Квантуем UV для "пикселизации" выборки на экране (делаем шаг 1 пиксель)
+    vec2 pixel_uv = floor(SCREEN_UV * screen_size) / screen_size;
+    
+    // Центрируем UV относительно 0.5 и масштабируем по size
     vec2 centered_uv = (UV - 0.5) * size;
-    float radius = length(centered_uv);
-    float angle = atan(centered_uv.y, centered_uv.x) + PI; // Add PI to fix left side cutoff
+    
+    // Делаем "пикселизацию" координат для лучей (шаг зависит от желаемого уровня детализации)
+    float pixel_step = 0.05; // например, шаг 0.05 для угла и радиуса (подбирай под свою игру)
+    
+    // Квантуем radius и angle для "ступенчатости"
+    float radius = floor(length(centered_uv) / pixel_step) * pixel_step;
+    float angle = floor((atan(centered_uv.y, centered_uv.x) + 3.14159265) / pixel_step) * pixel_step * 10.0;
     
     vec2 ray1 = vec2(angle * ray1_density + TIME * speed + seed + sin(angle * 3.0), radius * 2.0);
     vec2 ray2 = vec2(angle * ray2_density + TIME * speed * 1.5 + seed + cos(angle * 2.0), radius * 2.0);
@@ -53,12 +66,17 @@ void fragment() {
     float core = smoothstep(0.2, 0.0, radius) * core_intensity;
     rays += core;
     
-    vec4 gradient_color = texture(gradient, vec2(rays, 0.5));
+    // Квантуем координату для градиента (чтобы не было плавного цвета)
+    float grad_coord = floor(rays * 16.0) / 16.0; // 16 уровней цвета, подбирай по вкусу
+    
+    vec4 gradient_color = texture(gradient, vec2(grad_coord, 0.5));
     vec3 shine = vec3(rays) * gradient_color.rgb;
     
+    // Пиксельная выборка с размытой текстурой - тоже с квантацией UV
     float blur_amount = radius * 0.1;
-    vec2 blur_uv = SCREEN_UV + centered_uv * blur_amount;
+    vec2 blur_uv = pixel_uv + floor(centered_uv * blur_amount * screen_size) / screen_size;
     vec4 blurred = texture(SCREEN_TEXTURE, blur_uv);
+    
     shine = screen(blurred, vec4(shine, rays)).rgb;
     
     COLOR = vec4(shine, rays * gradient_color.a);

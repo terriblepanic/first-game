@@ -35,7 +35,7 @@ var _attack_timer: float = 0.0
 @onready var inventory: Inventory = $"../../HUD/Inventory"
 @onready var death_label: Label = $"../../HUD/DeathLabel"
 @onready var jump_handler: Node = $CoyoteJump
-
+@onready var in_game_menu: Control = $"../../InGameMenu/InGameMenu"
 
 func _ready() -> void:
 	health = max_health
@@ -111,6 +111,9 @@ func _on_interact() -> void:
 			area.interact(self)
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("exit") and not get_tree().paused:
+		in_game_menu.open_menu()
 # ---------------------------------------
 # Остальные функции
 # ---------------------------------------

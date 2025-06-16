@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=4 uid="uid://c6r75dgerce7a"]
+[gd_scene load_steps=63 format=4 uid="uid://c6r75dgerce7a"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_d72ae"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_vr15j"]
@@ -19,6 +19,7 @@
 [ext_resource type="Shader" uid="uid://bpx1ahbt7vyir" path="res://shaders/pantheon_water.gdshader" id="14_fmryo"]
 [ext_resource type="PackedScene" uid="uid://jubqgarq03kq" path="res://scenes/fog_layer.tscn" id="14_l658r"]
 [ext_resource type="Shader" uid="uid://bbh7l56d6sbsa" path="res://shaders/pantheon_godrays2.gdshader" id="15_mbwdc"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="20_j8446"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_os1q6"]
 shader = ExtResource("4_fbv6d")
@@ -32,44 +33,58 @@ shader_parameter/samples = 64
 shader_parameter/weight = 0.005
 shader_parameter/threshold = 0.1
 
+[sub_resource type="Gradient" id="Gradient_3qtx6"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.315789, 0.644737, 1)
+colors = PackedColorArray(1, 0.729412, 0.101961, 1, 1, 0.729412, 0.101961, 1, 1, 0.73, 0.1, 0, 1, 0.729412, 0.101961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j8446"]
+gradient = SubResource("Gradient_3qtx6")
+width = 1
+height = 3
+fill_from = Vector2(1, 0.0462963)
+fill_to = Vector2(0, 1)
+
 [sub_resource type="Gradient" id="Gradient_j8446"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0.99219, 0.622188, 0.373165, 1)
+offsets = PackedFloat32Array(0, 0.447368, 0.756579)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_fuqn8"]
 gradient = SubResource("Gradient_j8446")
 width = 1
-height = 1
+height = 30
+fill_to = Vector2(0, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xjg63"]
 shader = ExtResource("13_p75bh")
-shader_parameter/color_gradient = SubResource("GradientTexture2D_fuqn8")
-shader_parameter/size_effect = 2.0
-shader_parameter/speed = 1.2
+shader_parameter/vertical_gradient = SubResource("GradientTexture2D_fuqn8")
+shader_parameter/color_gradient = SubResource("GradientTexture2D_j8446")
+shader_parameter/size_effect = 3.0
+shader_parameter/speed = 1.0
 shader_parameter/highlight_strength = 0.0500001
 shader_parameter/color_mode_toggle = true
 shader_parameter/is_horizontal = false
-shader_parameter/pause_duration = 0.4
+shader_parameter/pause_duration = 0.1
 shader_parameter/texture_size = Vector2(16, 16)
 
 [sub_resource type="Gradient" id="Gradient_8a4im"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.223684, 0.407895, 0.618421)
-colors = PackedColorArray(0.0031, 0.151435, 0.31, 0, 0, 0.137255, 0.298039, 1, 1, 0.509333, 0.08, 1, 0.996078, 0.937255, 0.482353, 1)
+offsets = PackedFloat32Array(0, 0.447368, 0.539474)
+colors = PackedColorArray(0.0031, 0.151435, 0.31, 0, 1, 0.509333, 0.08, 1, 0.996078, 0.937255, 0.482353, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_mbwdc"]
 gradient = SubResource("Gradient_8a4im")
-width = 16
-height = 16
+width = 30
+height = 30
+fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mbwdc"]
 shader = ExtResource("13_8a4im")
 shader_parameter/gradient = SubResource("GradientTexture2D_mbwdc")
-shader_parameter/spread = 0.5
-shader_parameter/cutoff = 1.1
-shader_parameter/size = 0.7
-shader_parameter/speed = 5.0
+shader_parameter/spread = 2.34
+shader_parameter/cutoff = 4.75
+shader_parameter/size = 7.56
+shader_parameter/speed = 3.4
 shader_parameter/ray1_density = 8.0
 shader_parameter/ray2_density = 30.0
 shader_parameter/ray2_intensity = 0.3
@@ -81,8 +96,8 @@ shader_parameter/seed = 5.0
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_3qtx6"]
 gradient = SubResource("Gradient_p75bh")
-width = 32
-height = 32
+width = 128
+height = 128
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vr15j"]
 atlas = ExtResource("3_t6k2j")
@@ -294,14 +309,15 @@ fill_to = Vector2(0, 1)
 script = ExtResource("12_fbv6d")
 
 [node name="Player" type="CanvasLayer" parent="."]
+layer = 0
 follow_viewport_enabled = true
 
-[node name="Player2" parent="Player" instance=ExtResource("1_d72ae")]
+[node name="Player" parent="Player" instance=ExtResource("1_d72ae")]
 position = Vector2(-29, 69)
 speed = 150.0
 metadata/_edit_group_ = true
 
-[node name="Camera2D" type="Camera2D" parent="Player/Player2"]
+[node name="Camera2D" type="Camera2D" parent="Player/Player"]
 position = Vector2(0, -47)
 zoom = Vector2(2.3, 2.3)
 limit_left = -320
@@ -387,7 +403,7 @@ texture = ExtResource("14_3qtx6")
 
 [node name="Orb" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_mbwdc")
-position = Vector2(72, 28)
+position = Vector2(72, 10)
 texture = SubResource("GradientTexture2D_3qtx6")
 
 [node name="Fire" type="AnimatedSprite2D" parent="."]
@@ -397,9 +413,21 @@ animation = &"fire"
 
 [node name="FirePoint" type="PointLight2D" parent="."]
 position = Vector2(0, 56)
-color = Color(0.72549, 0.207843, 0, 1)
-energy = 2.86
+color = Color(0.955258, 0.257993, 0, 1)
+energy = 3.27
 texture = SubResource("GradientTexture2D_os1q6")
+metadata/use_color_temperature = true
+metadata/color_temperature = 1000
+metadata/color_filter = Color(1, 0.513726, 0, 0.243137)
+
+[node name="PedestalPoint" type="PointLight2D" parent="."]
+position = Vector2(72, 28)
+color = Color(0.955258, 0.257993, 0, 1)
+energy = 3.27
+texture = SubResource("GradientTexture2D_os1q6")
+metadata/use_color_temperature = true
+metadata/color_temperature = 1000
+metadata/color_filter = Color(1, 0.513726, 0, 0.243137)
 
 [node name="GodRay" type="ColorRect" parent="."]
 z_index = 2
@@ -415,7 +443,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ParallaxForeground" type="ParallaxBackground" parent="."]
-layer = 2
+layer = 0
 
 [node name="Water" type="ParallaxLayer" parent="ParallaxForeground"]
 motion_mirroring = Vector2(640, 0)
@@ -436,8 +464,12 @@ metadata/_edit_group_ = true
 [node name="FogLayer" parent="ParallaxForeground/Fog" instance=ExtResource("14_l658r")]
 position = Vector2(0, -362)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="EdgeOfScreen" type="StaticBody2D" parent="."]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="EdgeOfScreen"]
 build_mode = 1
 polygon = PackedVector2Array(-320, -59, -320, 80, 320, 80, 320, -59)
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("20_j8446")]
