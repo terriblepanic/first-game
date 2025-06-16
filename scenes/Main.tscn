@@ -164,8 +164,6 @@ metadata/_edit_group_ = true
 texture_filter = 1
 texture_repeat = 3
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
 [node name="WorldMap" type="TileMapLayer" parent="."]
 tile_set = ExtResource("15_nfivy")
 

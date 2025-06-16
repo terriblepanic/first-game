@@ -32,7 +32,7 @@ void fragment(){
 	float x = st.x;
 	float y = st.y + yshift*2.;
 	float d = 1. - distance(vec2(0.),vec2(x,y))*(1. - light_distance);
-	
+
 	float theta = atan(y,x);
 	float aphla = (90. - angle*0.5)*PI/180.;
 
@@ -47,7 +47,7 @@ void fragment(){
 		COLOR = alpha_r*vec4(d,0.,0.,d) + alpha_g*vec4(0.,d,0.,d) + alpha_b*vec4(0.,0.,d,d);
 		//out_color *= sin(atan(y,x));
 	} else {
-  
+
 		COLOR = vec4(0.);
 	}
 }
