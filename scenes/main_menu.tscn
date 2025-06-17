@@ -1,6 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://j8tyoq1hd1bx"]
+[gd_scene load_steps=10 format=3 uid="uid://j8tyoq1hd1bx"]
 
 [ext_resource type="Script" uid="uid://ckkig1tjr3e2a" path="res://scripts/MainMenu/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="2_ekxnf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bqqt6"]
+shader = ExtResource("2_ekxnf")
+shader_parameter/bg_color = Vector4(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vue75"]
 bg_color = Color(0.0201693, 0.142918, 0.225508, 1)
@@ -13,6 +18,57 @@ font_size = 27
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 2
+
+[sub_resource type="Animation" id="Animation_ekxnf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StartContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(273, 159)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StartContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(101.001, 103)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ContinueContainer:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(280, 151)]
+}
 
 [sub_resource type="Animation" id="Animation_l6cm7"]
 resource_name = "fade_in"
@@ -89,57 +145,6 @@ tracks/5/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_ekxnf"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("StartContainer:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(273, 159)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("StartContainer:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Label:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(101.001, 103)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("ContinueContainer:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(280, 151)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bqqt6"]
 _data = {
 &"RESET": SubResource("Animation_ekxnf"),
@@ -156,6 +161,7 @@ grow_vertical = 2
 script = ExtResource("1_l6cm7")
 
 [node name="Panel" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_bqqt6")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -165,7 +171,6 @@ grow_vertical = 2
 theme = SubResource("Theme_l6cm7")
 
 [node name="Label" type="Label" parent="."]
-modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -173,9 +178,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -271.999
-offset_top = -126.5
+offset_top = -106.5
 offset_right = 272.001
-offset_bottom = -89.5
+offset_bottom = -69.5005
 grow_horizontal = 2
 grow_vertical = 2
 text = "Isekai Chronicle: Blessing of the Pantheon"
@@ -185,7 +190,6 @@ vertical_alignment = 1
 language = "en_US"
 
 [node name="StartContainer" type="VBoxContainer" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -193,9 +197,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -100.0
-offset_top = -74.5
+offset_top = -54.5002
 offset_right = 100.0
-offset_bottom = 26.5
+offset_bottom = 46.4998
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
@@ -214,7 +218,7 @@ layout_mode = 2
 text = "Выйти"
 
 [node name="ContinueContainer" type="VBoxContainer" parent="."]
-modulate = Color(1, 1, 1, 0)
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -222,9 +226,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -93.0
-offset_top = -78.5
+offset_top = -58.5002
 offset_right = 93.0
-offset_bottom = 38.5
+offset_bottom = 58.4998
 grow_horizontal = 2
 grow_vertical = 2
 

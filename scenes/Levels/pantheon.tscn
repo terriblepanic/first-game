@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=4 uid="uid://c6r75dgerce7a"]
+[gd_scene load_steps=65 format=4 uid="uid://c6r75dgerce7a"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_d72ae"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_vr15j"]
@@ -21,6 +21,18 @@
 [ext_resource type="Shader" uid="uid://bbh7l56d6sbsa" path="res://shaders/pantheon_godrays2.gdshader" id="15_mbwdc"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="20_j8446"]
 
+[sub_resource type="Gradient" id="Gradient_sn8u8"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.666667)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xt1kv"]
+gradient = SubResource("Gradient_sn8u8")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_os1q6"]
 shader = ExtResource("4_fbv6d")
 shader_parameter/bg_color = Vector4(0, 0, 0, 0)
@@ -42,7 +54,7 @@ colors = PackedColorArray(1, 0.729412, 0.101961, 1, 1, 0.729412, 0.101961, 1, 1,
 gradient = SubResource("Gradient_3qtx6")
 width = 1
 height = 3
-fill_from = Vector2(1, 0.0462963)
+fill_from = Vector2(1, 0)
 fill_to = Vector2(0, 1)
 
 [sub_resource type="Gradient" id="Gradient_j8446"]
@@ -330,6 +342,14 @@ drag_top_margin = 0.0
 drag_right_margin = 0.0
 drag_bottom_margin = 0.0
 
+[node name="PointLight2D" type="PointLight2D" parent="Player/Player"]
+shadow_enabled = true
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_xt1kv")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6500
+metadata/color_filter = Color(1, 1, 1, 0)
+
 [node name="HUD" parent="." instance=ExtResource("2_vr15j")]
 layer = 100
 visible = false
@@ -385,18 +405,19 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="BG" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAACAAMAAAAEAAAAAAD9/wMAAAAEAAAAAAAGAAMAAAAEAAAAAAAKAAMAAAAEAAAAAAAOAAMAAAAEAAAAAAASAAMAAAAEAAAAAAD5/wMAAAAEAAAAAAD1/wMAAAAEAAAAAADx/wMAAAAEAAAAAADt/wMAAAAEAAAAAADs//z/AAAAAAAAAADw//z/AAAAAAAAAAD0//z/AAAAAAAAAAD4//z/AAAAAAAAAAD8//z/AAAAAAAAAAAAAPz/AAAAAAAAAAAEAPz/AAAAAAAAAAAIAPz/AAAAAAAAAAAMAPz/AAAAAAAAAAAQAPz/AAAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAD9/wMAAQAEAAAAAAACAAMAAQAEAAAAAAAGAAMAAQAEAAAAAAAKAAMAAQAEAAAAAAAOAAMAAQAEAAAAAAASAAMAAQAEAAAAAAD5/wMAAQAEAAAAAAD1/wMAAQAEAAAAAADx/wMAAQAEAAAAAADt/wMAAQAEAAAAAADs//z/AQAAAAAAAADw//z/AQAAAAAAAAD0//z/AQAAAAAAAAD4//z/AQAAAAAAAAD8//z/AQAAAAAAAAAAAPz/AQAAAAAAAAAEAPz/AQAAAAAAAAAIAPz/AQAAAAAAAAAMAPz/AQAAAAAAAAAQAPz/AQAAAAAAAAA=")
 tile_set = ExtResource("10_3qtx6")
 
 [node name="Floor" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAAAAAQAAAAAAAMAAAD8/wQAAAAAAAMAAAAEAAQAAAAAAAMAAAD4/wQAAAAAAAMAAAD0/wQAAAAAAAMAAADw/wQAAAAAAAMAAADs/wQAAAAAAAMAAAAIAAQAAAAAAAMAAAAMAAQAAAAAAAMAAAAQAAQAAAAAAAMAAADs/wUAAAAAAAUAAADw/wUAAAAAAAUAAAD0/wUAAAAAAAUAAAD4/wUAAAAAAAUAAAD8/wUAAAAAAAUAAAAAAAUAAAAAAAUAAAAEAAUAAAAAAAUAAAAIAAUAAAAAAAUAAAAMAAUAAAAAAAUAAAAQAAUAAAAAAAUAAADs/wMAAAAAAAEAAADw/wMAAAAAAAEAAAD0/wMAAAAAAAEAAAD4/wMAAAAAAAEAAAD8/wMAAAAAAAEAAAAAAAMAAAAAAAEAAAAEAAMAAAAAAAEAAAAIAAMAAAAAAAEAAAAMAAMAAAAAAAEAAAAQAAMAAAAAAAEAAAA=")
+tile_map_data = PackedByteArray("AADs/wQAAQAAAAMAAADw/wQAAQAAAAMAAAD0/wQAAQAAAAMAAAD4/wQAAQAAAAMAAAD8/wQAAQAAAAMAAAAAAAQAAQAAAAMAAAAEAAQAAQAAAAMAAAAIAAQAAQAAAAMAAAAMAAQAAQAAAAMAAAAQAAQAAQAAAAMAAADs/wUAAQAAAAUAAADw/wUAAQAAAAUAAAD0/wUAAQAAAAUAAAD4/wUAAQAAAAUAAAD8/wUAAQAAAAUAAAAAAAUAAQAAAAUAAAAEAAUAAQAAAAUAAAAIAAUAAQAAAAUAAAAMAAUAAQAAAAUAAAAQAAUAAQAAAAUAAADs/wMAAQAAAAEAAADw/wMAAQAAAAEAAAD0/wMAAQAAAAEAAAD4/wMAAQAAAAEAAAD8/wMAAQAAAAEAAAAAAAMAAQAAAAEAAAAEAAMAAQAAAAEAAAAIAAMAAQAAAAEAAAAMAAMAAQAAAAEAAAAQAAMAAQAAAAEAAAA=")
 tile_set = ExtResource("10_3qtx6")
 
 [node name="Deco" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAD//wQAAAAEAAgAAAAHAAQAAAACAAcAAAALAAQAAAACAAcAAAD6/wQAAAACAAcAAAD2/wQAAAACAAcAAADy/wQAAAACAAcAAAAPAAQAAAACAAcAAADu/wQAAAACAAcAAAA=")
+tile_map_data = PackedByteArray("AAD//wQAAQAEAAgAAAADAAQAAQAAAAcAAAAHAAQAAQACAAcAAAALAAQAAQACAAcAAAAPAAQAAQACAAcAAAD6/wQAAQACAAcAAAD2/wQAAQACAAcAAADy/wQAAQACAAcAAADu/wQAAQACAAcAAAA=")
 tile_set = ExtResource("10_3qtx6")
 
 [node name="Pedestal" type="Sprite2D" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_xjg63")
 position = Vector2(72, 58)
 texture = ExtResource("14_3qtx6")

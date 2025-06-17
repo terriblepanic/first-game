@@ -110,10 +110,6 @@ func _on_interact() -> void:
 		if area.has_method("interact"):
 			area.interact(self)
 
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("exit") and not get_tree().paused:
-		in_game_menu.open_menu()
 # ---------------------------------------
 # Остальные функции
 # ---------------------------------------

@@ -28,60 +28,60 @@ vec2 random(vec2 uv) {
 }
 
 float worley(vec2 uv, float columns, float rows, float time) {
-	
+
 	vec2 index_uv = floor(vec2(uv.x * columns, uv.y * rows));
 	vec2 fract_uv = fract(vec2(uv.x * columns, uv.y * rows));
-	
-	float minimum_dist = 1.0;  
-	
+
+	float minimum_dist = 1.0;
+
 	for (int y= -1; y <= 1; y++) {
 		for (int x= -1; x <= 1; x++) {
 			vec2 neighbor = vec2(float(x),float(y));
 			vec2 point = random(index_uv + neighbor);
 			point = vec2( cos(time * point.x * worley_speed), sin(time * point.y * worley_speed) ) * 0.5 + 0.5;
-			
+
 			vec2 diff = neighbor + point - fract_uv;
 			float dist = length(diff);
 			minimum_dist = min(minimum_dist, dist);
 		}
 	}
-	
+
 	return minimum_dist;
 }
 
 void fragment() {
 	vec4 uv_result = vec4(0.0);
 	vec2 uv;
-	
-	/// Pixel Mode 
+
+	/// Pixel Mode
 	if (pixel_mode){
 		uv = floor(UV * pixel_amount) / pixel_amount;
 	}else{
 		uv = UV;
 	}
-	
+
 	/// Noise Texture System
 	if (texture_noise_system){
 		vec4 noise_uv = texture(noise_texture, uv + TIME * noise_speed * float(noise_direction));
 		uv_result += noise_uv;
 	}
-	
+
 	/// Worley Noise System
 	if (worley_noise_system){
 		float worley = worley(uv, worley_cell_density, worley_cell_density, TIME);
 		vec4 result = texture(TEXTURE, vec2(worley));
 		uv_result += result;
 	}
-	
+
 	/// Blend
 	vec2 noise_uv = mix(uv, uv_result.rg, distortion);
-	
+
 	if (edge_and_mask){
 		vec4 base = texture(TEXTURE, uv);
 		vec4 blend = texture(mask_texture, noise_uv);
-	
+
 		vec4 final_color = mix(base, blend, blend.a);
-		
+
 		COLOR = final_color;
 		COLOR.a = (texture(TEXTURE, noise_uv).a) * alpha_value;
 	}

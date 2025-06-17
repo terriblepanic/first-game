@@ -218,6 +218,9 @@ position_smoothing_enabled = true
 shadow_enabled = true
 shadow_filter = 2
 texture = SubResource("GradientTexture2D_5a2w1")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6500
+metadata/color_filter = Color(1, 1, 1, 0)
 
 [node name="HUD" parent="." instance=ExtResource("3_sn8u8")]
 layer = 100

@@ -24,6 +24,11 @@ func close_menu():
 	get_tree().paused = false
 	hide()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("exit") and not get_tree().paused:
+		open_menu()
+	elif event.is_action_pressed("exit") and get_tree().paused:
+		close_menu()
 
 func _on_button_quit_pressed() -> void:
 	get_tree().paused = false
