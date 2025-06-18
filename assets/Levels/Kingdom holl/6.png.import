@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dul83e1t05skr"
-path="res://.godot/imported/kingdom.png-e686cf2d05311e594eaff26be3ae4d42.ctex"
+uid="uid://di1va0jwpjwx6"
+path="res://.godot/imported/6.png-029577d0fbe49ae993483649b8a5a4d2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/kingdom_king/kingdom.png"
-dest_files=["res://.godot/imported/kingdom.png-e686cf2d05311e594eaff26be3ae4d42.ctex"]
+source_file="res://assets/Levels/Kingdom holl/6.png"
+dest_files=["res://.godot/imported/6.png-029577d0fbe49ae993483649b8a5a4d2.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://db7o6pjackf8w"
-path="res://.godot/imported/pantheon.png-9e2af92f1acefe446df60cb36a6d0698.ctex"
+uid="uid://dul83e1t05skr"
+path="res://.godot/imported/kingdom.png-a561e2c91230dab19ade6c669db23496.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/phanteon/pantheon.png"
-dest_files=["res://.godot/imported/pantheon.png-9e2af92f1acefe446df60cb36a6d0698.ctex"]
+source_file="res://assets/Levels/Kingdom room/kingdom.png"
+dest_files=["res://.godot/imported/kingdom.png-a561e2c91230dab19ade6c669db23496.ctex"]
 
 [params]
 

@@ -207,3 +207,6 @@ func _place_selected_block() -> void:
 		var cell = world_map.position_to_cell(get_global_mouse_position())
 		world_map.place_block(cell, item.terrain_id)
 		inventory.remove_item(selected_slot)
+
+func _on_entrance_animation_done():
+	set_process(true)

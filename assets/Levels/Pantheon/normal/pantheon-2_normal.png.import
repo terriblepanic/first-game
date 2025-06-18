@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0qqyvofqc4gv"
-path="res://.godot/imported/Fire+Sparks.png-5f2b7b0ab14f1e55aa1beb3a3ed5f02f.ctex"
+uid="uid://ddg6lmmnkjv80"
+path="res://.godot/imported/pantheon-2_normal.png-96fa6c92d373031048c19b837f1b8e2c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/Fire+Sparks.png"
-dest_files=["res://.godot/imported/Fire+Sparks.png-5f2b7b0ab14f1e55aa1beb3a3ed5f02f.ctex"]
+source_file="res://assets/Levels/Pantheon/normal/pantheon-2_normal.png"
+dest_files=["res://.godot/imported/pantheon-2_normal.png-96fa6c92d373031048c19b837f1b8e2c.ctex"]
 
 [params]
 

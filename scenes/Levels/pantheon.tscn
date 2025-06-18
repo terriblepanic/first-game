@@ -1,33 +1,34 @@
-[gd_scene load_steps=65 format=4 uid="uid://c6r75dgerce7a"]
+[gd_scene load_steps=62 format=4 uid="uid://c6r75dgerce7a"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_d72ae"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_vr15j"]
-[ext_resource type="Texture2D" uid="uid://yaiohswpveft" path="res://assets/tiles/phanteon/fire.png" id="3_t6k2j"]
+[ext_resource type="Texture2D" uid="uid://yaiohswpveft" path="res://assets/Levels/Pantheon/fire.png" id="3_t6k2j"]
 [ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="4_fbv6d"]
 [ext_resource type="Script" uid="uid://dnjdjvavi217w" path="res://scripts/small_clouds.gd" id="4_os1q6"]
-[ext_resource type="Texture2D" uid="uid://bnf1s7iux6qeo" path="res://assets/tiles/phanteon/parallax/1.png" id="5_l658r"]
-[ext_resource type="Texture2D" uid="uid://cts31067ffx0s" path="res://assets/tiles/phanteon/parallax/2.png" id="6_fmryo"]
+[ext_resource type="Texture2D" uid="uid://bnf1s7iux6qeo" path="res://assets/Levels/Pantheon/parallax/1.png" id="5_l658r"]
+[ext_resource type="Texture2D" uid="uid://cts31067ffx0s" path="res://assets/Levels/Pantheon/parallax/2.png" id="6_fmryo"]
 [ext_resource type="Script" uid="uid://odaxpu7ubwei" path="res://scripts/big_clouds.gd" id="7_8a4im"]
-[ext_resource type="Texture2D" uid="uid://dmb45uev6ein5" path="res://assets/tiles/phanteon/parallax/3.png" id="8_mbwdc"]
-[ext_resource type="Texture2D" uid="uid://dwxl3shei32pk" path="res://assets/tiles/phanteon/parallax/4.png" id="9_p75bh"]
+[ext_resource type="Texture2D" uid="uid://dmb45uev6ein5" path="res://assets/Levels/Pantheon/parallax/3.png" id="8_mbwdc"]
+[ext_resource type="Texture2D" uid="uid://dwxl3shei32pk" path="res://assets/Levels/Pantheon/parallax/4.png" id="9_p75bh"]
 [ext_resource type="TileSet" uid="uid://bomyroirsycrr" path="res://assets/tilesets/pantheon.tres" id="10_3qtx6"]
 [ext_resource type="Shader" uid="uid://cq0tvmh3a0lof" path="res://shaders/god_rays.gdshader" id="11_os1q6"]
 [ext_resource type="Script" uid="uid://dl5osbkkokjs7" path="res://scripts/pantheon_fire.gd" id="12_fbv6d"]
 [ext_resource type="Shader" uid="uid://dymhok6c0bfp3" path="res://shaders/pantheon_godrays.gdshader" id="13_8a4im"]
-[ext_resource type="Shader" uid="uid://chvx2xdcxombt" path="res://shaders/pantheon_glow.gdshader" id="13_p75bh"]
-[ext_resource type="Texture2D" uid="uid://dn0iryccx4rxp" path="res://assets/tiles/phanteon/pantheon_pedestal.png" id="14_3qtx6"]
 [ext_resource type="Shader" uid="uid://bpx1ahbt7vyir" path="res://shaders/pantheon_water.gdshader" id="14_fmryo"]
 [ext_resource type="PackedScene" uid="uid://jubqgarq03kq" path="res://scenes/fog_layer.tscn" id="14_l658r"]
 [ext_resource type="Shader" uid="uid://bbh7l56d6sbsa" path="res://shaders/pantheon_godrays2.gdshader" id="15_mbwdc"]
+[ext_resource type="Script" uid="uid://d15nobs3uuxeb" path="res://addons/postfx/nodes/PostFX.gd" id="18_fuqn8"]
+[ext_resource type="Script" uid="uid://bvbw3ejkm2bck" path="res://addons/postfx/scripts/FXBase.gd" id="19_xjg63"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="20_j8446"]
+[ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="20_xt1kv"]
 
-[sub_resource type="Gradient" id="Gradient_sn8u8"]
+[sub_resource type="Gradient" id="Gradient_fuqn8"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.666667)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0, 0.554348, 0.73913)
+colors = PackedColorArray(1, 1, 1, 0.462745, 1, 1, 1, 0.0392157, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_xt1kv"]
-gradient = SubResource("Gradient_sn8u8")
+gradient = SubResource("Gradient_fuqn8")
 width = 256
 height = 256
 fill = 1
@@ -44,40 +45,6 @@ shader_parameter/decay = 0.95
 shader_parameter/samples = 64
 shader_parameter/weight = 0.005
 shader_parameter/threshold = 0.1
-
-[sub_resource type="Gradient" id="Gradient_3qtx6"]
-interpolation_mode = 1
-offsets = PackedFloat32Array(0, 0.315789, 0.644737, 1)
-colors = PackedColorArray(1, 0.729412, 0.101961, 1, 1, 0.729412, 0.101961, 1, 1, 0.73, 0.1, 0, 1, 0.729412, 0.101961, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_j8446"]
-gradient = SubResource("Gradient_3qtx6")
-width = 1
-height = 3
-fill_from = Vector2(1, 0)
-fill_to = Vector2(0, 1)
-
-[sub_resource type="Gradient" id="Gradient_j8446"]
-offsets = PackedFloat32Array(0, 0.447368, 0.756579)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_fuqn8"]
-gradient = SubResource("Gradient_j8446")
-width = 1
-height = 30
-fill_to = Vector2(0, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xjg63"]
-shader = ExtResource("13_p75bh")
-shader_parameter/vertical_gradient = SubResource("GradientTexture2D_fuqn8")
-shader_parameter/color_gradient = SubResource("GradientTexture2D_j8446")
-shader_parameter/size_effect = 3.0
-shader_parameter/speed = 1.0
-shader_parameter/highlight_strength = 0.0500001
-shader_parameter/color_mode_toggle = true
-shader_parameter/is_horizontal = false
-shader_parameter/pause_duration = 0.1
-shader_parameter/texture_size = Vector2(16, 16)
 
 [sub_resource type="Gradient" id="Gradient_8a4im"]
 offsets = PackedFloat32Array(0, 0.447368, 0.539474)
@@ -317,6 +284,13 @@ colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
 gradient = SubResource("Gradient_mbwdc")
 fill_to = Vector2(0, 1)
 
+[sub_resource type="Resource" id="Resource_50kcf"]
+script = ExtResource("20_xt1kv")
+intensity = 0.2
+color = Color(0, 0, 0, 1)
+enabled = true
+metadata/_custom_type_script = "uid://cqqc7s7kp8uem"
+
 [node name="Main" type="Node2D"]
 script = ExtResource("12_fbv6d")
 
@@ -343,6 +317,7 @@ drag_right_margin = 0.0
 drag_bottom_margin = 0.0
 
 [node name="PointLight2D" type="PointLight2D" parent="Player/Player"]
+position = Vector2(0, -25)
 shadow_enabled = true
 shadow_filter = 2
 texture = SubResource("GradientTexture2D_xt1kv")
@@ -416,12 +391,6 @@ tile_set = ExtResource("10_3qtx6")
 tile_map_data = PackedByteArray("AAD//wQAAQAEAAgAAAADAAQAAQAAAAcAAAAHAAQAAQACAAcAAAALAAQAAQACAAcAAAAPAAQAAQACAAcAAAD6/wQAAQACAAcAAAD2/wQAAQACAAcAAADy/wQAAQACAAcAAADu/wQAAQACAAcAAAA=")
 tile_set = ExtResource("10_3qtx6")
 
-[node name="Pedestal" type="Sprite2D" parent="."]
-visible = false
-material = SubResource("ShaderMaterial_xjg63")
-position = Vector2(72, 58)
-texture = ExtResource("14_3qtx6")
-
 [node name="Orb" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_mbwdc")
 position = Vector2(72, 10)
@@ -485,11 +454,25 @@ metadata/_edit_group_ = true
 [node name="FogLayer" parent="ParallaxForeground/Fog" instance=ExtResource("14_l658r")]
 position = Vector2(0, -362)
 
+[node name="Collumns" type="ParallaxLayer" parent="ParallaxForeground"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="ParallaxForeground/Collumns"]
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAD2//7/AQAAAAAAAAD6//7/AQAAAAAAAAD+//7/AQAAAAAAAAACAP7/AQAAAAAAAAAGAP7/AQAAAAAAAAA=")
+tile_set = ExtResource("10_3qtx6")
+
 [node name="EdgeOfScreen" type="StaticBody2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="EdgeOfScreen"]
 build_mode = 1
 polygon = PackedVector2Array(-320, -59, -320, 80, 320, 80, 320, -59)
+
+[node name="Vignete" type="CanvasLayer" parent="."]
+
+[node name="PostFX" type="CanvasLayer" parent="Vignete"]
+script = ExtResource("18_fuqn8")
+effects = Array[ExtResource("19_xjg63")]([SubResource("Resource_50kcf")])
+metadata/_custom_type_script = "uid://d15nobs3uuxeb"
 
 [node name="InGameMenu" type="CanvasLayer" parent="."]
 

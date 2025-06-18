@@ -5,11 +5,11 @@
 
 [resource]
 shader = ExtResource("1_jxbyh")
-shader_parameter/pixel_mode = false
-shader_parameter/pixel_amount = 32.0
+shader_parameter/pixel_mode = true
+shader_parameter/pixel_amount = 200000.0
 shader_parameter/distortion = 0.001
 shader_parameter/texture_noise_system = true
-shader_parameter/noise_speed = 0.02
+shader_parameter/noise_speed = 1.0
 shader_parameter/noise_direction = -1
 shader_parameter/noise_texture = ExtResource("2_205u4")
 shader_parameter/worley_noise_system = false

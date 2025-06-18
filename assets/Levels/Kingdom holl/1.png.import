@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dn0iryccx4rxp"
-path="res://.godot/imported/pantheon_pedestal.png-8086b2733d7a3d773658e688267c6327.ctex"
+uid="uid://dl4d6idflv6mi"
+path="res://.godot/imported/1.png-2fdc15f0061e5427ab52caeb2b29214d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/phanteon/pantheon_pedestal.png"
-dest_files=["res://.godot/imported/pantheon_pedestal.png-8086b2733d7a3d773658e688267c6327.ctex"]
+source_file="res://assets/Levels/Kingdom holl/1.png"
+dest_files=["res://.godot/imported/1.png-2fdc15f0061e5427ab52caeb2b29214d.ctex"]
 
 [params]
 

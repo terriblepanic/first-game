@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnf1s7iux6qeo"
-path="res://.godot/imported/1.png-cf7b1bd7d4bc5ed4f912479419f72495.ctex"
+uid="uid://drfwy1qpdybja"
+path="res://.godot/imported/pantheon-2.png-b64c082905c47a926e100eb65c9540ad.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/phanteon/parallax/1.png"
-dest_files=["res://.godot/imported/1.png-cf7b1bd7d4bc5ed4f912479419f72495.ctex"]
+source_file="res://assets/Levels/Pantheon/pantheon-2.png"
+dest_files=["res://.godot/imported/pantheon-2.png-b64c082905c47a926e100eb65c9540ad.ctex"]
 
 [params]
 
