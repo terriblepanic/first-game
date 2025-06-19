@@ -87,13 +87,27 @@ offset_top = 79.25
 offset_right = 173.5
 offset_bottom = 93.75
 
-[node name="InventoryGrid" type="GridContainer" parent="HUD/InventoryPanel"]
+[node name="InfoTabs" type="TabContainer" parent="HUD/InventoryPanel"]
+layout_mode = 0
+
+[node name="InventoryTab" type="VBoxContainer" parent="HUD/InventoryPanel/InfoTabs"]
+layout_mode = 0
+tab_title = "Инвентарь"
+
+[node name="InventoryGrid" type="GridContainer" parent="HUD/InventoryPanel/InfoTabs/InventoryTab"]
 layout_mode = 0
 offset_left = -186.5
 offset_top = -104.75
 offset_right = -186.5
 offset_bottom = -104.75
 columns = 5
+
+[node name="StatsTab" type="VBoxContainer" parent="HUD/InventoryPanel/InfoTabs"]
+layout_mode = 0
+tab_title = "Характеристики"
+
+[node name="BlessingsList" type="ItemList" parent="HUD/InventoryPanel/InfoTabs/StatsTab"]
+layout_mode = 0
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="HUD"]
 visible = false

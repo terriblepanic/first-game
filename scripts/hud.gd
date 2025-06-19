@@ -11,7 +11,8 @@ var mp_orb: OrbUIController
 
 # Инвентарь
 @onready var inventory_panel: Control = $HUD/InventoryPanel
-@onready var inventory_grid: GridContainer = $HUD/InventoryPanel/InventoryGrid
+@onready var inventory_grid: GridContainer = $HUD/InventoryPanel/InfoTabs/InventoryTab/InventoryGrid
+@onready var blessings_list: ItemList = $HUD/InventoryPanel/InfoTabs/StatsTab/BlessingsList
 @onready var inventory: Inventory = $Inventory
 
 func _ready() -> void:
@@ -56,13 +57,15 @@ func _ready() -> void:
 	if inventory:
 		inventory.inventory_changed.connect(_on_inventory_changed)
 
-	inventory_panel.visible = false
+        inventory_panel.visible = false
+        update_blessings_list()
 
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("open_inventory"):
-		inventory_panel.visible = not inventory_panel.visible
-		if inventory_panel.visible:
-			inventory.populate_grid(inventory_grid)
+        if Input.is_action_just_pressed("open_inventory"):
+                inventory_panel.visible = not inventory_panel.visible
+                if inventory_panel.visible:
+                        inventory.populate_grid(inventory_grid)
+                        update_blessings_list()
 
 func _on_player_health_changed(value: int, max_value: int) -> void:
 	if hp_orb:
@@ -81,5 +84,12 @@ func _on_player_mana_changed(value: int, max_value: int) -> void:
 			mp_orb.SetSmooth(value, max_value)
 
 func _on_inventory_changed() -> void:
-	if inventory_panel.visible:
-		inventory.populate_grid(inventory_grid)
+        if inventory_panel.visible:
+                inventory.populate_grid(inventory_grid)
+
+func update_blessings_list() -> void:
+        blessings_list.clear()
+        for god in BlessingManager.blessings.keys():
+                var blessing = BlessingManager.blessings[god]
+                blessings_list.add_item("%s: %s" % [god, blessing])
+
