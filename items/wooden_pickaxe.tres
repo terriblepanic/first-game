@@ -1,11 +1,13 @@
-[gd_resource type="Pickaxe" format=3 uid="uid://p3bic18cznlv"]
+[gd_resource type="Item" script_class="Pickaxe" load_steps=3 format=3 uid="uid://p3bic18c0nlv"]
 
-[ext_resource type="Script" path="res://scripts/pickaxe.gd" id="1"]
-[ext_resource type="Texture2D" path="res://assets/particles/player_attack.png" id="2"]
+[ext_resource type="Script" uid="uid://0x10n1xwo6xm" path="res://scripts/pickaxe.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://clx4va2ges768" path="res://assets/particles/player_attack.png" id="2"]
 
 [resource]
+resource_local_to_scene = false
+resource_name = ""
 script = ExtResource("1")
+mine_speed = 1.0
 name = "Wooden Pickaxe"
 icon = ExtResource("2")
 stack_size = 1
-mine_speed = 1.0
