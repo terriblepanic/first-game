@@ -16,14 +16,14 @@ func _process(delta: float) -> void:
 
 func _spawn_altars() -> void:
 	var altar1: GodAltar = _altar_scene.instantiate()
-	altar1.position = Vector2(-100, 20)
+	altar1.position = Vector2(-72, 64)
 	altar1.god_name = "GodA"
 	altar1.blessings = ["Сила", "Защита"]
 	add_child(altar1)
 	altar1.blessing_selected.connect(_on_blessing_selected)
 
 	var altar2: GodAltar = _altar_scene.instantiate()
-	altar2.position = Vector2(100, 20)
+	altar2.position = Vector2(72, 64)
 	altar2.god_name = "GodB"
 	altar2.blessings = ["Мудрость", "Удача"]
 	add_child(altar2)

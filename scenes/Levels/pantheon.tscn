@@ -388,7 +388,7 @@ tile_map_data = PackedByteArray("AADs/wQAAQAAAAMAAADw/wQAAQAAAAMAAAD0/wQAAQAAAAM
 tile_set = ExtResource("10_3qtx6")
 
 [node name="Deco" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAD//wQAAQAEAAgAAAADAAQAAQAAAAcAAAAHAAQAAQACAAcAAAALAAQAAQACAAcAAAAPAAQAAQACAAcAAAD6/wQAAQACAAcAAAD2/wQAAQACAAcAAADy/wQAAQACAAcAAADu/wQAAQACAAcAAAA=")
+tile_map_data = PackedByteArray("AAD//wQAAQAEAAgAAAAHAAQAAQACAAcAAAALAAQAAQACAAcAAAAPAAQAAQACAAcAAAD2/wQAAQACAAcAAADy/wQAAQACAAcAAADu/wQAAQACAAcAAAA=")
 tile_set = ExtResource("10_3qtx6")
 
 [node name="Orb" type="Sprite2D" parent="."]
