@@ -153,6 +153,11 @@ func set_spawn_position(pos: Vector2) -> void:
         position = pos
 
 
+# Allows external scripts to place the player at a given position
+func set_spawn_position(pos: Vector2) -> void:
+       position = pos
+
+
 func health_regen(delta: float) -> void:
 	if health < max_health:
 		var prev := int(health)
