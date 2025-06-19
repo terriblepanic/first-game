@@ -1,17 +1,18 @@
 extends CanvasLayer
-class_name TransitionManager
 
 var fade_rect: ColorRect
-	
-	func _ready() -> void:
+
+
+func _ready() -> void:
 	fade_rect = ColorRect.new()
 	fade_rect.color = Color.BLACK
 	fade_rect.anchor_right = 1.0
 	fade_rect.anchor_bottom = 1.0
 	fade_rect.visible = false
 	add_child(fade_rect)
-	
-	func change_scene(scene_path: String) -> void:
+
+
+func change_scene(scene_path: String) -> void:
 	fade_rect.visible = true
 	fade_rect.modulate.a = 0.0
 	var tween = get_tree().create_tween()

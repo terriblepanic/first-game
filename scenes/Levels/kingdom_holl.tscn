@@ -74,7 +74,7 @@ layer = 0
 follow_viewport_enabled = true
 
 [node name="Player" parent="Player" instance=ExtResource("1_myoku")]
-position = Vector2(0, 74.8)
+position = Vector2(-196, 32)
 speed = 150.0
 metadata/_edit_group_ = true
 
@@ -189,16 +189,6 @@ build_mode = 1
 polygon = PackedVector2Array(-380, -59, -380, 75.64, 380, 74.64, 380, -59)
 
 [node name="FX" type="CanvasLayer" parent="."]
-
-[node name="Fade" type="ColorRect" parent="FX"]
-visible = false
-z_index = -1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
 
 [node name="PostFX" type="CanvasLayer" parent="FX"]
 layer = 2
