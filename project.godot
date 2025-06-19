@@ -20,6 +20,7 @@ boot_splash/show_image=false
 
 TerrainData="*res://scripts/terrain_data.gd"
 TransitionManager="*res://scripts/transition_manager.gd"
+BlessingManager="*res://scripts/blessing_manager.gd"
 
 [display]
 
