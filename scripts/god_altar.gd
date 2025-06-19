@@ -29,12 +29,18 @@ func _show_menu() -> void:
 	var vbox := VBoxContainer.new()
 	win.add_child(vbox)
 
-	# кнопки благословений
-	for b in blessings:
-		var btn := Button.new()
-		btn.text = b
-		btn.pressed.connect(_on_blessing_chosen.bind(b, win))
-		vbox.add_child(btn)
+        # кнопки благословений
+        for b in blessings:
+                var current := BlessingManager.get_blessing(god_name)
+                var btn := Button.new()
+                if current == b:
+                        btn.text = "%s (выбрано)" % b
+                        btn.disabled = true
+                        btn.modulate = Color(0.7, 0.7, 0.7)
+                else:
+                        btn.text = b
+                btn.pressed.connect(_on_blessing_chosen.bind(b, win))
+                vbox.add_child(btn)
 
 	# единожды добавляем в сцену, ставим паузу и показываем
 	add_child(win)
