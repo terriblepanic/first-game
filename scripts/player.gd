@@ -40,7 +40,7 @@ var _attack_timer: float = 0.0
 func _ready() -> void:
 	health = max_health
 	mana = max_mana
-	attack_area.monitoring = false
+	attack_area.monitoring = view_mode == ViewMode.SIDE_VIEW
 	attack_area.body_entered.connect(_on_attack_area_body_entered)
 	emit_signal("health_changed", int(health), max_health)
 	emit_signal("mana_changed", int(mana), max_mana)
@@ -60,6 +60,10 @@ func _physics_process(delta: float) -> void:
 func _process_side_view(delta: float) -> void:
 	var dir_h := Input.get_axis("move_left", "move_right")
 	velocity.x = dir_h * speed
+	
+	# Ensure the attack area is active to detect interactable objects
+	if not attack_area.monitoring:
+		attack_area.monitoring = true
 
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -75,11 +79,14 @@ func _process_side_view(delta: float) -> void:
 
 	if Input.is_action_just_pressed("place_block"):
 		_place_selected_block()
+		
+	if Input.is_action_just_pressed("interact"):
+		_on_interact()
 
 	if _attack_timer > 0.0:
 		_attack_timer -= delta
 		if _attack_timer <= 0.0:
-			attack_area.monitoring = false
+			attack_area.monitoring = true
 			_is_attacking = false
 
 	mana_regen(delta)
