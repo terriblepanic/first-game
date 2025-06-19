@@ -94,9 +94,10 @@ func _ready() -> void:
                 for y in range(-2, 3):
                         tilemap.erase_cell(spawn_tile + Vector2i(x, y))
 
-        if has_node("HUD/Inventory"):
-                var pickaxe: Item = load("res://items/wooden_pickaxe.tres")
-                $HUD/Inventory.add_item(pickaxe)
+       if has_node("HUD/Inventory"):
+               var inventory := $HUD/Inventory
+               var pickaxe: Item = load("res://items/wooden_pickaxe.tres")
+               inventory.add_item(pickaxe)
 
         _process(0.0)
         $Player/Player.player_died.connect(_on_player_died)
