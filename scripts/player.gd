@@ -25,6 +25,7 @@ var mana_regen_timer: float = 0.0
 var selected_slot: int = 0
 var _is_attacking: bool = false
 var _attack_timer: float = 0.0
+var spawn_position: Vector2 = Vector2.ZERO
 
 @onready var camera: Camera2D = $Camera2D
 @onready var attack_area: Area2D = $AttackArea
@@ -138,12 +139,18 @@ func take_damage(amount: int) -> void:
 
 
 func respawn() -> void:
-	health = max_health
-	mana = max_mana
-	emit_signal("health_changed", int(health), max_health)
-	emit_signal("mana_changed", int(mana), max_mana)
-	show()
-	set_process(true)
+        health = max_health
+        mana = max_mana
+        emit_signal("health_changed", int(health), max_health)
+        emit_signal("mana_changed", int(mana), max_mana)
+        position = spawn_position
+        show()
+        set_process(true)
+
+
+func set_spawn_position(pos: Vector2) -> void:
+        spawn_position = pos
+        position = pos
 
 
 func health_regen(delta: float) -> void:
