@@ -161,5 +161,13 @@ func position_to_cell(global_pos: Vector2) -> Vector2i:
 
 
 func _on_player_died() -> void:
-	await get_tree().create_timer(2).timeout
-	get_tree().reload_current_scene()
+        await get_tree().create_timer(2).timeout
+        get_tree().reload_current_scene()
+
+
+# When the player enters the exit Area2D we return back to the previous scene.
+# This is similar to other level scripts where the player is disabled and a
+# transition effect is triggered.
+func _on_exit_body_entered(body: Node2D) -> void:
+        if body.name == "Player":
+                TransitionManager.change_scene("res://scenes/Main.tscn")
