@@ -139,18 +139,18 @@ func take_damage(amount: int) -> void:
 
 
 func respawn() -> void:
-        health = max_health
-        mana = max_mana
-        emit_signal("health_changed", int(health), max_health)
-        emit_signal("mana_changed", int(mana), max_mana)
-        position = spawn_position
-        show()
-        set_process(true)
+	health = max_health
+	mana = max_mana
+	emit_signal("health_changed", int(health), max_health)
+	emit_signal("mana_changed", int(mana), max_mana)
+	position = spawn_position
+	show()
+	set_process(true)
 
 
 func set_spawn_position(pos: Vector2) -> void:
-        spawn_position = pos
-        position = pos
+	spawn_position = pos
+	position = pos
 
 
 func health_regen(delta: float) -> void:

@@ -60,47 +60,47 @@ var _loaded_chunks: Dictionary = {}
 
 
 func _ready() -> void:
-        randomize()
-        set_process(true)
+	randomize()
+	set_process(true)
 
-        if world_tiles:
-                tilemap.tile_set = world_tiles
+	if world_tiles:
+		tilemap.tile_set = world_tiles
 
-        generator.setup({
-                "world_height": world_height,
-                "surface_base": -10,
-                "surface_amp": 0,
-                "surface_amp_desert": 0,
-                "surface_amp_mountain": 0,
-                "dirt_depth": dirt_depth,
-                "sand_depth": sand_depth,
-                "sea_level": sea_level,
-                "beach_width": beach_width,
-                "cave_threshold": 0.4,
-                "cave_threshold_depth_factor": cave_threshold_depth_factor,
-                "ore_chances": ore_chances,
-                "SOURCE_ID": SOURCE_ID
-                })
+	generator.setup({
+		"world_height": world_height,
+		"surface_base": -10,
+		"surface_amp": 0,
+		"surface_amp_desert": 0,
+		"surface_amp_mountain": 0,
+		"dirt_depth": dirt_depth,
+		"sand_depth": sand_depth,
+		"sea_level": sea_level,
+		"beach_width": beach_width,
+		"cave_threshold": 0.4,
+		"cave_threshold_depth_factor": cave_threshold_depth_factor,
+		"ore_chances": ore_chances,
+		"SOURCE_ID": SOURCE_ID
+	})
 
-        var spawn_tile: Vector2i = Vector2i(world_width / 2, world_height / 2)
-        var ts: Vector2 = tilemap.tile_set.tile_size
-        var spawn_pos: Vector2 = Vector2(spawn_tile.x * ts.x, spawn_tile.y * ts.y)
-        if player.has_method("set_spawn_position"):
-                player.set_spawn_position(spawn_pos)
-        if has_node("Exit"):
-                $Exit.position = spawn_pos
+	var spawn_tile: Vector2i = Vector2i(world_width / 2, world_height / 2)
+	var ts: Vector2 = tilemap.tile_set.tile_size
+	var spawn_pos: Vector2 = Vector2(spawn_tile.x * ts.x, spawn_tile.y * ts.y)
+	if player.has_method("set_spawn_position"):
+		player.set_spawn_position(spawn_pos)
+	if has_node("Exit"):
+		$Exit.position = spawn_pos
 
-        for x in range(-2, 3):
-                for y in range(-2, 3):
-                        tilemap.erase_cell(spawn_tile + Vector2i(x, y))
+	for x in range(-2, 3):
+		for y in range(-2, 3):
+			tilemap.erase_cell(spawn_tile + Vector2i(x, y))
 
-       if has_node("HUD/Inventory"):
-               var inventory := $HUD/Inventory
-               var pickaxe: Item = load("res://items/wooden_pickaxe.tres")
-               inventory.add_item(pickaxe)
+	if has_node("HUD/Inventory"):
+		var inventory := $HUD/Inventory
+		var pickaxe: Item = load("res://items/wooden_pickaxe.tres")
+		inventory.add_item(pickaxe)
 
-        _process(0.0)
-        $Player/Player.player_died.connect(_on_player_died)
+	_process(0.0)
+	$Player/Player.player_died.connect(_on_player_died)
 
 
 func _process(_delta: float) -> void:
@@ -162,13 +162,13 @@ func position_to_cell(global_pos: Vector2) -> Vector2i:
 
 
 func _on_player_died() -> void:
-        await get_tree().create_timer(2).timeout
-        get_tree().reload_current_scene()
+	await get_tree().create_timer(2).timeout
+	get_tree().reload_current_scene()
 
 
 # When the player enters the exit Area2D we return back to the previous scene.
 # This is similar to other level scripts where the player is disabled and a
 # transition effect is triggered.
 func _on_exit_body_entered(body: Node2D) -> void:
-        if body.name == "Player":
-                TransitionManager.change_scene("res://scenes/Main.tscn")
+	if body.name == "Player":
+		TransitionManager.change_scene("res://scenes/Main.tscn")

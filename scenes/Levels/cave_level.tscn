@@ -1,7 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://citgr4h7kjmw2"]
+[gd_scene load_steps=20 format=3 uid="uid://citgr4h7kjmw2"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1"]
-[ext_resource type="Script" uid="uid://bo8rt7s20wgyr" path="res://scenes/Levels/cave_level.gd" id="1_3p2gp"]
+[ext_resource type="Script" uid="uid://bo8rt7s20wgyr" path="res://scripts/world_map.gd" id="1_3p2gp"]
 [ext_resource type="Texture2D" uid="uid://dd63kst26r5ds" path="res://assets/parallax_bg/paralax_bg_1_sky.png" id="3_q8u5g"]
 [ext_resource type="Texture2D" uid="uid://bmn82hvqpj7sw" path="res://assets/parallax_bg/paralax_bg_2_smallClouds.png" id="4_lhr70"]
 [ext_resource type="Script" uid="uid://dnjdjvavi217w" path="res://scripts/small_clouds.gd" id="4_wp0k4"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://jubqgarq03kq" path="res://scenes/fog_layer.tscn" id="12_bjd11"]
 [ext_resource type="Shader" uid="uid://cq0tvmh3a0lof" path="res://shaders/god_rays.gdshader" id="13_qmy6f"]
 [ext_resource type="TileSet" uid="uid://c863tgpflukmr" path="res://assets/tilesets/nature.tres" id="15_nfivy"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="17_7vjiv"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="17_ft6cd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
@@ -24,9 +25,9 @@ shader_parameter/decay = 0.95
 shader_parameter/samples = 30
 shader_parameter/weight = 0.5
 shader_parameter/threshold = 0.6
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
 size = Vector2(32, 32)
-
 
 [node name="Main" type="Node"]
 script = ExtResource("1_3p2gp")
@@ -49,7 +50,6 @@ drag_left_margin = 0.0
 drag_top_margin = 0.0
 drag_right_margin = 0.0
 drag_bottom_margin = 0.0
-
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -165,6 +165,10 @@ tile_set = ExtResource("15_nfivy")
 
 [node name="HUD" parent="." instance=ExtResource("17_ft6cd")]
 layer = 100
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("17_7vjiv")]
 
 [node name="Exit" type="Area2D" parent="."]
 
