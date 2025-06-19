@@ -82,7 +82,7 @@ func _ready() -> void:
 		"SOURCE_ID": SOURCE_ID
 	})
 
-	var spawn_tile: Vector2i = Vector2i(world_width / 2, world_height / 2)
+	var spawn_tile: Vector2i = generator.find_cave_spawn_tile(world_width, world_height)
 	var ts: Vector2 = tilemap.tile_set.tile_size
 	var spawn_pos: Vector2 = Vector2(spawn_tile.x * ts.x, spawn_tile.y * ts.y)
 	if player.has_method("set_spawn_position"):

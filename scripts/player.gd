@@ -32,7 +32,7 @@ var spawn_position: Vector2 = Vector2.ZERO
 @onready var attack_animation: GPUParticles2D = $AttackAnimation
 @onready var attack_animation_2: GPUParticles2D = $AttackAnimation2
 @onready var take_damage_animation: GPUParticles2D = $TakeDamageAnimation
-@onready var world_map = get_parent()
+@onready var world_map = get_parent().get_parent()
 @onready var inventory: Inventory = $"../../HUD/Inventory"
 @onready var death_label: Label = $"../../HUD/DeathLabel"
 @onready var jump_handler: Node = $CoyoteJump
@@ -207,12 +207,23 @@ func _use_selected_item() -> void:
 		var cell = world_map.position_to_cell(get_global_mouse_position())
 		var tid = world_map.remove_block(cell)
 		if tid != -1:
-			var block_item = BlockItem.new()
-			block_item.terrain_id = tid
-			inventory.add_item(block_item)
-	elif mana >= mana_cost_attack:
-		use_mana(mana_cost_attack)
-		perform_attack()
+			var drop_item: Item = null
+			match tid:
+				world_map.TerrainID.ORE_COPPER:
+					drop_item = load("res://items/copper_ore.tres")
+				world_map.TerrainID.ORE_IRON:
+					drop_item = load("res://items/iron_ore.tres")
+				world_map.TerrainID.ORE_GOLD:
+					drop_item = load("res://items/gold_ore.tres")
+				_:
+					var block_item = BlockItem.new()
+					block_item.terrain_id = tid
+					drop_item = block_item
+			if drop_item:
+				inventory.add_item(drop_item)
+		elif mana >= mana_cost_attack:
+			use_mana(mana_cost_attack)
+			perform_attack()
 
 
 func _place_selected_block() -> void:

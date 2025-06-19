@@ -96,6 +96,10 @@ func _ready() -> void:
 		var enemy_spawn: Vector2i = spawn_tile + Vector2i(1, 0)
 		var enemy_pos: Vector2 = Vector2(enemy_spawn.x * ts.x, enemy_spawn.y * ts.y)
 		$Enemy/Enemy.set_spawn_position(enemy_pos)
+	if has_node("HUD/Inventory"):
+		var inventory := $HUD/Inventory
+		var pickaxe: Item = load("res://items/wooden_pickaxe.tres")
+		inventory.add_item(pickaxe)
 
 	# первый вызов _process, чтобы сразу отрисовать чанки и тени
 	_process(0.0)

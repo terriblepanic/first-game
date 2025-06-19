@@ -196,6 +196,16 @@ func safe_spawn_tile(world_width: int, offset: int) -> Vector2i:
 		y0 -= 1
 	return Vector2i(cx, by - offset)
 
+func find_cave_spawn_tile(world_width: int, world_height: int) -> Vector2i:
+	var attempts: int = 1000
+	while attempts > 0:
+		var x: int = randi() % world_width
+		var y: int = randi() % (world_height - 1)
+		if is_cave(x, y) and not is_cave(x, y + 1):
+			return Vector2i(x, y)
+		attempts -= 1
+	return Vector2i(world_width / 2, world_height / 2)
+
 
 func _default_tile_id(grid: Array, x: int, y: int) -> int:
 	# Шаг 1: Узнаём, какой тип блока находится в этой клетке
