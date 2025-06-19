@@ -19,6 +19,7 @@ boot_splash/show_image=false
 [autoload]
 
 TerrainData="*res://scripts/terrain_data.gd"
+TransitionManager="*res://scripts/transition_manager.gd"
 
 [display]
 
