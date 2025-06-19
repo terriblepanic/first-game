@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://chpimji2u13r7"]
+[gd_resource type="Resource" script_class="BlockItem" load_steps=3 format=3 uid="uid://chpimji2u13r7"]
 
 [ext_resource type="Texture2D" uid="uid://caknje60e1y3i" path="res://assets/tiles/nature/ore/ore_copper.png" id="1_8rn27"]
-[ext_resource type="Script" uid="uid://enlx7m7e75n4" path="res://scripts/item.gd" id="1_es8vr"]
+[ext_resource type="Script" uid="uid://uvmd65hksovi" path="res://scripts/block_item.gd" id="1_es8vr"]
 
 [resource]
 script = ExtResource("1_es8vr")
+terrain_id = 4
 name = "Copper Ore"
 icon = ExtResource("1_8rn27")
 stack_size = 99

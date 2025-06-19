@@ -48,44 +48,54 @@ scale = Vector2(0.2, 0.2)
 
 [node name="QuickSlots" type="HBoxContainer" parent="HUD"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.25
-anchor_right = 0.75
-anchor_bottom = 1.0
-offset_left = 186.5
-offset_right = 186.5
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 125.0
+offset_bottom = 50.0
+grow_horizontal = 2
 
 [node name="Slot1" type="TextureRect" parent="HUD/QuickSlots"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Slot2" type="TextureRect" parent="HUD/QuickSlots"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Slot3" type="TextureRect" parent="HUD/QuickSlots"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Slot4" type="TextureRect" parent="HUD/QuickSlots"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Slot5" type="TextureRect" parent="HUD/QuickSlots"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Slot6" type="TextureRect" parent="HUD/QuickSlots"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Slot7" type="TextureRect" parent="HUD/QuickSlots"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Slot8" type="TextureRect" parent="HUD/QuickSlots"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Slot9" type="TextureRect" parent="HUD/QuickSlots"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Slot10" type="TextureRect" parent="HUD/QuickSlots"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="InventoryPanel" type="Panel" parent="HUD"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0

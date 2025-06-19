@@ -215,6 +215,8 @@ func _use_selected_item() -> void:
 					drop_item = load("res://items/iron_ore.tres")
 				world_map.TerrainID.ORE_GOLD:
 					drop_item = load("res://items/gold_ore.tres")
+				world_map.TerrainID.DIRT:
+					drop_item = load("res://items/dirt_block.tres")
 				_:
 					var block_item = BlockItem.new()
 					block_item.terrain_id = tid

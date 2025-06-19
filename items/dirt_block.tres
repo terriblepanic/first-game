@@ -1,11 +1,13 @@
-[gd_resource type="BlockItem" format=3 uid="uid://zpug9vo7y7cm"]
+[gd_resource type="BlockItem" script_class="BlockItem" load_steps=3 format=3 uid="uid://0puhavo7y7cm"]
 
-[ext_resource type="Script" path="res://scripts/block_item.gd" id="1"]
-[ext_resource type="Texture2D" path="res://assets/tiles/dirt.png" id="2"]
+[ext_resource type="Script" uid="uid://uvmd65hksovi" path="res://scripts/block_item.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://cb1ghpwo8so3s" path="res://assets/tiles/nature/grass/dirt.png" id="2"]
 
 [resource]
+resource_local_to_scene = false
+resource_name = ""
 script = ExtResource("1")
+terrain_id = 0
 name = "Dirt Block"
 icon = ExtResource("2")
 stack_size = 99
-terrain_id = 0
