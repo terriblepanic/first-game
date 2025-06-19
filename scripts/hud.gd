@@ -11,8 +11,9 @@ var mp_orb: OrbUIController
 
 # Инвентарь
 @onready var inventory_panel: Control = $HUD/InventoryPanel
-@onready var inventory_grid: GridContainer = $HUD/InventoryPanel/InfoTabs/InventoryTab/InventoryGrid
-@onready var blessings_list: ItemList = $HUD/InventoryPanel/InfoTabs/StatsTab/BlessingsList
+@onready var inventory_grid: GridContainer = $HUD/InventoryPanel/InfoTabs/Снаряжение/InventoryGrid
+@onready var blessings_list: ItemList = $HUD/InventoryPanel/InfoTabs/Характеристики/BlessingsList
+@onready var quests_list: ItemList = $HUD/InventoryPanel/InfoTabs/Задания гильдии/QuestsList
 @onready var inventory: Inventory = $Inventory
 
 func _ready() -> void:
