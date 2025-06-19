@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://i60btftcy6ji"]
 
-[ext_resource type="Script" uid="uid://dbqvta4b25f55" path="res://scripts/HUD.gd" id="1_nysna"]
+[ext_resource type="Script" uid="uid://dbqvta4b25f55" path="res://scripts/hud.gd" id="1_nysna"]
 [ext_resource type="Script" uid="uid://cspwhrut3nv8d" path="res://scripts/inventory.gd" id="2_f6qnu"]
 [ext_resource type="PackedScene" uid="uid://c7htbu4a30wt2" path="res://scenes/orb_bar.tscn" id="3_k4w17"]
 [ext_resource type="Script" uid="uid://bqb1l0y2cyjop" path="res://scripts/mini_map_viewport.gd" id="4_twldb"]
@@ -75,7 +75,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="InventoryPanel" type="Panel" parent="HUD"]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.25
@@ -88,26 +87,31 @@ offset_right = 173.5
 offset_bottom = 93.75
 
 [node name="InfoTabs" type="TabContainer" parent="HUD/InventoryPanel"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
 
 [node name="InventoryTab" type="VBoxContainer" parent="HUD/InventoryPanel/InfoTabs"]
-layout_mode = 0
-tab_title = "Инвентарь"
+layout_mode = 2
+metadata/_tab_index = 0
 
 [node name="InventoryGrid" type="GridContainer" parent="HUD/InventoryPanel/InfoTabs/InventoryTab"]
-layout_mode = 0
-offset_left = -186.5
-offset_top = -104.75
-offset_right = -186.5
-offset_bottom = -104.75
+layout_mode = 2
+size_flags_vertical = 3
 columns = 5
 
 [node name="StatsTab" type="VBoxContainer" parent="HUD/InventoryPanel/InfoTabs"]
-layout_mode = 0
-tab_title = "Характеристики"
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="BlessingsList" type="ItemList" parent="HUD/InventoryPanel/InfoTabs/StatsTab"]
-layout_mode = 0
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="HUD"]
 visible = false

@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dwxl3shei32pk" path="res://assets/Levels/Pantheon/parallax/4.png" id="9_p75bh"]
 [ext_resource type="TileSet" uid="uid://bomyroirsycrr" path="res://assets/tilesets/pantheon.tres" id="10_3qtx6"]
 [ext_resource type="Shader" uid="uid://cq0tvmh3a0lof" path="res://shaders/god_rays.gdshader" id="11_os1q6"]
-[ext_resource type="Script" uid="uid://dl5osbkkokjs7" path="res://scripts/pantheon_fire.gd" id="12_fbv6d"]
+[ext_resource type="Script" uid="uid://dl5osbkkokjs7" path="res://scripts/pantheon.gd" id="12_fbv6d"]
 [ext_resource type="Shader" uid="uid://dymhok6c0bfp3" path="res://shaders/pantheon_godrays.gdshader" id="13_8a4im"]
 [ext_resource type="Shader" uid="uid://bpx1ahbt7vyir" path="res://shaders/pantheon_water.gdshader" id="14_fmryo"]
 [ext_resource type="PackedScene" uid="uid://jubqgarq03kq" path="res://scenes/fog_layer.tscn" id="14_l658r"]
@@ -327,7 +327,6 @@ metadata/color_filter = Color(1, 1, 1, 0)
 
 [node name="HUD" parent="." instance=ExtResource("2_vr15j")]
 layer = 100
-visible = false
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
