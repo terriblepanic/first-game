@@ -11,7 +11,7 @@ var mp_orb: OrbUIController
 @onready var orb_mp_sprite: Sprite2D = $HUD/OrbMP/Sprite2D
 # Инвентарь
 @onready var inventory_panel: Control = $HUD/InventoryPanel
-@onready var inventory_grid: GridContainer = $HUD/InventoryPanel/InfoTabs/Снаряжение/InventoryGrid
+@onready var inventory_grid: GridContainer = $HUD/InventoryPanel/InfoTabs/Снаряжение/CenterContainer/InventoryGrid
 @onready var blessings_list: ItemList = $HUD/InventoryPanel/InfoTabs/Характеристики/BlessingsList
 @onready var quests_list: ItemList = $"HUD/InventoryPanel/InfoTabs/Задания гильдии/QuestsList"
 @onready var inventory: Inventory = $Inventory
@@ -69,11 +69,6 @@ func _process(_delta: float) -> void:
 			$HUD/InventoryPanel/InfoTabs.current_tab = 1  # открыть вкладку "Снаряжение"
 			inventory.populate_grid(inventory_grid)
 			update_blessings_list()
-
-
-			# =========================
-			# Здесь ключ:
-			# =========================
 
 
 # Сигнатура с двумя опциональными параметрами.

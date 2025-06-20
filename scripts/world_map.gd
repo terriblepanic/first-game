@@ -1,17 +1,7 @@
 extends Node
 
 # — ID ландшафта —
-enum TerrainID {
-	AIR,
-	GRASS,
-	DIRT,
-	ORE_COPPER,
-	ORE_GOLD,
-	ORE_IRON,
-	SAND,
-	STONE,
-}
-
+const TerrainID := TerrainData.TerrainID
 const Item = preload("res://scripts/item.gd")
 
 # минимальная глубина появления руды
@@ -39,19 +29,11 @@ const SHADE_ID_OFFSET := 0 # смещение, если тайлы идут с �
 # Шансы руды
 @export var ore_chances: Dictionary = { "copper": 0.015, "iron": 0.007, "gold": 0.003 }
 # Соответствие TerrainID → ID тайла в TileSet
-@export var SOURCE_ID: Dictionary = {
-	TerrainID.AIR: 0,
-	TerrainID.DIRT: 1,
-	TerrainID.GRASS: 2,
-	TerrainID.ORE_COPPER: 3,
-	TerrainID.ORE_GOLD: 4,
-	TerrainID.ORE_IRON: 5,
-	TerrainID.SAND: 6,
-	TerrainID.STONE: 7
-}
 
 @export var chunk_width: int = 100
 @export var world_tiles: TileSet
+
+var SOURCE_ID: Dictionary = TerrainData.SOURCE_ID
 
 var generator: WorldGenerator = WorldGenerator.new()
 

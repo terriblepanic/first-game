@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_es8vr")
 terrain_id = 4
-name = "Copper Ore"
+name = "Copper"
 icon = ExtResource("1_8rn27")
 stack_size = 99
 count = 0

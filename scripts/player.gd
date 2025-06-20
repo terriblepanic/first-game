@@ -222,14 +222,18 @@ func _use_selected_item() -> void:
 		if tid != -1:
 			var drop_item: Item = null
 			match tid:
-				world_map.TerrainID.ORE_COPPER:
+				TerrainData.TerrainID.ORE_COPPER:
 					drop_item = load("res://items/copper_ore.tres")
-				world_map.TerrainID.ORE_IRON:
+				TerrainData.TerrainID.ORE_IRON:
 					drop_item = load("res://items/iron_ore.tres")
-				world_map.TerrainID.ORE_GOLD:
+				TerrainData.TerrainID.ORE_GOLD:
 					drop_item = load("res://items/gold_ore.tres")
-				world_map.TerrainID.DIRT:
-					drop_item = load("res://items/dirt_block.tres")
+				TerrainData.TerrainID.DIRT:
+					drop_item = load("res://items/dirt.tres")
+				TerrainData.TerrainID.STONE:
+					drop_item = load("res://items/stone.tres")
+				TerrainData.TerrainID.SAND:
+					drop_item = load("res://items/sand.tres")
 				_:
 					var block_item = BlockItem.new()
 					block_item.terrain_id = tid

@@ -29,7 +29,7 @@ script = ExtResource("1_nysna")
 
 [node name="Inventory" type="Node" parent="."]
 script = ExtResource("2_f6qnu")
-slot_count = 15
+slot_count = 21
 
 [node name="HUD" type="Control" parent="."]
 layout_mode = 3
@@ -118,13 +118,14 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
+offset_left = 60.0
 offset_top = 20.0
-offset_right = -20.0
+offset_right = -60.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 1
+tab_alignment = 1
+current_tab = 2
 
 [node name="Задания гильдии" type="VBoxContainer" parent="HUD/InventoryPanel/InfoTabs"]
 visible = false
@@ -136,18 +137,26 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_twldb")
 
-[node name="Снаряжение" type="VBoxContainer" parent="HUD/InventoryPanel/InfoTabs"]
+[node name="Снаряжение" type="Control" parent="HUD/InventoryPanel/InfoTabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="InventoryGrid" type="GridContainer" parent="HUD/InventoryPanel/InfoTabs/Снаряжение"]
+[node name="CenterContainer" type="CenterContainer" parent="HUD/InventoryPanel/InfoTabs/Снаряжение"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InventoryGrid" type="GridContainer" parent="HUD/InventoryPanel/InfoTabs/Снаряжение/CenterContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 columns = 5
 
 [node name="Характеристики" type="VBoxContainer" parent="HUD/InventoryPanel/InfoTabs"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

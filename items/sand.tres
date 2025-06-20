@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BlockItem" load_steps=3 format=3 uid="uid://crdp7xvtiphhd"]
+
+[ext_resource type="Script" uid="uid://uvmd65hksovi" path="res://scripts/block_item.gd" id="1_ftea6"]
+[ext_resource type="Texture2D" uid="uid://dvgioj6vs08qj" path="res://assets/tiles/nature/sand.png" id="1_t8i3k"]
+
+[resource]
+script = ExtResource("1_ftea6")
+terrain_id = 1
+name = "Sand"
+icon = ExtResource("1_t8i3k")
+stack_size = 99
+count = 0
+metadata/_custom_type_script = "uid://uvmd65hksovi"

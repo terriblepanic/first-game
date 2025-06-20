@@ -130,7 +130,7 @@ void fragment() {
         if (light_effect) {
             L = cos(distance(qUV, sin(suv * suv) + NTIME * ball_light_speed)) * 0.25;
         }
-		
+
 		if (glow_effect) {
 		    float pulse = sin(TIME * glow_pulse_speed) * 0.5 + 0.5; // от 0 до 1
 		    float dist = distance(qUV, vec2(0.5, 0.5));
@@ -141,7 +141,7 @@ void fragment() {
 		    COLOR.rgb += glow_layer.rgb * glow_layer.a;
 		    COLOR.a = clamp(COLOR.a + glow_layer.a, 0.0, 1.0);
 		}
-		
+
         vec4 ballLayer = vec4(
             vec3(1.0),
             pow(distance(qUV, vec2(0.5, 0.5)) * 2.0, ball_border_ci) + L

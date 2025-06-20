@@ -8,6 +8,8 @@ const ItemSlotScene = preload("res://scenes/item_slot.tscn")
 
 @export var slot_count: int = 20
 var items: Array[Item] = []
+const SLOT_SIZE   := Vector2(80, 96)
+const ICON_SIZE   := Vector2(64, 64)
 
 
 func add_item(item: Item) -> bool:
@@ -44,47 +46,40 @@ func clear() -> void:
 
 # inventory.gd
 func populate_grid(grid: GridContainer) -> void:
-	# Очистка старого
+	# ────────── (1) одноразовая настройка сетки ──────────
+	if not grid.has_meta("setup"):
+		grid.columns = 7
+		grid.set("theme_override_constants/separation", 4)
+		grid.set_meta("setup", true)
+
+	# ────────── (2) очищаем старое содержимое ──────────
 	for child in grid.get_children():
 		child.queue_free()
 
-	# ------------------------------------------------------------------
-	# 1. Настроим сетку (чтобы имена не налезали) – сделать один раз.
-	# ------------------------------------------------------------------
-	grid.columns = 5                                   # 5×4 = 20 слотов
-	grid.set("theme_override_constants/separation", 4)
+	# ────────── (3) создаём 20 слотов ──────────
+	for i in range(slot_count):
+		var slot := ItemSlotScene.instantiate()
+		slot.custom_minimum_size = SLOT_SIZE
 
-	# ------------------------------------------------------------------
-	# 2. Добавляем предметы
-	# ------------------------------------------------------------------
-	for item in items:
-		var slot = ItemSlotScene.instantiate()
+		# пути к нодам внутри слота
+		var icon:  TextureRect = slot.get_node("VBoxContainer/Icon")
+		var name:  Label       = slot.get_node("VBoxContainer/Name")
+		var count: Label       = slot.get_node("Count")
 
-		# --- ОБЯЗАТЕЛЬНЫЕ размеры: ------------------------
-		slot.custom_minimum_size = Vector2(80, 96)
-		var icon = slot.get_node("Icon")
-		icon.custom_minimum_size = Vector2(64, 64)
-		# --------------------------------------------------
+		if i < items.size():               # заполненный слот
+			var item: Item = items[i]
+			icon.custom_minimum_size = ICON_SIZE
+			icon.texture = item.icon
+			name.text    = item.name
 
-		var count = slot.get_node("Icon/Count")
-		var name  = slot.get_node("Name")
-
-		icon.texture = item.icon
-		name.text   = item.name
-
-		if item.count > 1:
-			count.text = str(item.count)
-			count.visible = true
-		else:
+			if item.count > 1:
+				count.text    = str(item.count)
+				count.visible = true
+			else:
+				count.visible = false
+		else:                              # пустая ячейка
+			icon.visible  = false
+			name.visible  = false
 			count.visible = false
 
-		print("ADD:", item.name, item.icon)
 		grid.add_child(slot)
-
-	# ------------------------------------------------------------------
-	# 3. Пустые слоты
-	# ------------------------------------------------------------------
-	for i in range(get_free_slots()):
-		var filler := Control.new()
-		filler.custom_minimum_size = Vector2(80, 96)
-		grid.add_child(filler)

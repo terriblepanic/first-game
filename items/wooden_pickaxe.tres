@@ -6,7 +6,8 @@
 [resource]
 script = ExtResource("1")
 mine_speed = 1.0
-name = "Wooden Pickaxe"
+name = "Pickaxe"
 icon = ExtResource("2")
 stack_size = 1
+count = 0
 metadata/_custom_type_script = "uid://0x10n1xwo6xm"

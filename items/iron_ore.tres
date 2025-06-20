@@ -6,7 +6,8 @@
 [resource]
 script = ExtResource("2_ri5q5")
 terrain_id = 6
-name = "Iron Ore"
+name = "Iron"
 icon = ExtResource("1_ri5q5")
 stack_size = 99
+count = 0
 metadata/_custom_type_script = "uid://enlx7m7e75n4"
