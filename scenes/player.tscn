@@ -1,25 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://dolm0awkrgl7m"]
+[gd_scene load_steps=23 format=3 uid="uid://dolm0awkrgl7m"]
 
 [ext_resource type="Script" uid="uid://cx80fdkryqxil" path="res://scripts/player.gd" id="1"]
-[ext_resource type="Shader" uid="uid://dflboxrqydypb" path="res://shaders/outline.gdshader" id="2_dqkch"]
+[ext_resource type="SpriteFrames" uid="uid://durf0fmthtjny" path="res://assets/char/char_sprite_frames.tres" id="2_dqkch"]
 [ext_resource type="Texture2D" uid="uid://clx4va2ges768" path="res://assets/particles/player_attack.png" id="2_qhqgy"]
 [ext_resource type="Script" uid="uid://baj7ercl2fb7l" path="res://addons/coyote_jump/coyote_jump.gd" id="3_qhqgy"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dqkch"]
-shader = ExtResource("2_dqkch")
-shader_parameter/allow_out_of_bounds = true
-shader_parameter/outline_thickness = 1.0
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-
-[sub_resource type="Gradient" id="Gradient_3vyb7"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_g2els"]
-gradient = SubResource("Gradient_3vyb7")
-width = 14
-height = 28
-fill_from = Vector2(0, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qhqgy"]
 radius = 2.61
@@ -675,10 +659,11 @@ color = Color(0, 0, 0, 1)
 z_index = 1
 script = ExtResource("1")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_dqkch")
-position = Vector2(0, -14)
-texture = SubResource("GradientTexture2D_g2els")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -28)
+sprite_frames = ExtResource("2_dqkch")
+animation = &"idle"
+frame_progress = 0.57853
 
 [node name="CollisionShape2D_body" type="CollisionShape2D" parent="."]
 position = Vector2(0, -3)
