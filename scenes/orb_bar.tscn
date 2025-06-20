@@ -6,10 +6,17 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vgbrp"]
 shader = ExtResource("2_2p2p8")
+shader_parameter/pixelate = true
+shader_parameter/pixel_scale = 32
 shader_parameter/light_effect = false
 shader_parameter/border_exclusion_effect = false
 shader_parameter/wave_fix_on_border = false
 shader_parameter/transparent_empty = true
+shader_parameter/glow_effect = true
+shader_parameter/glow_color = Color(1, 1, 1, 0.5)
+shader_parameter/glow_size = 0.8
+shader_parameter/glow_intensity = 1.0
+shader_parameter/glow_pulse_speed = 2.0
 shader_parameter/water_color = Color(1, 0, 0, 1)
 shader_parameter/water_wave_speed = 2.0
 shader_parameter/water_wave_ci = 0.05
