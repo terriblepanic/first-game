@@ -39,7 +39,6 @@ follow_viewport_enabled = true
 [node name="Player" parent="Player" instance=ExtResource("1")]
 z_index = 2
 position = Vector2(-1, -13)
-speed = 800.0
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player/Player"]

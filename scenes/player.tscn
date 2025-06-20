@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dolm0awkrgl7m"]
+[gd_scene load_steps=26 format=3 uid="uid://dolm0awkrgl7m"]
 
 [ext_resource type="Script" uid="uid://cx80fdkryqxil" path="res://scripts/player.gd" id="1"]
 [ext_resource type="SpriteFrames" uid="uid://durf0fmthtjny" path="res://assets/char/char_sprite_frames.tres" id="2_dqkch"]
@@ -6,11 +6,21 @@
 [ext_resource type="Script" uid="uid://baj7ercl2fb7l" path="res://addons/coyote_jump/coyote_jump.gd" id="3_qhqgy"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qhqgy"]
-radius = 2.61
-height = 13.3
+radius = 5.0
+height = 26.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dqkch"]
+radius = 24.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dqkch"]
+radius = 7.0
+height = 40.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
 radius = 83.0542
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
+radius = 63.0714
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_g2els"]
 blend_mode = 2
@@ -662,20 +672,38 @@ script = ExtResource("1")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -28)
 sprite_frames = ExtResource("2_dqkch")
-animation = &"idle"
-frame_progress = 0.57853
+animation = &"spell_cast"
+frame_progress = 0.17933
 
 [node name="CollisionShape2D_body" type="CollisionShape2D" parent="."]
-position = Vector2(0, -3)
-rotation = 1.5708
+position = Vector2(0, -13)
 shape = SubResource("CapsuleShape2D_qhqgy")
 
-[node name="AttackArea" type="Area2D" parent="."]
+[node name="InteractArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0, -17)
+shape = SubResource("CircleShape2D_dqkch")
+
+[node name="MeleeAttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeAttackArea"]
+position = Vector2(9, -18)
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_dqkch")
+
+[node name="MagicAttackArea" type="Area2D" parent="."]
 position = Vector2(0, -14)
 monitoring = false
 
-[node name="CollisionShape2D_attack" type="CollisionShape2D" parent="AttackArea"]
+[node name="CollisionShape2D_attack" type="CollisionShape2D" parent="MagicAttackArea"]
 shape = SubResource("CircleShape2D_3vyb7")
+
+[node name="MiningArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MiningArea"]
+position = Vector2(0, -14)
+shape = SubResource("CircleShape2D_qlg0r")
 
 [node name="AttackAnimation" type="GPUParticles2D" parent="."]
 z_index = 1
