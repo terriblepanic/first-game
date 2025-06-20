@@ -1,5 +1,6 @@
 extends Node
 
+const Item = preload("res://scripts/item.gd")
 # — ID ландшафта —
 enum TerrainID {
 	AIR,

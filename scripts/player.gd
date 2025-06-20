@@ -1,7 +1,22 @@
 extends CharacterBody2D
 
+@export var mana_regen_rate: float = 5.0
+
+signal health_changed(value: int, max_value: int)
+signal mana_changed(value: int, max_value: int)
+signal player_died
+
 # Режимы управления
-enum ViewMode { SIDE_VIEW, TOP_DOWN }
+enum ViewMode {
+	SIDE_VIEW,
+	TOP_DOWN,
+}
+
+const Inventory = preload("res://scripts/inventory.gd")
+const Item = preload("res://scripts/item.gd")
+const Pickaxe = preload("res://scripts/pickaxe.gd")
+const BlockItem = preload("res://scripts/block_item.gd")
+
 @export var view_mode: ViewMode = ViewMode.SIDE_VIEW
 
 @export var mana_cost_attack: int = 10
@@ -12,20 +27,16 @@ enum ViewMode { SIDE_VIEW, TOP_DOWN }
 @export var max_health: float = 100
 @export var health_regen_rate: float = 1.0
 @export var max_mana: float = 50
-@export var mana_regen_rate: float = 5.0
-
-signal health_changed(value: int, max_value: int)
-signal mana_changed(value: int, max_value: int)
-signal player_died
 
 var health: float
 var mana: float
 var mana_regen_delay: float = 2.0
 var mana_regen_timer: float = 0.0
 var selected_slot: int = 0
+var spawn_position: Vector2 = Vector2.ZERO
+
 var _is_attacking: bool = false
 var _attack_timer: float = 0.0
-var spawn_position: Vector2 = Vector2.ZERO
 
 @onready var camera: Camera2D = $Camera2D
 @onready var attack_area: Area2D = $AttackArea
@@ -38,6 +49,7 @@ var spawn_position: Vector2 = Vector2.ZERO
 @onready var jump_handler: Node = $CoyoteJump
 @onready var in_game_menu: Control = $"../../InGameMenu/InGameMenu"
 
+
 func _ready() -> void:
 	health = max_health
 	mana = max_mana
@@ -47,21 +59,13 @@ func _ready() -> void:
 	emit_signal("mana_changed", int(mana), max_mana)
 
 
-func _physics_process(delta: float) -> void:
-	match view_mode:
-		ViewMode.SIDE_VIEW:
-			_process_side_view(delta)
-		ViewMode.TOP_DOWN:
-			_process_top_down(delta)
-
-
 # ---------------------------------------
 # 1) Боковой режим (SIDE_VIEW)
 # ---------------------------------------
 func _process_side_view(delta: float) -> void:
 	var dir_h := Input.get_axis("move_left", "move_right")
 	velocity.x = dir_h * speed
-	
+
 	# Ensure the attack area is active to detect interactable objects
 	if not attack_area.monitoring:
 		attack_area.monitoring = true
@@ -80,7 +84,7 @@ func _process_side_view(delta: float) -> void:
 
 	if Input.is_action_just_pressed("place_block"):
 		_place_selected_block()
-		
+
 	if Input.is_action_just_pressed("interact"):
 		_on_interact()
 
@@ -113,10 +117,13 @@ func _process_top_down(delta: float) -> void:
 	move_and_slide()
 
 
-func _on_interact() -> void:
-	for area in attack_area.get_overlapping_areas():
-		if area.has_method("interact"):
-			area.interact(self)
+func _physics_process(delta: float) -> void:
+	match view_mode:
+		ViewMode.SIDE_VIEW:
+			_process_side_view(delta)
+		ViewMode.TOP_DOWN:
+			_process_top_down(delta)
+
 
 # ---------------------------------------
 # Остальные функции
@@ -178,6 +185,12 @@ func mana_regen(delta: float) -> void:
 				emit_signal("mana_changed", int(mana), max_mana)
 
 
+func _on_interact() -> void:
+	for area in attack_area.get_overlapping_areas():
+		if area.has_method("interact"):
+			area.interact(self)
+
+
 func _on_attack_area_body_entered(body: Node) -> void:
 	if body != self and body.has_method("take_damage"):
 		body.take_damage(1)
@@ -234,6 +247,7 @@ func _place_selected_block() -> void:
 		var cell = world_map.position_to_cell(get_global_mouse_position())
 		world_map.place_block(cell, item.terrain_id)
 		inventory.remove_item(selected_slot)
+
 
 func _on_entrance_animation_done():
 	set_process(true)

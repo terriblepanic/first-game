@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://dv2qia4gb4ufn"]
+[gd_resource type="Resource" script_class="BlockItem" load_steps=3 format=3 uid="uid://dv2qia4gb4ufn"]
 
 [ext_resource type="Texture2D" uid="uid://cuh3mmivqhhwa" path="res://assets/tiles/nature/ore/ore_iron.png" id="1_ri5q5"]
-[ext_resource type="Script" uid="uid://enlx7m7e75n4" path="res://scripts/item.gd" id="1_vgbwb"]
+[ext_resource type="Script" uid="uid://uvmd65hksovi" path="res://scripts/block_item.gd" id="2_ri5q5"]
 
 [resource]
-script = ExtResource("1_vgbwb")
+script = ExtResource("2_ri5q5")
+terrain_id = 6
 name = "Iron Ore"
 icon = ExtResource("1_ri5q5")
 stack_size = 99

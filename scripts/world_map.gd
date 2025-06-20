@@ -12,6 +12,8 @@ enum TerrainID {
 	STONE,
 }
 
+const Item = preload("res://scripts/item.gd")
+
 # минимальная глубина появления руды
 const ORE_DEPTH := { "copper": 30, "iron": 40, "gold": 50 }
 

@@ -9,4 +9,5 @@ terrain_id = 4
 name = "Copper Ore"
 icon = ExtResource("1_8rn27")
 stack_size = 99
+count = 0
 metadata/_custom_type_script = "uid://enlx7m7e75n4"

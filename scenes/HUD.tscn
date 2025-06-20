@@ -29,6 +29,7 @@ script = ExtResource("1_nysna")
 
 [node name="Inventory" type="Node" parent="."]
 script = ExtResource("2_f6qnu")
+slot_count = 15
 
 [node name="HUD" type="Control" parent="."]
 layout_mode = 3
@@ -95,7 +96,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="InventoryPanel" type="Panel" parent="HUD"]
-visible = false
+clip_contents = true
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -112,13 +113,18 @@ grow_vertical = 2
 color = Color(1, 0.580392, 0.729412, 1)
 
 [node name="InfoTabs" type="TabContainer" parent="HUD/InventoryPanel"]
+clip_contents = true
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 2
+current_tab = 1
 
 [node name="Задания гильдии" type="VBoxContainer" parent="HUD/InventoryPanel/InfoTabs"]
 visible = false
@@ -131,17 +137,17 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_twldb")
 
 [node name="Снаряжение" type="VBoxContainer" parent="HUD/InventoryPanel/InfoTabs"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="InventoryGrid" type="GridContainer" parent="HUD/InventoryPanel/InfoTabs/Снаряжение"]
-visible = false
+clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 columns = 5
 
 [node name="Характеристики" type="VBoxContainer" parent="HUD/InventoryPanel/InfoTabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

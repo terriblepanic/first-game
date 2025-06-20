@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://bnjyhmu3vyagg"]
+[gd_resource type="Resource" script_class="BlockItem" load_steps=3 format=3 uid="uid://bnjyhmu3vyagg"]
 
-[ext_resource type="Script" uid="uid://enlx7m7e75n4" path="res://scripts/item.gd" id="1_13211"]
 [ext_resource type="Texture2D" uid="uid://b4g7kfegeli2p" path="res://assets/tiles/nature/ore/ore_gold.png" id="1_sb1er"]
+[ext_resource type="Script" uid="uid://uvmd65hksovi" path="res://scripts/block_item.gd" id="2_sb1er"]
 
 [resource]
-script = ExtResource("1_13211")
+script = ExtResource("2_sb1er")
+terrain_id = 5
 name = "Gold Ore"
 icon = ExtResource("1_sb1er")
 stack_size = 99
