@@ -1,0 +1,66 @@
+[gd_scene load_steps=6 format=3 uid="uid://b1jldarqwjutx"]
+
+[ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_qpjmm"]
+[ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_lfneh"]
+[ext_resource type="Texture2D" uid="uid://baua631ap75lh" path="res://assets/test/mining.png" id="3_y5bej"]
+
+[sub_resource type="Gradient" id="Gradient_sn8u8"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.554348, 0.73913)
+colors = PackedColorArray(1, 1, 1, 0.462745, 1, 1, 1, 0.0392157, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kf5cw"]
+gradient = SubResource("Gradient_sn8u8")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" type="CanvasLayer" parent="."]
+layer = 0
+follow_viewport_enabled = true
+
+[node name="Player" parent="Player" instance=ExtResource("1_qpjmm")]
+position = Vector2(-191, 84)
+speed = 150.0
+metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="Player/Player"]
+position = Vector2(0, -47)
+zoom = Vector2(2.3, 2.3)
+limit_left = -417
+limit_top = -144
+limit_right = 55
+limit_bottom = 109
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+drag_left_margin = 0.0
+drag_top_margin = 0.0
+drag_right_margin = 0.0
+drag_bottom_margin = 0.0
+
+[node name="PointLight2D" type="PointLight2D" parent="Player/Player"]
+position = Vector2(0, -25)
+shadow_enabled = true
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_kf5cw")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6500
+metadata/color_filter = Color(1, 1, 1, 0)
+
+[node name="HUD" parent="." instance=ExtResource("2_lfneh")]
+layer = 100
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-181, -17)
+texture = ExtResource("3_y5bej")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+build_mode = 1
+polygon = PackedVector2Array(-418, 85, 56, 85, 55, -145, -418, -145)

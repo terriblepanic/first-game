@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://citgr4h7kjmw2"]
+[gd_scene load_steps=21 format=3 uid="uid://citgr4h7kjmw2"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1"]
 [ext_resource type="Script" uid="uid://djn41588oxs12" path="res://scripts/cave_world.gd" id="1_7vjiv"]
@@ -17,6 +17,10 @@
 [ext_resource type="TileSet" uid="uid://c863tgpflukmr" path="res://assets/tilesets/nature.tres" id="15_nfivy"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="17_7vjiv"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="17_ft6cd"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7vjiv"]
+radius = 6.0
+height = 24.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
 shader = ExtResource("13_qmy6f")
@@ -49,6 +53,10 @@ drag_left_margin = 0.0
 drag_top_margin = 0.0
 drag_right_margin = 0.0
 drag_bottom_margin = 0.0
+
+[node name="CollisionShape2D_body2" type="CollisionShape2D" parent="Player/Player"]
+position = Vector2(0, -12.525)
+shape = SubResource("CapsuleShape2D_7vjiv")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 

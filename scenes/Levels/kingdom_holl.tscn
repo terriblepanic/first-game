@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://drcpid30wp65t"]
+[gd_scene load_steps=24 format=3 uid="uid://drcpid30wp65t"]
 
 [ext_resource type="Texture2D" uid="uid://j5uws3p6obw1" path="res://assets/Levels/Kingdom holl/0.png" id="1_606s2"]
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_myoku"]
@@ -16,17 +16,21 @@
 [ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="13_r68dp"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="14_4tqme"]
 
-[sub_resource type="Gradient" id="Gradient_sn8u8"]
+[sub_resource type="Gradient" id="Gradient_ucs00"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.554348, 0.73913)
 colors = PackedColorArray(1, 1, 1, 0.462745, 1, 1, 1, 0.0392157, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_xosg7"]
-gradient = SubResource("Gradient_sn8u8")
+gradient = SubResource("Gradient_ucs00")
 width = 256
 height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ucs00"]
+radius = 2.61
+height = 13.3
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4hhpu"]
 frequency = 0.0295
@@ -100,6 +104,11 @@ texture = SubResource("GradientTexture2D_xosg7")
 metadata/use_color_temperature = true
 metadata/color_temperature = 6500
 metadata/color_filter = Color(1, 1, 1, 0)
+
+[node name="CollisionShape2D_body2" type="CollisionShape2D" parent="Player/Player"]
+position = Vector2(0, -3)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_ucs00")
 
 [node name="HUD" parent="." instance=ExtResource("2_ucs00")]
 layer = 100

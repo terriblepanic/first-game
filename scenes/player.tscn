@@ -6,8 +6,8 @@
 [ext_resource type="Script" uid="uid://baj7ercl2fb7l" path="res://addons/coyote_jump/coyote_jump.gd" id="3_qhqgy"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qhqgy"]
-radius = 5.0
-height = 26.0
+radius = 2.61
+height = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dqkch"]
 radius = 24.0
@@ -672,11 +672,11 @@ script = ExtResource("1")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -28)
 sprite_frames = ExtResource("2_dqkch")
-animation = &"spell_cast"
-frame_progress = 0.17933
+animation = &"landing"
 
 [node name="CollisionShape2D_body" type="CollisionShape2D" parent="."]
-position = Vector2(0, -13)
+position = Vector2(0, -10)
+rotation = 1.5708
 shape = SubResource("CapsuleShape2D_qhqgy")
 
 [node name="InteractArea" type="Area2D" parent="."]

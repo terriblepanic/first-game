@@ -71,7 +71,7 @@ var _tile_size: Vector2 = Vector2.ZERO
 @onready var death_label     : Label            = $"../../HUD/DeathLabel"
 @onready var inventory                        = $"../../HUD/Inventory"
 @onready var world_map                        = get_parent().get_parent()
-@onready var tilemap: TileMapLayer = (world_map.get_node("WorldMap") as TileMapLayer)
+@onready var tilemap: TileMapLayer = (world_map.get_node_or_null("WorldMap") as TileMapLayer)
 
 # ───────────── READY ─────────────
 func _ready() -> void:
@@ -90,7 +90,8 @@ func _ready() -> void:
 	_was_on_floor = is_on_floor()
 
 	# после инициализации tilemap:
-	_tile_size = tilemap.tile_set.tile_size
+	if tilemap:
+		_tile_size = tilemap.tile_set.tile_size
 
 # ───────── PHYSICS LOOP ──────────
 func _physics_process(delta: float) -> void:
@@ -100,11 +101,14 @@ func _physics_process(delta: float) -> void:
 
 # ───────── SIDE VIEW ─────────────
 func _process_side_view(delta: float) -> void:
-	var dir_h := Input.get_axis("move_left","move_right")
-	velocity.x = dir_h * speed
-	if dir_h != 0:
-		anim.flip_h = dir_h < 0
-		_sync_hitboxes()
+	if _is_attacking and is_on_floor():
+		velocity.x = 0
+	else:
+		var dir_h := Input.get_axis("move_left", "move_right")
+		velocity.x = dir_h * speed
+		if dir_h != 0:
+			anim.flip_h = dir_h < 0
+			_sync_hitboxes()
 
 	if not is_on_floor():
 		velocity.y += gravity * (gravity_up_factor if velocity.y < 0 else gravity_down_factor) * delta
@@ -141,9 +145,11 @@ func _process_top_down(delta: float) -> void:
 
 # ───────── INPUT ─────────
 func _handle_inputs() -> void:
-	if Input.is_action_just_pressed("attack") and not _is_attacking:
+	# ближняя атака только если на земле и не в другом действии
+	if Input.is_action_just_pressed("attack") and not _is_attacking and is_on_floor():
 		_melee_attack()
-	if Input.is_action_just_pressed("magic_attack") and not _is_attacking:
+	# магическая атака только если на земле и не в другом действии
+	if Input.is_action_just_pressed("magic_attack") and not _is_attacking and is_on_floor():
 		_magic_attack()
 
 	# добыча
@@ -239,7 +245,7 @@ func _on_magic_body_entered(body: Node) -> void:
 
 # ───── НАЧАЛО ДОБЫЧИ ────────────
 func _start_mining() -> void:
-	if _is_mining or _is_attacking:
+	if tilemap == null or _is_mining or _is_attacking:
 		return
 
 	var shape: CircleShape2D = mining_area.get_node("CollisionShape2D").shape as CircleShape2D

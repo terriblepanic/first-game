@@ -8,6 +8,18 @@
 [ext_resource type="Script" uid="uid://bvbw3ejkm2bck" path="res://addons/postfx/scripts/FXBase.gd" id="6_pdvh7"]
 [ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="7_u2yx4"]
 
+[sub_resource type="Gradient" id="Gradient_sn8u8"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.666667)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5a2w1"]
+gradient = SubResource("Gradient_sn8u8")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [sub_resource type="Gradient" id="Gradient_7b03i"]
 offsets = PackedFloat32Array(0)
 colors = PackedColorArray(0, 0, 0, 1)
@@ -42,18 +54,6 @@ polygon = PackedVector2Array(227, 459, 253, 459, 253, 463, 255, 463, 255, 476, 2
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_g5c1c"]
 polygon = PackedVector2Array(419, 459, 445, 459, 445, 463, 447, 463, 447, 476, 445, 476, 445, 478, 443, 478, 443, 480, 421, 480, 421, 478, 419, 478, 419, 476, 417, 476, 417, 463, 419, 463)
-
-[sub_resource type="Gradient" id="Gradient_sn8u8"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.666667)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_5a2w1"]
-gradient = SubResource("Gradient_sn8u8")
-width = 256
-height = 256
-fill = 1
-fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="Gradient" id="Gradient_5a2w1"]
 interpolation_mode = 2
@@ -101,6 +101,32 @@ z_index = 2
 y_sort_enabled = true
 tile_map_data = PackedByteArray("AAAKAAEAAAAIAAAAAAA=")
 tile_set = ExtResource("1_uybik")
+
+[node name="Player" parent="." instance=ExtResource("2_jhoyw")]
+light_mask = 9
+z_index = 2
+y_sort_enabled = true
+position = Vector2(325, 365)
+view_mode = 1
+speed = 50.0
+metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(2.12, 2.12)
+limit_left = 160
+limit_top = -220
+limit_right = 512
+limit_bottom = 544
+position_smoothing_enabled = true
+
+[node name="PointLight2D" type="PointLight2D" parent="Player"]
+position = Vector2(0, -9)
+shadow_enabled = true
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_5a2w1")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6500
+metadata/color_filter = Color(1, 1, 1, 0)
 
 [node name="BG" type="Sprite2D" parent="."]
 z_index = -1
@@ -212,30 +238,6 @@ polygon = PackedVector2Array(-23, 8, -23, 16, -10, 16, -10, 11, 6, 11, 6, 16, 19
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collisions/Walls"]
 build_mode = 1
 polygon = PackedVector2Array(160, 0, 160, 508, 256, 508, 256, 540, 286.848, 540, 287, 600, 386, 600, 385.956, 540, 415, 540, 415, 508, 512, 508, 512, 0)
-
-[node name="Player" parent="." instance=ExtResource("2_jhoyw")]
-light_mask = 9
-z_index = 2
-y_sort_enabled = true
-position = Vector2(336, 478)
-view_mode = 1
-metadata/_edit_group_ = true
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(2.12, 2.12)
-limit_left = 160
-limit_top = -220
-limit_right = 512
-limit_bottom = 544
-position_smoothing_enabled = true
-
-[node name="PointLight2D" type="PointLight2D" parent="Player"]
-shadow_enabled = true
-shadow_filter = 2
-texture = SubResource("GradientTexture2D_5a2w1")
-metadata/use_color_temperature = true
-metadata/color_temperature = 6500
-metadata/color_filter = Color(1, 1, 1, 0)
 
 [node name="HUD" parent="." instance=ExtResource("3_sn8u8")]
 layer = 100

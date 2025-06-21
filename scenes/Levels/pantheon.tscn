@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=4 uid="uid://c6r75dgerce7a"]
+[gd_scene load_steps=63 format=4 uid="uid://c6r75dgerce7a"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_d72ae"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_vr15j"]
@@ -33,6 +33,10 @@ width = 256
 height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fuqn8"]
+radius = 2.61
+height = 13.3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_os1q6"]
 shader = ExtResource("4_fbv6d")
@@ -324,6 +328,11 @@ texture = SubResource("GradientTexture2D_xt1kv")
 metadata/use_color_temperature = true
 metadata/color_temperature = 6500
 metadata/color_filter = Color(1, 1, 1, 0)
+
+[node name="CollisionShape2D_body2" type="CollisionShape2D" parent="Player/Player"]
+position = Vector2(0, -3)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_fuqn8")
 
 [node name="HUD" parent="." instance=ExtResource("2_vr15j")]
 layer = 100
