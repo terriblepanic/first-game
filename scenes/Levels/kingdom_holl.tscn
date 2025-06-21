@@ -215,7 +215,15 @@ metadata/_custom_type_script = "uid://d15nobs3uuxeb"
 position = Vector2(290, 44.5)
 shape = SubResource("RectangleShape2D_bbgxk")
 
+[node name="LeftExit" type="Area2D" parent="."]
+position = Vector2(-577, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftExit"]
+position = Vector2(290, 44.5)
+shape = SubResource("RectangleShape2D_bbgxk")
+
 [node name="EntranceRight" type="Marker2D" parent="."]
 position = Vector2(191, 74.8)
 
 [connection signal="body_entered" from="RightExit" to="." method="_on_right_exit_body_entered"]
+[connection signal="body_entered" from="LeftExit" to="." method="_on_left_exit_body_entered"]

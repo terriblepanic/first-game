@@ -1,29 +1,39 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1jldarqwjutx"]
+[gd_scene load_steps=10 format=3 uid="uid://b1jldarqwjutx"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_qpjmm"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_lfneh"]
 [ext_resource type="Texture2D" uid="uid://baua631ap75lh" path="res://assets/test/mining.png" id="3_y5bej"]
+[ext_resource type="Script" uid="uid://xr34ja4tsdr" path="res://scripts/mining_entrance_mine.gd" id="4_y5bej"]
+[ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="5_kf5cw"]
 
-[sub_resource type="Gradient" id="Gradient_sn8u8"]
+[sub_resource type="Gradient" id="Gradient_y5bej"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.554348, 0.73913)
 colors = PackedColorArray(1, 1, 1, 0.462745, 1, 1, 1, 0.0392157, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_kf5cw"]
-gradient = SubResource("Gradient_sn8u8")
+gradient = SubResource("Gradient_y5bej")
 width = 256
 height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jja6h"]
+size = Vector2(60, 163)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y5bej"]
+shader = ExtResource("5_kf5cw")
+shader_parameter/bg_color = Vector4(0, 0, 0, 0)
+
 [node name="Main" type="Node2D"]
+script = ExtResource("4_y5bej")
 
 [node name="Player" type="CanvasLayer" parent="."]
 layer = 0
 follow_viewport_enabled = true
 
 [node name="Player" parent="Player" instance=ExtResource("1_qpjmm")]
-position = Vector2(-191, 84)
+position = Vector2(-292, 84)
 speed = 150.0
 metadata/_edit_group_ = true
 
@@ -64,3 +74,40 @@ texture = ExtResource("3_y5bej")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
 build_mode = 1
 polygon = PackedVector2Array(-418, 85, 56, 85, 55, -145, -418, -145)
+
+[node name="EntranceMine" type="Area2D" parent="."]
+position = Vector2(0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceMine"]
+position = Vector2(-167, 27.5)
+shape = SubResource("RectangleShape2D_jja6h")
+
+[node name="EntranceMineUI" type="PopupPanel" parent="."]
+position = Vector2i(323, 124)
+size = Vector2i(100, 50)
+visible = true
+
+[node name="Panel" type="Panel" parent="EntranceMineUI"]
+material = SubResource("ShaderMaterial_y5bej")
+clip_contents = true
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 96.0
+offset_bottom = 46.0
+
+[node name="Label" type="Label" parent="EntranceMineUI/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+text = "ВХОД В ШАХТУ
+Нажмите E"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[connection signal="body_entered" from="EntranceMine" to="." method="_on_entrance_mine_body_entered"]
+[connection signal="body_exited" from="EntranceMine" to="." method="_on_entrance_mine_body_exited"]
