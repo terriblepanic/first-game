@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://squymi3l8gqp"]
+[gd_scene load_steps=11 format=3 uid="uid://squymi3l8gqp"]
 
 [ext_resource type="Script" uid="uid://cffi3g70ywads" path="res://scenes/Levels/street.gd" id="1_1i8gt"]
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_id1e1"]
@@ -6,19 +6,22 @@
 [ext_resource type="Texture2D" uid="uid://c3alsxnf6gnf4" path="res://assets/test/street.png" id="3_edg5a"]
 [ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="4_1gbas"]
 
-[sub_resource type="Gradient" id="Gradient_sn8u8"]
+[sub_resource type="Gradient" id="Gradient_1i8gt"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.554348, 0.73913)
 colors = PackedColorArray(1, 1, 1, 0.462745, 1, 1, 1, 0.0392157, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_fj0c5"]
-gradient = SubResource("Gradient_sn8u8")
+gradient = SubResource("Gradient_1i8gt")
 width = 256
 height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5uu1g"]
+size = Vector2(60, 163)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1i8gt"]
 size = Vector2(60, 163)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_052tf"]
@@ -90,6 +93,13 @@ position = Vector2(147, 1)
 position = Vector2(-167, 27.5)
 shape = SubResource("RectangleShape2D_5uu1g")
 
+[node name="LeftExit" type="Area2D" parent="."]
+position = Vector2(-175, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftExit"]
+position = Vector2(-167, 27.5)
+shape = SubResource("RectangleShape2D_1i8gt")
+
 [node name="EntranceCastleUI" type="PopupPanel" parent="."]
 auto_translate_mode = 1
 position = Vector2i(323, 124)
@@ -124,3 +134,4 @@ position = Vector2(-90, 73)
 [connection signal="body_entered" from="EntranceCastle" to="." method="_on_entrance_castle_body_entered"]
 [connection signal="body_exited" from="EntranceCastle" to="." method="_on_entrance_castle_body_exited"]
 [connection signal="body_entered" from="RightExit" to="." method="_on_right_exit_body_entered"]
+[connection signal="body_entered" from="LeftExit" to="." method="_on_left_exit_body_entered"]

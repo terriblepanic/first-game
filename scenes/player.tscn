@@ -668,6 +668,7 @@ color = Color(0, 0, 0, 1)
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 script = ExtResource("1")
+mana_regen_rate = 15.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -28)

@@ -29,6 +29,7 @@ func _enable_transition_and_player():
 	$RightExit.monitoring = true
 
 
+
 func _on_right_exit_body_entered(body: Node2D) -> void:
 	if body.name == "Player":
 		body.set_process(false)
@@ -37,7 +38,7 @@ func _on_right_exit_body_entered(body: Node2D) -> void:
 
 func _load_next_scene():
 	pass
-
+ 
 
 func _on_left_exit_body_entered(body: Node2D) -> void:
 	if body.name == "Player":

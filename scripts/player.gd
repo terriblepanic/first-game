@@ -178,6 +178,9 @@ func _tick_timers(delta: float) -> void:
 			_break_block()
 			_remove_mining_overlay()
 
+	health_regen(delta)
+	mana_regen(delta)
+
 # ───────── COOLDOWN ─────────
 func _handle_attack_cooldown(delta: float) -> void:
 	if _attack_timer > 0:

@@ -1,0 +1,133 @@
+[gd_scene load_steps=16 format=3 uid="uid://dkel0agqip5am"]
+
+[ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_kx86s"]
+[ext_resource type="Script" uid="uid://1a8i70subq8c" path="res://scenes/Levels/guild_in.gd" id="1_xay07"]
+[ext_resource type="Texture2D" uid="uid://dvrrh0p602qjb" path="res://assets/test/guild_in.png" id="2_xay07"]
+
+[sub_resource type="Gradient" id="Gradient_sn8u8"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.666667)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tlqwo"]
+gradient = SubResource("Gradient_sn8u8")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kx86s"]
+radius = 7.07107
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2rxx5"]
+radius = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0w7t7"]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_72bti"]
+radius = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_adr34"]
+radius = 17.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lwsfk"]
+radius = 26.0192
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yj02q"]
+radius = 28.0179
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_grh58"]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r0h2e"]
+radius = 19.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_feqjg"]
+size = Vector2(50, 24)
+
+[node name="Main" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_xay07")
+
+[node name="Player" parent="." instance=ExtResource("1_kx86s")]
+light_mask = 9
+y_sort_enabled = true
+position = Vector2(0, 40)
+view_mode = 1
+speed = 100.0
+metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(2.12, 2.12)
+limit_left = -191
+limit_top = -125
+limit_right = 191
+limit_bottom = 127
+position_smoothing_enabled = true
+
+[node name="PointLight2D" type="PointLight2D" parent="Player"]
+position = Vector2(0, -9)
+shadow_enabled = true
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_tlqwo")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6500
+metadata/color_filter = Color(1, 1, 1, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(0, -7)
+shape = SubResource("CircleShape2D_kx86s")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_xay07")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+build_mode = 1
+polygon = PackedVector2Array(177, 112, 25, 111, 25, 136, -25, 136, -25, 111, -177, 111, -177, -42, -74, -42, -74, -33, -72, -31, -60, -31, -58, -33, -58, -42, -52, -42, -52, -36, -46, -26, -46, -25, -39, -25, -39, -26, -38, -34, 39, -34, 40, -26, 40, -25, 47, -25, 47, -26, 52, -36, 52, -43, 57, -43, 58, -33, 60, -31, 73, -31, 75, -33, 75, -42, 176, -42)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-87, 29)
+shape = SubResource("CircleShape2D_2rxx5")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-149, 26)
+shape = SubResource("CircleShape2D_0w7t7")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(88, 28)
+shape = SubResource("CircleShape2D_72bti")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(149, 29)
+shape = SubResource("CircleShape2D_adr34")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(140, -26)
+shape = SubResource("CircleShape2D_lwsfk")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-142, -28)
+shape = SubResource("CircleShape2D_yj02q")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(149, 107)
+shape = SubResource("CircleShape2D_grh58")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-153, 107)
+shape = SubResource("CircleShape2D_r0h2e")
+
+[node name="Exit" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+position = Vector2(0, 124)
+shape = SubResource("RectangleShape2D_feqjg")
+
+[node name="Entrance" type="Marker2D" parent="."]
+position = Vector2(0, 101)
+
+[connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]

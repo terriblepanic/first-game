@@ -315,6 +315,7 @@ limit_top = -71
 limit_right = 320
 limit_smoothed = true
 position_smoothing_enabled = true
+position_smoothing_speed = 3.0
 drag_left_margin = 0.0
 drag_top_margin = 0.0
 drag_right_margin = 0.0

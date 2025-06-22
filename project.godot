@@ -21,6 +21,7 @@ boot_splash/show_image=false
 TerrainData="*res://scripts/terrain_data.gd"
 TransitionManager="*res://scripts/transition_manager.gd"
 BlessingManager="*res://scripts/blessing_manager.gd"
+SceneManager="*res://addons/scene_manager/SceneManager.tscn"
 
 [display]
 
@@ -33,7 +34,7 @@ window/main_scene="res://scenes/Main.tscn"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/HaSa1002.light-tools/plugin.cfg", "res://addons/coyote_jump/plugin.cfg", "res://addons/fastnoiselite-configurator/plugin.cfg", "res://addons/gdpeg/plugin.cfg", "res://addons/postfx/plugin.cfg", "res://addons/script_spliter/plugin.cfg", "res://addons/simple_gdscript_formatter/plugin.cfg")
+enabled=PackedStringArray("res://addons/HaSa1002.light-tools/plugin.cfg", "res://addons/coyote_jump/plugin.cfg", "res://addons/fastnoiselite-configurator/plugin.cfg", "res://addons/gdpeg/plugin.cfg", "res://addons/postfx/plugin.cfg", "res://addons/ridiculous_coding/plugin.cfg", "res://addons/rmsmartshape/plugin.cfg", "res://addons/scene_manager/plugin.cfg", "res://addons/script_spliter/plugin.cfg", "res://addons/simple_gdscript_formatter/plugin.cfg")
 
 [input]
 

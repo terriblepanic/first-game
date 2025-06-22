@@ -8,13 +8,13 @@
 [ext_resource type="Script" uid="uid://bvbw3ejkm2bck" path="res://addons/postfx/scripts/FXBase.gd" id="6_pdvh7"]
 [ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="7_u2yx4"]
 
-[sub_resource type="Gradient" id="Gradient_sn8u8"]
+[sub_resource type="Gradient" id="Gradient_fwsy5"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.666667)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_5a2w1"]
-gradient = SubResource("Gradient_sn8u8")
+gradient = SubResource("Gradient_fwsy5")
 width = 256
 height = 256
 fill = 1

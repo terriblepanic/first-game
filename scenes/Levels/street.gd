@@ -2,6 +2,8 @@ extends Node2D
 
 @export_file("*.tscn") var next_level_path := "res://scenes/Levels/mining.tscn"
 @export_file("*.tscn") var next_level_path2 := "res://scenes/Levels/kingdom_holl.tscn"
+@export_file("*.tscn") var next_level_path3 := "res://scenes/Levels/guild.tscn"
+
 @onready var hint_popup: PopupPanel = $EntranceCastleUI
 @onready var player = $Player/Player
 
@@ -40,6 +42,10 @@ func _on_right_exit_body_entered(body: Node2D) -> void:
 		body.set_process(false)
 		TransitionManager.change_scene(next_level_path)
 
+func _on_left_exit_body_entered(body: Node2D) -> void:
+	if body.name == "Player":
+		body.set_process(false)
+		TransitionManager.change_scene(next_level_path3)
 func _process(_delta):
 	if player_inside and Input.is_action_just_pressed("interact"):
 		TransitionManager.change_scene(next_level_path2)
