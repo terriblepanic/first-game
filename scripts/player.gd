@@ -68,13 +68,16 @@ var _tile_size: Vector2 = Vector2.ZERO
 @onready var jump_handler                    = $CoyoteJump
 @onready var interact_area   : Area2D           = $InteractArea
 @onready var mining_area     : Area2D           = $MiningArea
-@onready var death_label     : Label            = $"../../HUD/DeathLabel"
-@onready var inventory                        = $"../../HUD/Inventory"
+@onready var hud = get_tree().current_scene.get_node("HUD")
+@onready var inventory = hud.get_node("Inventory")
+@onready var death_label = hud.get_node("DeathLabel")
 @onready var world_map                        = get_parent().get_parent()
 @onready var tilemap: TileMapLayer = (world_map.get_node_or_null("WorldMap") as TileMapLayer)
+@onready var inv_data := InventoryData
 
 # ───────────── READY ─────────────
 func _ready() -> void:
+	add_to_group("player")
 	health = max_health
 	mana   = max_mana
 	_emit_stats()
@@ -291,6 +294,7 @@ func _break_block() -> void:
 	var tid: int = world_map.remove_block(_mining_cell)
 	if tid == -1:
 		return
+
 	var drop: Resource = null
 	match tid:
 		TerrainData.TerrainID.ORE_COPPER: drop = load("res://items/copper_ore.tres")
@@ -299,8 +303,12 @@ func _break_block() -> void:
 		TerrainData.TerrainID.SAND:       drop = load("res://items/sand.tres")
 		TerrainData.TerrainID.DIRT:       drop = load("res://items/dirt.tres")
 		TerrainData.TerrainID.STONE:      drop = load("res://items/stone.tres")
-	if drop and inventory:
-		inventory.add_item(drop)
+
+	if drop:
+		inv_data.add_item(drop)           # ← добавляем в глобальное хранилище
+		if is_instance_valid(inventory):  #   и сразу обновляем визуальный HUD
+			inventory.refresh()
+
 
 # ─────────── УДАЛЕНИЕ ОВЕРЛЕЯ ───────────
 func _remove_mining_overlay() -> void:

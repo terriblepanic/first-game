@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://ja0rruw8weub"]
+[gd_scene load_steps=26 format=4 uid="uid://ja0rruw8weub"]
 
 [ext_resource type="Script" uid="uid://ty7cl5ntqcfa" path="res://scenes/Levels/kingdom_king.gd" id="1_5a2w1"]
 [ext_resource type="TileSet" uid="uid://ctxbcpswxbrha" path="res://assets/tilesets/kingdom_king.tres" id="1_uybik"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://d15nobs3uuxeb" path="res://addons/postfx/nodes/PostFX.gd" id="5_fwsy5"]
 [ext_resource type="Script" uid="uid://bvbw3ejkm2bck" path="res://addons/postfx/scripts/FXBase.gd" id="6_pdvh7"]
 [ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="7_u2yx4"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="8_pdvh7"]
 
 [sub_resource type="Gradient" id="Gradient_fwsy5"]
 interpolation_mode = 2
@@ -106,9 +107,9 @@ tile_set = ExtResource("1_uybik")
 light_mask = 9
 z_index = 2
 y_sort_enabled = true
-position = Vector2(325, 365)
+position = Vector2(278, 384)
 view_mode = 1
-speed = 50.0
+speed = 120.0
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -117,7 +118,9 @@ limit_left = 160
 limit_top = -220
 limit_right = 512
 limit_bottom = 544
+limit_smoothed = true
 position_smoothing_enabled = true
+position_smoothing_speed = 7.0
 
 [node name="PointLight2D" type="PointLight2D" parent="Player"]
 position = Vector2(0, -9)
@@ -279,5 +282,9 @@ position = Vector2(336, 478)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
 position = Vector2(336, 527)
 shape = SubResource("RectangleShape2D_lvkt7")
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("8_pdvh7")]
 
 [connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]

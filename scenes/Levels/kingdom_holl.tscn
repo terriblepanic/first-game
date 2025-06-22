@@ -112,7 +112,6 @@ shape = SubResource("CapsuleShape2D_ucs00")
 
 [node name="HUD" parent="." instance=ExtResource("2_ucs00")]
 layer = 100
-visible = false
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 

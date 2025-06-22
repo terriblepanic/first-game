@@ -1,9 +1,10 @@
-[gd_resource type="TileSet" load_steps=83 format=3 uid="uid://c863tgpflukmr"]
+[gd_resource type="TileSet" load_steps=85 format=3 uid="uid://c863tgpflukmr"]
 
 [ext_resource type="Texture2D" uid="uid://cb1ghpwo8so3s" path="res://assets/tiles/nature/grass/dirt.png" id="1_tjwna"]
 [ext_resource type="Texture2D" uid="uid://dvgioj6vs08qj" path="res://assets/tiles/nature/sand.png" id="2_x07dh"]
 [ext_resource type="Texture2D" uid="uid://csrysbrv1yy46" path="res://assets/tiles/nature/leaf/leaf_corner_sw.png" id="3_di51c"]
 [ext_resource type="Texture2D" uid="uid://cle4py7rkxkxx" path="res://assets/tiles/nature/leaf/leaf_full.png" id="4_cv2sq"]
+[ext_resource type="Texture2D" uid="uid://cp0umaxtvrpwq" path="res://assets/tiles/void.png" id="4_di51c"]
 [ext_resource type="Texture2D" uid="uid://6ha1as1c7kgd" path="res://assets/tiles/nature/leaf/leaf_t_down.png" id="5_adwol"]
 [ext_resource type="Texture2D" uid="uid://bke5asd6tjt00" path="res://assets/tiles/nature/leaf/leaf_t_left.png" id="6_u2iji"]
 [ext_resource type="Texture2D" uid="uid://cjkeeyaen6ycf" path="res://assets/tiles/nature/leaf/leaf_t_right.png" id="7_jx4sw"]
@@ -62,6 +63,13 @@ texture = ExtResource("7_jx4sw")
 texture_region_size = Vector2i(14, 14)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 4, -7, 7, -4, 7, 4, 4, 7, -7, 7)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cv2sq"]
+resource_name = "void"
+texture = ExtResource("4_di51c")
+texture_region_size = Vector2i(14, 14)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-7, -7, 7, -7, 7, 7, -7, 7)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rsbe7"]
 resource_name = "leaf_t_down"
@@ -374,3 +382,4 @@ sources/26 = SubResource("TileSetAtlasSource_utguc")
 sources/27 = SubResource("TileSetAtlasSource_gaad4")
 sources/28 = SubResource("TileSetAtlasSource_1w2ve")
 sources/29 = SubResource("TileSetAtlasSource_rr4rg")
+sources/100 = SubResource("TileSetAtlasSource_cv2sq")

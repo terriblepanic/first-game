@@ -70,6 +70,8 @@ func setup(params: Dictionary) -> void:
 	noise_cave = FastNoiseLite.new()
 	noise_cave2 = FastNoiseLite.new()
 	_init_noises()
+	# Пещерный мир, «поверхность» далеко наверху, амплитуда 0
+	surface_base = -1000         # <--- добавлено
 
 
 func get_biome(x: int) -> String:

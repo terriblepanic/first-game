@@ -23,3 +23,8 @@ func _on_entrance_mine_body_exited(body: Node2D) -> void:
 func _process(_delta):
 	if player_inside and Input.is_action_just_pressed("interact"):
 		TransitionManager.change_scene(next_level_path)
+
+
+func _on_left_exit_body_entered(body: Node2D) -> void:
+	if body.name == "Player":
+		TransitionManager.change_scene("res://scenes/Levels/Street.tscn")

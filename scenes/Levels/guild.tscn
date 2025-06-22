@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://cn3k05cpbscjx"]
+[gd_scene load_steps=11 format=3 uid="uid://cn3k05cpbscjx"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_c1362"]
 [ext_resource type="Script" uid="uid://c4rn77vqysc0" path="res://scenes/Levels/guild.gd" id="1_j1y07"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_j1y07"]
 [ext_resource type="Texture2D" uid="uid://dbk3pdbrjg1lv" path="res://assets/test/guild.png" id="3_63ly8"]
 [ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="4_482si"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="6_63ly8"]
 
 [sub_resource type="Gradient" id="Gradient_sn8u8"]
 interpolation_mode = 2
@@ -120,4 +121,10 @@ autowrap_mode = 3
 [node name="EntranceRight" type="Marker2D" parent="."]
 position = Vector2(-90, 73)
 
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("6_63ly8")]
+
+[connection signal="body_entered" from="EntranceGuild" to="." method="_on_entrance_guild_body_entered"]
+[connection signal="body_exited" from="EntranceGuild" to="." method="_on_entrance_guild_body_exited"]
 [connection signal="body_entered" from="RightExit" to="." method="_on_right_exit_body_entered"]

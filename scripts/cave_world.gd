@@ -1,158 +1,188 @@
+# cave_world.gd
+# ------------------------------------------------------------------------------
+# Пещерный уровень - ставит вокруг «нережибельной» зоны чёрный тайл-пустоту
+# ------------------------------------------------------------------------------
 extends Node
 
-const Item = preload("res://scripts/item.gd")
-# — ID ландшафта —
-const TerrainID := TerrainData.TerrainID
+const Item      = preload("res://scripts/item.gd")
+const TerrainID = TerrainData.TerrainID
 
-# минимальная глубина появления руды
-const ORE_DEPTH := { "copper": 30, "iron": 40, "gold": 50 }
+# -----------------------------------------------------------------------------#
+#  ID ЧЁРНОГО ТАЙЛА – берём тот же самый, что хранится в TerrainData
+# -----------------------------------------------------------------------------#
+const VOID_SOURCE_ID : int = 100
 
-# Настройки градиента тени
-const MAX_DARK_DEPTH := 20.0 # глубина до полного затемнения в тайлах
-const SHADE_TILES := 20 # количество теневых тайлов (ID 0…19)
-const SHADE_ID_OFFSET := 0 # смещение, если тайлы идут с другого ID
+# -----------------------------------------------------------------------------#
+#  ПАРАМЕТРЫ МИРА (можно менять из инспектора)
+# -----------------------------------------------------------------------------#
+@export var world_width  : int = 41
+@export var world_height : int = 41
 
-# — Параметры мира —
-@export var world_width: int = 1000
-@export var world_height: int = 50
-@export var surface_base: int = 10
-@export var surface_amp: int = 8
-@export var surface_amp_desert: int = 6
-@export var surface_amp_mountain: int = 40
-@export var dirt_depth: int = 10
-@export var sand_depth: int = 10
-@export var sea_level: int = 20
-@export var beach_width: int = 3
-# Порог для шума пещер
-@export var cave_threshold: float = 0.7
-@export var cave_threshold_depth_factor: float = 0.2
-# Шансы руды
-@export var ore_chances: Dictionary = { "copper": 0.015, "iron": 0.007, "gold": 0.003 }
-# Соответствие TerrainID → ID тайла в TileSet
+@export var cave_threshold              : float  = 0.4
+@export var cave_threshold_depth_factor : float  = 0.2
+@export var ore_chances : Dictionary = { "copper": 0.015, "iron": 0.007, "gold": 0.003 }
 
-@export var chunk_width: int = 100
-@export var world_tiles: TileSet
+@export var world_tiles : TileSet               # назначьте свой TileSet
 
-var SOURCE_ID: Dictionary = TerrainData.SOURCE_ID
+var SOURCE_ID : Dictionary        = TerrainData.SOURCE_ID
+var generator  : WorldGenerator   = WorldGenerator.new()
 
-var generator: WorldGenerator = WorldGenerator.new()
+# — сцены / узлы — -------------------------------------------------------------
+@onready var tilemap    : TileMapLayer = $WorldMap
+@onready var player     : Node2D       = $Player/Player
+@onready var exit_area  : Area2D       = $Exit
+@onready var hint_popup : PopupPanel   = $ExitUI
+@onready var Inv := InventoryData
 
-@onready var tilemap: TileMapLayer = $WorldMap
-@onready var player: Node2D = $Player/Player
-
-var _loaded_chunks: Dictionary = {}
+var _player_inside_exit := false
 
 
+#==============================================================================#
+#  ИНИЦИАЛИЗАЦИЯ
+#==============================================================================#
 func _ready() -> void:
 	randomize()
-	set_process(true)
-
 	if world_tiles:
 		tilemap.tile_set = world_tiles
 
+	# 1 — генератор
+	_setup_generator()
+
+	# 2 — заполняем мир тайлами + чёрной рамкой
+	_fill_world()
+
+	# 3 — площадка спавна и игрок
+	_position_player_and_exit()
+
+	# 4 — стартовый предмет в инвентаре
+	Inv.add_item(load("res://items/wooden_pickaxe.tres"), 1)
+
+	# 5 — сигналы
+	$Player/Player.player_died.connect(_on_player_died)
+	hint_popup.hide()
+	$HUD/Inventory.refresh()
+
+
+#------------------------------------------------------------------------------#
+#  НАСТРОЙКА ГЕНЕРАТОРА
+#------------------------------------------------------------------------------#
+func _setup_generator() -> void:
 	generator.setup({
 		"world_height": world_height,
-		"surface_base": -10,
+		"surface_base": -10,          # «поверхности» нет — только пещеры
 		"surface_amp": 0,
 		"surface_amp_desert": 0,
 		"surface_amp_mountain": 0,
-		"dirt_depth": dirt_depth,
-		"sand_depth": sand_depth,
-		"sea_level": sea_level,
-		"beach_width": beach_width,
-		"cave_threshold": 0.4,
+		"dirt_depth": 10,
+		"sand_depth": 10,
+		"sea_level": -1000,
+		"beach_width": 0,
+		"cave_threshold": cave_threshold,
 		"cave_threshold_depth_factor": cave_threshold_depth_factor,
 		"ore_chances": ore_chances,
-		"SOURCE_ID": SOURCE_ID
-		})
+		"SOURCE_ID": SOURCE_ID,
+	})
 
-	var spawn_tile: Vector2i = generator.find_cave_spawn_tile(world_width, world_height)
-	var ts: Vector2 = tilemap.tile_set.tile_size
-	var spawn_pos: Vector2 = Vector2(spawn_tile.x * ts.x, spawn_tile.y * ts.y)
+
+#------------------------------------------------------------------------------#
+#  ЗАПОЛНЯЕМ ТАЙЛЫ + ДОБАВЛЯЕМ ЧЁРНУЮ «ОБЛАСТЬ-ЗАПРЕТКУ»
+#------------------------------------------------------------------------------#
+func _fill_world() -> void:
+	var patt := generator.create_chunk_pattern(0, world_width)
+	tilemap.set_pattern(Vector2i.ZERO, patt)
+
+	# Толщина черной границы
+	var border_thickness := 3
+
+	for x in range(world_width):
+		for y in range(world_height):
+			var near_edge := x < border_thickness or x >= world_width - border_thickness \
+						  or y < border_thickness or y >= world_height - border_thickness
+			if near_edge:
+				tilemap.set_cell(Vector2i(x, y), VOID_SOURCE_ID, Vector2i.ZERO, 0)
+
+
+
+#------------------------------------------------------------------------------#
+#  СПАВН ИГРОКА + ВЫХОД
+#------------------------------------------------------------------------------#
+func _position_player_and_exit() -> void:
+	var cx := world_width  / 2
+	var cy := world_height / 2
+	var spawn_tile := Vector2i(cx, cy)
+
+	# очищаем 5 × 5 под ногами
+	for dx in range(-2, 3):
+		for dy in range(-2, 2):
+			tilemap.erase_cell(spawn_tile + Vector2i(dx, dy))
+		for dy in range(2, 3):
+			var cell := spawn_tile + Vector2i(dx, dy)
+			tilemap.set_cell(cell, VOID_SOURCE_ID, Vector2i.ZERO, 0)
+
+	# координаты в пикселях
+	var ts := tilemap.tile_set.tile_size
+	var spawn_pos := Vector2(spawn_tile.x * ts.x, spawn_tile.y * ts.y)
+
+	# игрок
 	if player.has_method("set_spawn_position"):
 		player.set_spawn_position(spawn_pos)
-	if has_node("Exit"):
-		$Exit.position = spawn_pos
+	else:
+		player.global_position = spawn_pos
 
-	for x in range(-2, 3):
-		for y in range(-2, 3):
-			tilemap.erase_cell(spawn_tile + Vector2i(x, y))
+	# и там-же выход
+	exit_area.position = spawn_pos
 
-	if has_node("HUD/Inventory"):
-		var inventory := $HUD/Inventory
-		var pickaxe: Item = load("res://items/wooden_pickaxe.tres")
-		inventory.add_item(pickaxe)
 
-	_process(0.0)
-	$Player/Player.player_died.connect(_on_player_died)
+#==============================================================================#
+#  ВЫХОД – СИГНАЛЫ И КНОПКА
+#==============================================================================#
+func _on_exit_body_entered(body: Node2D) -> void:
+	if body == player:
+		hint_popup.popup()
+		_player_inside_exit = true
+
+
+func _on_exit_body_exited(body: Node2D) -> void:
+	if body == player:
+		hint_popup.hide()
+		_player_inside_exit = false
 
 
 func _process(_delta: float) -> void:
-	var ts: Vector2 = tilemap.tile_set.tile_size
-	var player_cell: int = int(player.global_position.x / ts.x)
-	var current_ci: int = player_cell / chunk_width
-	var min_ci = max(current_ci - 1, 0)
-	var max_ci = min(current_ci + 2, int((world_width - 1) / chunk_width))
-
-	# загрузка новых чанков
-	for ci in range(min_ci, max_ci + 1):
-		if not _loaded_chunks.has(ci):
-			var xs = ci * chunk_width
-			var xe = min(xs + chunk_width, world_width)
-
-			# основной мир
-			var patt: TileMapPattern = generator.create_chunk_pattern(xs, xe)
-			tilemap.set_pattern(Vector2i(xs, 0), patt)
-
-			# тени
-			_loaded_chunks[ci] = true
-
-	# удаление старых чанков
-	var to_remove: Array = []
-	for ci in _loaded_chunks.keys():
-		if ci < min_ci or ci > max_ci:
-			tilemap.set_pattern(Vector2i(ci * chunk_width, 0), TileMapPattern.new())
-			to_remove.append(ci)
-	for ci in to_remove:
-		_loaded_chunks.erase(ci)
-
-		# --- Utilities ---------------------------------------------------------------
+	if _player_inside_exit and Input.is_action_just_pressed("interact"):
+		# ⬇ автосохранение перед сменой сцены, чтобы добытая руда не потерялась
+		SaveManager.save_game(SaveManager.current_slot)
+		TransitionManager.change_scene("res://scenes/Levels/mining.tscn")
 
 
-# Удаляет блок и возвращает его TerrainID или -1, если ничего нет
-func remove_block(cell: Vector2i) -> int:
-	var sid: int = tilemap.get_cell_source_id(cell)
-	if sid == -1:
-		return - 1
-	tilemap.erase_cell(cell)
-	for t in SOURCE_ID.keys():
-		if SOURCE_ID[t] == sid:
-			return t
-	return - 1
-
-
-# Ставит блок указанного типа
-func place_block(cell: Vector2i, terrain_id: int) -> void:
-	if not SOURCE_ID.has(terrain_id):
-		return
-	tilemap.set_cell(cell, SOURCE_ID[terrain_id], Vector2i.ZERO, 0)
-
-
-# Преобразует глобальные координаты в координаты тайла
-func position_to_cell(global_pos: Vector2) -> Vector2i:
-	var local: Vector2 = tilemap.to_local(global_pos)
-	var ts: Vector2 = tilemap.tile_set.tile_size
-	return Vector2i(floor(local.x / ts.x), floor(local.y / ts.y))
-
-
+#==============================================================================#
+#  ПРОЧЕЕ
+#==============================================================================#
 func _on_player_died() -> void:
 	await get_tree().create_timer(2).timeout
 	get_tree().reload_current_scene()
 
 
-# When the player enters the exit Area2D we return back to the previous scene.
-# This is similar to other level scripts where the player is disabled and a
-# transition effect is triggered.
-func _on_exit_body_entered(body: Node2D) -> void:
-	if body.name == "Player":
-		TransitionManager.change_scene("res://scenes/Main.tscn")
+#==============================================================================#
+#  API ДЛЯ БЛОКОВ
+#==============================================================================#
+func remove_block(cell: Vector2i) -> int:
+	var sid := tilemap.get_cell_source_id(cell)
+	if sid == -1 or sid == VOID_SOURCE_ID:
+		return -1
+	tilemap.erase_cell(cell)
+	for t in SOURCE_ID:
+		if SOURCE_ID[t] == sid:
+			return t
+	return -1
+
+
+func place_block(cell: Vector2i, terrain_id: int) -> void:
+	if SOURCE_ID.has(terrain_id):
+		tilemap.set_cell(cell, SOURCE_ID[terrain_id], Vector2i.ZERO, 0)
+
+
+func position_to_cell(global_pos: Vector2) -> Vector2i:
+	var local := tilemap.to_local(global_pos)
+	var ts := tilemap.tile_set.tile_size
+	return Vector2i(floor(local.x / ts.x), floor(local.y / ts.y))

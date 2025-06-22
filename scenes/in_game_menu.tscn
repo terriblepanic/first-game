@@ -137,6 +137,10 @@ vertical_alignment = 1
 layout_mode = 2
 text = "Продолжить"
 
+[node name="Button_Save" type="Button" parent="MenuContainer"]
+layout_mode = 2
+text = "Сохранить"
+
 [node name="Button_Quit" type="Button" parent="MenuContainer"]
 layout_mode = 2
 text = "В главное меню"
@@ -148,4 +152,5 @@ libraries = {
 }
 
 [connection signal="pressed" from="MenuContainer/Button_Continue" to="." method="_on_button_continue_pressed"]
+[connection signal="pressed" from="MenuContainer/Button_Save" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="MenuContainer/Button_Quit" to="." method="_on_button_quit_pressed"]

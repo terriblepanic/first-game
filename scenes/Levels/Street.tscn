@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://squymi3l8gqp"]
+[gd_scene load_steps=12 format=3 uid="uid://squymi3l8gqp"]
 
 [ext_resource type="Script" uid="uid://cffi3g70ywads" path="res://scenes/Levels/street.gd" id="1_1i8gt"]
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_id1e1"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_1i8gt"]
 [ext_resource type="Texture2D" uid="uid://c3alsxnf6gnf4" path="res://assets/test/street.png" id="3_edg5a"]
 [ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="4_1gbas"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="6_edg5a"]
 
 [sub_resource type="Gradient" id="Gradient_1i8gt"]
 interpolation_mode = 2
@@ -66,7 +67,6 @@ metadata/color_filter = Color(1, 1, 1, 0)
 
 [node name="HUD" parent="." instance=ExtResource("2_1i8gt")]
 layer = 100
-visible = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-181, -17)
@@ -130,6 +130,10 @@ autowrap_mode = 3
 
 [node name="EntranceRight" type="Marker2D" parent="."]
 position = Vector2(-90, 73)
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("6_edg5a")]
 
 [connection signal="body_entered" from="EntranceCastle" to="." method="_on_entrance_castle_body_entered"]
 [connection signal="body_exited" from="EntranceCastle" to="." method="_on_entrance_castle_body_exited"]

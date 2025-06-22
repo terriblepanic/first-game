@@ -22,6 +22,8 @@ TerrainData="*res://scripts/terrain_data.gd"
 TransitionManager="*res://scripts/transition_manager.gd"
 BlessingManager="*res://scripts/blessing_manager.gd"
 SceneManager="*res://addons/scene_manager/SceneManager.tscn"
+SaveManager="*res://scripts/Save/save_manager.gd"
+InventoryData="*res://scripts/Save/inventory_data.gd"
 
 [display]
 

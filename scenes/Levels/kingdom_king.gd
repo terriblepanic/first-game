@@ -1,35 +1,29 @@
 extends Node2D
 
+# Один раз получаем правильный путь
+@onready var player: CharacterBody2D = $Player
+@onready var entrance = $Entrance
+@onready var exit = $Exit
+
 
 func _ready() -> void:
-	var player = $Player
-	var spawn_point_node = $Entrance
-	var spawn_position = spawn_point_node.position
+	exit.monitoring = false # блокируем выход
+	var spawn_position = entrance.position
 
-	$Exit.monitoring = false # отключить зону выхода
+	player.global_position = spawn_position + Vector2(0, 100)
+	player.set_physics_process(false) # Godot 4; для 3.x — set_process(false)
 
-	if spawn_position:
-		player.position = spawn_position + Vector2(0.0, 100.0)
-		player.set_process(false)
-
-		var tween = get_tree().create_tween()
-		tween.tween_property(player, "position", spawn_position, 1.0)
-		tween.tween_callback(Callable(self, "_enable_transition_and_player"))
-	else:
-		player.position = Vector2(100.0, 100.0)
+	var tween = get_tree().create_tween()
+	tween.tween_property(player, "global_position", spawn_position, 1.0)
+	tween.tween_callback(Callable(self, "_enable_transition_and_player"))
 
 
-func _enable_transition_and_player():
-	var player = $Player
-	player.set_process(true)
-	$Exit.monitoring = true
+func _enable_transition_and_player() -> void:
+	player.set_physics_process(true)
+	exit.monitoring = true
 
 
 func _on_exit_body_entered(body: Node2D) -> void:
-	if body.name == "Player":
-		body.set_process(false)
+	if body == player:
+		player.set_physics_process(false)
 		TransitionManager.change_scene("res://scenes/Levels/kingdom_holl.tscn")
-
-
-func _load_next_scene():
-	pass

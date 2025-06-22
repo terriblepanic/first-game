@@ -1,7 +1,7 @@
 extends Node2D
 
 @export_file("*.tscn") var next_level_path := "res://scenes/Levels/Street.tscn"
-@export_file("*.tscn") var next_level_path2 := "res://scenes/Levels/kingdom_holl.tscn"
+@export_file("*.tscn") var next_level_path2 := "res://scenes/Levels/guild_in.tscn"
 @onready var hint_popup: PopupPanel = $EntranceGuildUI
 @onready var player = $Player/Player
 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://b1jldarqwjutx"]
+[gd_scene load_steps=12 format=3 uid="uid://b1jldarqwjutx"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_qpjmm"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_lfneh"]
 [ext_resource type="Texture2D" uid="uid://baua631ap75lh" path="res://assets/test/mining.png" id="3_y5bej"]
 [ext_resource type="Script" uid="uid://xr34ja4tsdr" path="res://scripts/mining_entrance_mine.gd" id="4_y5bej"]
 [ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="5_kf5cw"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="6_kf5cw"]
 
 [sub_resource type="Gradient" id="Gradient_y5bej"]
 interpolation_mode = 2
@@ -17,6 +18,9 @@ width = 256
 height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y5bej"]
+size = Vector2(60, 163)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jja6h"]
 size = Vector2(60, 163)
@@ -63,7 +67,6 @@ metadata/color_filter = Color(1, 1, 1, 0)
 
 [node name="HUD" parent="." instance=ExtResource("2_lfneh")]
 layer = 100
-visible = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-181, -17)
@@ -74,6 +77,13 @@ texture = ExtResource("3_y5bej")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
 build_mode = 1
 polygon = PackedVector2Array(-418, 85, 56, 85, 55, -145, -418, -145)
+
+[node name="LeftExit" type="Area2D" parent="."]
+position = Vector2(-219, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftExit"]
+position = Vector2(-167, 27.5)
+shape = SubResource("RectangleShape2D_y5bej")
 
 [node name="EntranceMine" type="Area2D" parent="."]
 position = Vector2(0, 1)
@@ -109,5 +119,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("6_kf5cw")]
+
+[connection signal="body_entered" from="LeftExit" to="." method="_on_left_exit_body_entered"]
 [connection signal="body_entered" from="EntranceMine" to="." method="_on_entrance_mine_body_entered"]
 [connection signal="body_exited" from="EntranceMine" to="." method="_on_entrance_mine_body_exited"]

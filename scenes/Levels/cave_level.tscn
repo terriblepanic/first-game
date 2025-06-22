@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://citgr4h7kjmw2"]
+[gd_scene load_steps=29 format=3 uid="uid://citgr4h7kjmw2"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1"]
 [ext_resource type="Script" uid="uid://djn41588oxs12" path="res://scripts/cave_world.gd" id="1_7vjiv"]
@@ -17,6 +17,8 @@
 [ext_resource type="TileSet" uid="uid://c863tgpflukmr" path="res://assets/tilesets/nature.tres" id="15_nfivy"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="17_7vjiv"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="17_ft6cd"]
+[ext_resource type="Shader" uid="uid://dymhok6c0bfp3" path="res://shaders/pantheon_godrays.gdshader" id="18_arvd1"]
+[ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="18_gihd7"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7vjiv"]
 radius = 6.0
@@ -30,8 +32,44 @@ shader_parameter/samples = 30
 shader_parameter/weight = 0.5
 shader_parameter/threshold = 0.6
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
-size = Vector2(32, 32)
+[sub_resource type="CircleShape2D" id="CircleShape2D_w4nba"]
+radius = 95.021
+
+[sub_resource type="Gradient" id="Gradient_ojkti"]
+offsets = PackedFloat32Array(0, 0.447368, 0.539474)
+colors = PackedColorArray(0.0031, 0.151435, 0.31, 0, 1, 0.509333, 0.08, 1, 0.996078, 0.937255, 0.482353, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mbwdc"]
+gradient = SubResource("Gradient_ojkti")
+width = 30
+height = 30
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xu6hb"]
+shader = ExtResource("18_arvd1")
+shader_parameter/gradient = SubResource("GradientTexture2D_mbwdc")
+shader_parameter/spread = 2.34
+shader_parameter/cutoff = 4.75
+shader_parameter/size = 7.56
+shader_parameter/speed = 3.4
+shader_parameter/ray1_density = 8.0
+shader_parameter/ray2_density = 30.0
+shader_parameter/ray2_intensity = 0.3
+shader_parameter/core_intensity = 2.0
+shader_parameter/hdr = false
+shader_parameter/seed = 5.0
+
+[sub_resource type="Gradient" id="Gradient_p75bh"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_in8h1"]
+gradient = SubResource("Gradient_p75bh")
+width = 128
+height = 128
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_arvd1"]
+shader = ExtResource("18_gihd7")
+shader_parameter/bg_color = Vector4(0, 0, 0, 0)
 
 [node name="Main" type="Node"]
 script = ExtResource("1_7vjiv")
@@ -180,7 +218,45 @@ layer = 100
 [node name="Exit" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
-position = Vector2(-1, -13)
-shape = SubResource("RectangleShape2D_exit")
+position = Vector2(0, -13)
+shape = SubResource("CircleShape2D_w4nba")
+
+[node name="Orb" type="Sprite2D" parent="Exit"]
+material = SubResource("ShaderMaterial_xu6hb")
+position = Vector2(0, -13)
+texture = SubResource("GradientTexture2D_in8h1")
+
+[node name="ExitUI" type="PopupPanel" parent="."]
+auto_translate_mode = 1
+position = Vector2i(323, 124)
+size = Vector2i(110, 50)
+visible = true
+
+[node name="Panel" type="Panel" parent="ExitUI"]
+material = SubResource("ShaderMaterial_arvd1")
+clip_contents = true
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 106.0
+offset_bottom = 46.0
+
+[node name="Label" type="Label" parent="ExitUI/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+text = "ВЫХОД ИЗ ПЕЩЕР
+Нажмите E"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="InGameMenu2" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu2" instance=ExtResource("17_7vjiv")]
 
 [connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
+[connection signal="body_exited" from="Exit" to="." method="_on_exit_body_exited"]

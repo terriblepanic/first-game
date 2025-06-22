@@ -54,7 +54,7 @@ shader_parameter/threshold = 0.1
 offsets = PackedFloat32Array(0, 0.447368, 0.539474)
 colors = PackedColorArray(0.0031, 0.151435, 0.31, 0, 1, 0.509333, 0.08, 1, 0.996078, 0.937255, 0.482353, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_mbwdc"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fuqn8"]
 gradient = SubResource("Gradient_8a4im")
 width = 30
 height = 30
@@ -63,7 +63,7 @@ fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mbwdc"]
 shader = ExtResource("13_8a4im")
-shader_parameter/gradient = SubResource("GradientTexture2D_mbwdc")
+shader_parameter/gradient = SubResource("GradientTexture2D_fuqn8")
 shader_parameter/spread = 2.34
 shader_parameter/cutoff = 4.75
 shader_parameter/size = 7.56
@@ -75,10 +75,10 @@ shader_parameter/core_intensity = 2.0
 shader_parameter/hdr = false
 shader_parameter/seed = 5.0
 
-[sub_resource type="Gradient" id="Gradient_p75bh"]
+[sub_resource type="Gradient" id="Gradient_xjg63"]
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_3qtx6"]
-gradient = SubResource("Gradient_p75bh")
+gradient = SubResource("Gradient_xjg63")
 width = 128
 height = 128
 
@@ -337,6 +337,7 @@ shape = SubResource("CapsuleShape2D_fuqn8")
 
 [node name="HUD" parent="." instance=ExtResource("2_vr15j")]
 layer = 100
+visible = false
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 

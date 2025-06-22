@@ -17,6 +17,7 @@ enum TerrainID {
 	ORE_IRON,
 	LEAVES,
 	GRASS,
+	VOID_BLACK
 }
 
 ## Флаги для направлений (битмаска)
@@ -37,6 +38,7 @@ static var SOURCE_ID := {
 	TerrainID.ORE_IRON: 6,
 	TerrainID.LEAVES: 7, # leaf_isolated
 	TerrainID.GRASS: 17, # grass_isolated
+	TerrainID.VOID_BLACK: 100
 }
 
 ## Внешние стыковочные варианты (edge, corner, T, cross)

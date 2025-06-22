@@ -1,8 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://dkel0agqip5am"]
+[gd_scene load_steps=18 format=3 uid="uid://dkel0agqip5am"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_kx86s"]
 [ext_resource type="Script" uid="uid://1a8i70subq8c" path="res://scenes/Levels/guild_in.gd" id="1_xay07"]
 [ext_resource type="Texture2D" uid="uid://dvrrh0p602qjb" path="res://assets/test/guild_in.png" id="2_xay07"]
+[ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="4_2rxx5"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="5_0w7t7"]
 
 [sub_resource type="Gradient" id="Gradient_sn8u8"]
 interpolation_mode = 2
@@ -83,6 +85,9 @@ shape = SubResource("CircleShape2D_kx86s")
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_xay07")
 
+[node name="HUD" parent="." instance=ExtResource("4_2rxx5")]
+layer = 100
+
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
@@ -129,5 +134,9 @@ shape = SubResource("RectangleShape2D_feqjg")
 
 [node name="Entrance" type="Marker2D" parent="."]
 position = Vector2(0, 101)
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("5_0w7t7")]
 
 [connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
