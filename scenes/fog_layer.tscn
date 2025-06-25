@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://jubqgarq03kq"]
+
+[ext_resource type="Shader" uid="uid://cq8dchu7lve2w" path="res://shaders/fog_2d.gdshader" id="1_iab3x"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yi30s"]
+shader = ExtResource("1_iab3x")
+shader_parameter/scroll_speed = Vector2(0.1, 0)
+shader_parameter/fog_strength = 0.2
+shader_parameter/time_scale = 0.2
+
+[sub_resource type="Gradient" id="Gradient_2k633"]
+colors = PackedColorArray(1, 1, 1, 0, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6p8ea"]
+fractal_weighted_strength = 1.0
+domain_warp_enabled = true
+domain_warp_type = 2
+domain_warp_fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hmtuf"]
+width = 746
+height = 838
+invert = true
+seamless = true
+seamless_blend_skirt = 0.46
+normalize = false
+color_ramp = SubResource("Gradient_2k633")
+noise = SubResource("FastNoiseLite_6p8ea")
+
+[node name="FogLayer" type="Node2D"]
+
+[node name="FogSprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture_repeat = 2
+material = SubResource("ShaderMaterial_yi30s")
+texture = SubResource("NoiseTexture2D_hmtuf")
+centered = false
+region_rect = Rect2(0, 0, 746, 419)

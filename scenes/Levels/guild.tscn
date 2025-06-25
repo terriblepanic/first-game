@@ -1,0 +1,132 @@
+[gd_scene load_steps=11 format=3 uid="uid://cn3k05cpbscjx"]
+
+[ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_c1362"]
+[ext_resource type="Script" uid="uid://c4rn77vqysc0" path="res://scenes/Levels/guild.gd" id="1_j1y07"]
+[ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_j1y07"]
+[ext_resource type="Texture2D" uid="uid://dbk3pdbrjg1lv" path="res://assets/test/guild.png" id="3_63ly8"]
+[ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="4_482si"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="6_63ly8"]
+
+[sub_resource type="Gradient" id="Gradient_sn8u8"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.554348, 0.73913)
+colors = PackedColorArray(1, 1, 1, 0.462745, 1, 1, 1, 0.0392157, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_skdc8"]
+gradient = SubResource("Gradient_sn8u8")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2gek"]
+size = Vector2(60, 163)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r7270"]
+shader = ExtResource("4_482si")
+shader_parameter/bg_color = Vector4(0, 0, 0, 0)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_j1y07")
+
+[node name="Player" type="CanvasLayer" parent="."]
+layer = 0
+follow_viewport_enabled = true
+
+[node name="Player" parent="Player" instance=ExtResource("1_c1362")]
+position = Vector2(-174, 58)
+virtual_floor_bit = 4
+metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="Player/Player"]
+position = Vector2(0, -47)
+zoom = Vector2(2.3, 2.3)
+limit_left = -372
+limit_top = -144
+limit_right = 10
+limit_bottom = 110
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+drag_left_margin = 0.0
+drag_top_margin = 0.0
+drag_right_margin = 0.0
+drag_bottom_margin = 0.0
+
+[node name="PointLight2D" type="PointLight2D" parent="Player/Player"]
+position = Vector2(0, -25)
+shadow_enabled = true
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_skdc8")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6500
+metadata/color_filter = Color(1, 1, 1, 0)
+
+[node name="HUD" parent="." instance=ExtResource("2_j1y07")]
+layer = 100
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-181, -17)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_63ly8")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 16
+metadata/surface = "default"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+build_mode = 1
+polygon = PackedVector2Array(-373, 85, 11, 85, 11, -145, -373, -145)
+
+[node name="EntranceGuild" type="Area2D" parent="."]
+position = Vector2(-13, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceGuild"]
+position = Vector2(-167, 27.5)
+shape = SubResource("RectangleShape2D_g2gek")
+
+[node name="RightExit" type="Area2D" parent="."]
+position = Vector2(147, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightExit"]
+position = Vector2(-167, 27.5)
+shape = SubResource("RectangleShape2D_g2gek")
+
+[node name="EntranceGuildUI" type="PopupPanel" parent="."]
+auto_translate_mode = 1
+position = Vector2i(323, 124)
+size = Vector2i(110, 50)
+visible = true
+
+[node name="Panel" type="Panel" parent="EntranceGuildUI"]
+material = SubResource("ShaderMaterial_r7270")
+clip_contents = true
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 106.0
+offset_bottom = 46.0
+
+[node name="Label" type="Label" parent="EntranceGuildUI/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+text = "ВХОД В ГИЛЬДИЮ
+Нажмите E"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="EntranceRight" type="Marker2D" parent="."]
+position = Vector2(-90, 73)
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("6_63ly8")]
+
+[connection signal="body_entered" from="EntranceGuild" to="." method="_on_entrance_guild_body_entered"]
+[connection signal="body_exited" from="EntranceGuild" to="." method="_on_entrance_guild_body_exited"]
+[connection signal="body_entered" from="RightExit" to="." method="_on_right_exit_body_entered"]

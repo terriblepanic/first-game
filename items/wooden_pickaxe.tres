@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Pickaxe" load_steps=3 format=3 uid="uid://d1ncscysmfu1g"]
+
+[ext_resource type="Script" uid="uid://0x10n1xwo6xm" path="res://scripts/pickaxe.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://clx4va2ges768" path="res://assets/particles/player_attack.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+mine_speed = 1.0
+name = "Pickaxe"
+icon = ExtResource("2")
+stack_size = 1
+count = 0
+metadata/_custom_type_script = "uid://0x10n1xwo6xm"

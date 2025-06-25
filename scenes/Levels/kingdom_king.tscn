@@ -1,0 +1,298 @@
+[gd_scene load_steps=26 format=4 uid="uid://ja0rruw8weub"]
+
+[ext_resource type="Script" uid="uid://ty7cl5ntqcfa" path="res://scenes/Levels/kingdom_king.gd" id="1_5a2w1"]
+[ext_resource type="TileSet" uid="uid://ctxbcpswxbrha" path="res://assets/tilesets/kingdom_king.tres" id="1_uybik"]
+[ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="2_jhoyw"]
+[ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="3_sn8u8"]
+[ext_resource type="Script" uid="uid://d15nobs3uuxeb" path="res://addons/postfx/nodes/PostFX.gd" id="5_fwsy5"]
+[ext_resource type="Script" uid="uid://bvbw3ejkm2bck" path="res://addons/postfx/scripts/FXBase.gd" id="6_pdvh7"]
+[ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="7_u2yx4"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="8_pdvh7"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bmc7u"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_sn8u8"]
+polygon = PackedVector2Array(253, 75, 253, 79, 255, 79, 255, 92, 253, 92, 253, 94, 251, 94, 251, 96, 229, 96, 229, 94, 227, 94, 227, 92, 225, 92, 225, 79, 227, 79, 227, 75)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_5a2w1"]
+polygon = PackedVector2Array(419, 75, 445, 75, 445, 79, 447, 79, 447, 92, 445, 92, 445, 94, 443, 94, 443, 96, 421, 96, 421, 94, 419, 94, 419, 92, 417, 92, 417, 79, 419, 79)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lvkt7"]
+polygon = PackedVector2Array(227, 203, 253, 203, 253, 207, 255, 207, 255, 220, 253, 220, 253, 222, 251, 222, 251, 224, 229, 224, 229, 222, 227, 222, 227, 220, 225, 220, 225, 207, 227, 207)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_olvp1"]
+polygon = PackedVector2Array(419, 203, 445, 203, 445, 207, 447, 207, 447, 220, 445, 220, 445, 222, 443, 222, 443, 224, 421, 224, 421, 222, 419, 222, 419, 220, 417, 220, 417, 207, 419, 207)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fwsy5"]
+polygon = PackedVector2Array(227, 331, 253, 331, 253, 335, 255, 335, 255, 348, 253, 348, 253, 350, 251, 350, 251, 352, 229, 352, 229, 350, 227, 350, 227, 348, 225, 348, 225, 335, 227, 335)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_pdvh7"]
+polygon = PackedVector2Array(419, 331, 445, 331, 445, 335, 447, 335, 447, 348, 445, 348, 445, 350, 443, 350, 443, 352, 421, 352, 421, 350, 419, 350, 419, 348, 417, 348, 417, 335, 419, 335)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_u2yx4"]
+polygon = PackedVector2Array(227, 459, 253, 459, 253, 463, 255, 463, 255, 476, 253, 476, 253, 478, 251, 478, 251, 480, 229, 480, 229, 478, 227, 478, 227, 476, 225, 476, 225, 463, 227, 463)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_g5c1c"]
+polygon = PackedVector2Array(419, 459, 445, 459, 445, 463, 447, 463, 447, 476, 445, 476, 445, 478, 443, 478, 443, 480, 421, 480, 421, 478, 419, 478, 419, 476, 417, 476, 417, 463, 419, 463)
+
+[sub_resource type="Gradient" id="Gradient_fwsy5"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.666667)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5a2w1"]
+gradient = SubResource("Gradient_fwsy5")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_7b03i"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xmrvq"]
+gradient = SubResource("Gradient_7b03i")
+width = 1
+height = 1
+
+[sub_resource type="Gradient" id="Gradient_5a2w1"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.663043)
+colors = PackedColorArray(0.965014, 0.0700551, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lvkt7"]
+gradient = SubResource("Gradient_5a2w1")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Resource" id="Resource_myoku"]
+script = ExtResource("7_u2yx4")
+intensity = 0.2
+color = Color(0, 0, 0, 1)
+enabled = true
+metadata/_custom_type_script = "uid://cqqc7s7kp8uem"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lvkt7"]
+size = Vector2(98, 33)
+
+[node name="Main" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_5a2w1")
+
+[node name="Collisions" type="Node2D" parent="."]
+z_index = 1
+
+[node name="Column_1" type="StaticBody2D" parent="Collisions"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Column_1"]
+z_index = 1
+position = Vector2(240, 86)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_bmc7u")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Collisions/Column_1"]
+occluder = SubResource("OccluderPolygon2D_sn8u8")
+
+[node name="Column_2" type="StaticBody2D" parent="Collisions"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Column_2"]
+z_index = 1
+position = Vector2(432, 86)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_bmc7u")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Collisions/Column_2"]
+occluder = SubResource("OccluderPolygon2D_5a2w1")
+
+[node name="Column_3" type="StaticBody2D" parent="Collisions"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Column_3"]
+z_index = 1
+position = Vector2(240, 214)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_bmc7u")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Collisions/Column_3"]
+occluder = SubResource("OccluderPolygon2D_lvkt7")
+
+[node name="Column_4" type="StaticBody2D" parent="Collisions"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Column_4"]
+z_index = 1
+position = Vector2(432, 214)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_bmc7u")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Collisions/Column_4"]
+occluder = SubResource("OccluderPolygon2D_olvp1")
+
+[node name="Column_5" type="StaticBody2D" parent="Collisions"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Column_5"]
+z_index = 1
+position = Vector2(240, 342)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_bmc7u")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Collisions/Column_5"]
+occluder = SubResource("OccluderPolygon2D_fwsy5")
+
+[node name="Column_6" type="StaticBody2D" parent="Collisions"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Column_6"]
+z_index = 1
+position = Vector2(432, 342)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_bmc7u")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Collisions/Column_6"]
+occluder = SubResource("OccluderPolygon2D_pdvh7")
+
+[node name="Column_7" type="StaticBody2D" parent="Collisions"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Column_7"]
+z_index = 1
+position = Vector2(240, 470)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_bmc7u")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Collisions/Column_7"]
+occluder = SubResource("OccluderPolygon2D_u2yx4")
+
+[node name="Column_8" type="StaticBody2D" parent="Collisions"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Column_8"]
+z_index = 1
+position = Vector2(432, 470)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_bmc7u")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Collisions/Column_8"]
+occluder = SubResource("OccluderPolygon2D_g5c1c")
+
+[node name="Throne" type="StaticBody2D" parent="Collisions"]
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="Collisions/Throne"]
+visible = false
+z_index = 2
+position = Vector2(338, 66)
+polygon = PackedVector2Array(-23, 8, -23, 16, -10, 16, -10, 11, 6, 11, 6, 16, 19, 16, 19, 8, 17, 8, 17, -9, -21, -9, -21, 8)
+
+[node name="Walls" type="StaticBody2D" parent="Collisions"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collisions/Walls"]
+build_mode = 1
+polygon = PackedVector2Array(160, 0, 160, 508, 256, 508, 256, 540, 286.848, 540, 287, 600, 386, 600, 385.956, 540, 415, 540, 415, 508, 512, 508, 512, 0)
+
+[node name="Floor" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAFAAAAAAABAAQAAAAFAAEAAAABAAUAAAAFAAIAAAABAAYAAAAFAAMAAAABAAcAAAAGAAAAAAACAAQAAAAGAAEAAAACAAUAAAAGAAIAAAACAAYAAAAGAAMAAAACAAcAAAAHAAAAAAADAAQAAAAHAAEAAAADAAUAAAAHAAIAAAADAAYAAAAHAAMAAAADAAcAAAAIAAAAAAAAAAQAAAAIAAEAAAAAAAUAAAAIAAIAAAAAAAYAAAAIAAMAAAAAAAcAAAAJAAAAAAABAAQAAAAJAAEAAAAEAAMAAAAJAAIAAAAEAAQAAAAJAAMAAAAEAAUAAAAKAAAAAAACAAQAAAAKAAEAAAAFAAMAAAAKAAIAAAAFAAQAAAAKAAMAAAAFAAUAAAALAAAAAAADAAQAAAAMAAAAAAAAAAQAAAANAAAAAAABAAQAAAANAAEAAAABAAUAAAANAAIAAAABAAYAAAANAAMAAAABAAcAAAAOAAAAAAACAAQAAAAOAAEAAAACAAUAAAAOAAIAAAACAAYAAAAOAAMAAAACAAcAAAAPAAAAAAADAAQAAAAPAAEAAAADAAUAAAAPAAIAAAADAAYAAAAPAAMAAAADAAcAAAAFAAQAAAABAAQAAAAFAAUAAAABAAUAAAAFAAYAAAABAAYAAAAFAAcAAAABAAcAAAAGAAQAAAACAAQAAAAGAAUAAAACAAUAAAAGAAYAAAACAAYAAAAGAAcAAAACAAcAAAAHAAQAAAADAAQAAAAHAAUAAAADAAUAAAAHAAYAAAADAAYAAAAHAAcAAAADAAcAAAAIAAQAAAAAAAQAAAAIAAUAAAAAAAUAAAAIAAYAAAAAAAYAAAAIAAcAAAAAAAcAAAAJAAQAAAAEAAUAAAAJAAUAAAAEAAUAAAAJAAYAAAAEAAUAAAAJAAcAAAAEAAUAAAAKAAQAAAAFAAUAAAAKAAUAAAAFAAUAAAAKAAYAAAAFAAUAAAAKAAcAAAAFAAUAAAANAAQAAAABAAQAAAANAAUAAAABAAUAAAANAAYAAAABAAYAAAANAAcAAAABAAcAAAAOAAQAAAACAAQAAAAOAAUAAAACAAUAAAAOAAYAAAACAAYAAAAOAAcAAAACAAcAAAAPAAQAAAADAAQAAAAPAAUAAAADAAUAAAAPAAYAAAADAAYAAAAPAAcAAAADAAcAAAAFAAgAAAABAAQAAAAFAAkAAAABAAUAAAAFAAoAAAABAAYAAAAFAAsAAAABAAcAAAAGAAgAAAACAAQAAAAGAAkAAAACAAUAAAAGAAoAAAACAAYAAAAGAAsAAAACAAcAAAAHAAgAAAADAAQAAAAHAAkAAAADAAUAAAAHAAoAAAADAAYAAAAHAAsAAAADAAcAAAAIAAgAAAAAAAQAAAAIAAkAAAAAAAUAAAAIAAoAAAAAAAYAAAAIAAsAAAAAAAcAAAAJAAgAAAAEAAUAAAAJAAkAAAAEAAUAAAAJAAoAAAAEAAUAAAAJAAsAAAAEAAYAAAAKAAgAAAAFAAUAAAAKAAkAAAAFAAUAAAAKAAoAAAAFAAUAAAAKAAsAAAAFAAYAAAANAAgAAAABAAQAAAANAAkAAAABAAUAAAANAAoAAAABAAYAAAANAAsAAAABAAcAAAAOAAgAAAACAAQAAAAOAAkAAAACAAUAAAAOAAoAAAACAAYAAAAOAAsAAAACAAcAAAAPAAgAAAADAAQAAAAPAAkAAAADAAUAAAAPAAoAAAADAAYAAAAPAAsAAAADAAcAAAAFAAwAAAABAAQAAAAFAA0AAAABAAUAAAAFAA4AAAABAAYAAAAFAA8AAAABAAcAAAAGAAwAAAACAAQAAAAGAA0AAAACAAUAAAAGAA4AAAACAAYAAAAGAA8AAAACAAcAAAAHAAwAAAADAAQAAAAHAA0AAAADAAUAAAAHAA4AAAADAAYAAAAHAA8AAAADAAcAAAAIAAwAAAAAAAQAAAAIAA0AAAAAAAUAAAAIAA4AAAAAAAYAAAAIAA8AAAAAAAcAAAAJAAwAAAAEAAUAAAAJAA0AAAAEAAYAAAAJAA4AAAAEAAcAAAAJAA8AAAABAAcAAAAKAAwAAAAFAAUAAAAKAA0AAAAFAAYAAAAKAA8AAAACAAcAAAALAA0AAAAGAAYAAAALAA4AAAAGAAcAAAALAA8AAAADAAcAAAAMAA0AAAAAAAUAAAAMAA4AAAAAAAYAAAAMAA8AAAAAAAcAAAANAAwAAAABAAQAAAANAA0AAAABAAUAAAANAA4AAAABAAYAAAANAA8AAAABAAcAAAAOAAwAAAACAAQAAAAOAA0AAAACAAUAAAAOAA4AAAACAAYAAAAOAA8AAAACAAcAAAAPAAwAAAADAAQAAAAPAA0AAAADAAUAAAAPAA4AAAADAAYAAAAPAA8AAAADAAcAAAAFAP7/AAAFAAAAAAAFAP//AAAFAAEAAAAGAP7/AAAGAAAAAAAGAP//AAAGAAEAAAAHAP7/AAAHAAAAAAAHAP//AAAHAAEAAAAIAP7/AAAEAAAAAAAIAP//AAAEAAEAAAAJAP7/AAAFAAAAAAAJAP//AAAFAAEAAAAKAP7/AAAGAAAAAAAKAP//AAAGAAEAAAALAP7/AAAHAAAAAAALAP//AAAHAAEAAAAMAP7/AAAEAAAAAAAMAP//AAAEAAEAAAANAP7/AAAFAAAAAAANAP//AAAFAAEAAAAOAP7/AAAGAAAAAAAOAP//AAAGAAEAAAAPAP7/AAAHAAAAAAAPAP//AAAHAAEAAAAFAP3/AAAEAAEAAAAGAP3/AAAFAAEAAAAHAP3/AAAGAAEAAAAIAP3/AAAHAAEAAAAJAP3/AAAEAAEAAAAKAP3/AAAFAAEAAAALAP3/AAAGAAEAAAAMAP3/AAAHAAEAAAANAP3/AAAEAAEAAAAOAP3/AAAFAAEAAAAPAP3/AAAGAAEAAAAFAPz/AAAEAAAAAAAGAPz/AAAFAAAAAAAHAPz/AAAGAAAAAAAIAPz/AAAHAAAAAAAJAPz/AAAEAAAAAAAKAPz/AAAFAAAAAAALAPz/AAAGAAAAAAAMAPz/AAAHAAAAAAANAPz/AAAEAAAAAAAOAPz/AAAFAAAAAAAPAPz/AAAGAAAAAAAFAPr/AAAEAAAAAAAFAPv/AAAEAAEAAAAGAPr/AAAFAAAAAAAGAPv/AAAFAAEAAAAHAPr/AAAGAAAAAAAHAPv/AAAGAAEAAAAIAPr/AAAHAAAAAAAIAPv/AAAHAAEAAAAJAPr/AAAEAAAAAAAJAPv/AAAEAAEAAAAKAPr/AAAFAAAAAAAKAPv/AAAFAAEAAAALAPr/AAAGAAAAAAALAPv/AAAGAAEAAAAMAPr/AAAHAAAAAAAMAPv/AAAHAAEAAAANAPr/AAAEAAAAAAANAPv/AAAEAAEAAAAOAPr/AAAFAAAAAAAOAPv/AAAFAAEAAAAPAPr/AAAGAAAAAAAPAPv/AAAGAAEAAAAFAPn/AAAEAAEAAAAGAPn/AAAFAAEAAAAHAPn/AAAGAAEAAAAIAPn/AAAHAAEAAAAJAPn/AAAEAAEAAAAKAPn/AAAFAAEAAAALAPn/AAAGAAEAAAAMAPn/AAAHAAEAAAANAPn/AAAEAAEAAAAOAPn/AAAFAAEAAAAPAPn/AAAGAAEAAAALAAEAAAAGAAMAAAALAAIAAAAGAAQAAAALAAMAAAAGAAUAAAALAAQAAAAGAAUAAAALAAUAAAAGAAUAAAALAAYAAAAGAAUAAAALAAcAAAAGAAUAAAALAAgAAAAGAAUAAAALAAkAAAAGAAUAAAALAAoAAAAGAAUAAAALAAsAAAAGAAYAAAALAAwAAAAGAAUAAAAMAAsAAAADAAQAAAAMAAwAAAADAAUAAAAMAAkAAAADAAQAAAAMAAoAAAADAAUAAAAMAAcAAAADAAQAAAAMAAgAAAADAAUAAAAMAAUAAAADAAQAAAAMAAYAAAADAAUAAAAMAAMAAAADAAQAAAAMAAQAAAADAAUAAAAMAAEAAAADAAQAAAAMAAIAAAADAAUAAAAJABAAAAAAAAUAAAAKABAAAAABAAUAAAALABAAAAACAAUAAAAIABAAAAAAAAQAAAAMABAAAAAAAAQAAAAKAA4AAAAFAAcAAAA=")
+tile_set = ExtResource("1_uybik")
+
+[node name="Deco" type="TileMapLayer" parent="."]
+light_mask = 8
+z_index = 2
+y_sort_enabled = true
+tile_map_data = PackedByteArray("AAANAAIAAAACAAEAAAAHAAIAAAACAAEAAAAHAAYAAAACAAEAAAANAAYAAAACAAEAAAAHAAoAAAACAAEAAAANAAoAAAACAAEAAAAHAA4AAAACAAEAAAANAA4AAAACAAEAAAAMAP7/AAACAAAAAAAIAP7/AAACAAAAAAAKABAAAAAHAAQAAAA=")
+tile_set = ExtResource("1_uybik")
+
+[node name="FloorThrone" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAKAAIAAAAAAAIAAAA=")
+tile_set = ExtResource("1_uybik")
+
+[node name="Throne" type="TileMapLayer" parent="."]
+z_index = 2
+y_sort_enabled = true
+tile_map_data = PackedByteArray("AAAKAAEAAAAIAAAAAAA=")
+tile_set = ExtResource("1_uybik")
+
+[node name="Player" parent="." instance=ExtResource("2_jhoyw")]
+light_mask = 9
+z_index = 2
+y_sort_enabled = true
+position = Vector2(278, 384)
+view_mode = 1
+default_surface = "carpet"
+virtual_floor_bit = 5
+metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(2.12, 2.12)
+limit_left = 160
+limit_top = -220
+limit_right = 512
+limit_bottom = 544
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
+
+[node name="PointLight2D" type="PointLight2D" parent="Player"]
+position = Vector2(0, -9)
+shadow_enabled = true
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_5a2w1")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6500
+metadata/color_filter = Color(1, 1, 1, 0)
+
+[node name="StaticBody2D" type="Area2D" parent="."]
+collision_layer = 48
+metadata/surface = "default"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PackedVector2Array(160, 512, 256, 512, 256, 544, 416, 544, 416, 512, 512, 512, 512, 0, 160, 0, 160, 31, 385, 31, 385, 481, 287, 481, 287, 31, 160, 31)
+
+[node name="BG" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(359.5, 197.5)
+scale = Vector2(1485, 1095)
+texture = SubResource("GradientTexture2D_xmrvq")
+
+[node name="HUD" parent="." instance=ExtResource("3_sn8u8")]
+layer = 100
+visible = false
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(271, -47)
+color = Color(0.867665, 0.833188, 0.836847, 1)
+energy = 15.07
+range_item_cull_mask = 9
+texture = SubResource("GradientTexture2D_lvkt7")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6949
+metadata/color_filter = Color(1, 0.537255, 0, 0.403922)
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+position = Vector2(399, -46)
+color = Color(0.867665, 0.833188, 0.836847, 1)
+energy = 15.07
+range_item_cull_mask = 9
+texture = SubResource("GradientTexture2D_lvkt7")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6949
+metadata/color_filter = Color(1, 0.537255, 0, 0.403922)
+
+[node name="FX" type="CanvasLayer" parent="."]
+
+[node name="PostFX" type="CanvasLayer" parent="FX"]
+layer = 2
+script = ExtResource("5_fwsy5")
+effects = Array[ExtResource("6_pdvh7")]([SubResource("Resource_myoku")])
+metadata/_custom_type_script = "uid://d15nobs3uuxeb"
+
+[node name="Entrance" type="Marker2D" parent="."]
+position = Vector2(336, 478)
+
+[node name="Exit" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+position = Vector2(336, 527)
+shape = SubResource("RectangleShape2D_lvkt7")
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("8_pdvh7")]
+
+[connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]

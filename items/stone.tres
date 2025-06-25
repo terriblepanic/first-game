@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BlockItem" load_steps=3 format=3 uid="uid://byyjq2hpoyayy"]
+
+[ext_resource type="Script" uid="uid://uvmd65hksovi" path="res://scripts/block_item.gd" id="1_becff"]
+[ext_resource type="Texture2D" uid="uid://cbe6wn65m5lo6" path="res://assets/tiles/nature/stone.png" id="1_mwerj"]
+
+[resource]
+script = ExtResource("1_becff")
+terrain_id = 2
+name = "Stone"
+icon = ExtResource("1_mwerj")
+stack_size = 99
+count = 0
+metadata/_custom_type_script = "uid://uvmd65hksovi"

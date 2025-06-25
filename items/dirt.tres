@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BlockItem" load_steps=3 format=3 uid="uid://bogdcmbm7e1y5"]
+
+[ext_resource type="Script" uid="uid://uvmd65hksovi" path="res://scripts/block_item.gd" id="1_epv5f"]
+[ext_resource type="Texture2D" uid="uid://cb1ghpwo8so3s" path="res://assets/tiles/nature/grass/dirt.png" id="1_og4fo"]
+
+[resource]
+script = ExtResource("1_epv5f")
+terrain_id = 0
+name = "Dirt"
+icon = ExtResource("1_og4fo")
+stack_size = 99
+count = 0
+metadata/_custom_type_script = "uid://uvmd65hksovi"

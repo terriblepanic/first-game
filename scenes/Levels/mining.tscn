@@ -1,0 +1,138 @@
+[gd_scene load_steps=12 format=3 uid="uid://b1jldarqwjutx"]
+
+[ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_qpjmm"]
+[ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_lfneh"]
+[ext_resource type="Texture2D" uid="uid://baua631ap75lh" path="res://assets/test/mining.png" id="3_y5bej"]
+[ext_resource type="Script" uid="uid://xr34ja4tsdr" path="res://scripts/mining_entrance_mine.gd" id="4_y5bej"]
+[ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="5_kf5cw"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="6_kf5cw"]
+
+[sub_resource type="Gradient" id="Gradient_y5bej"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.554348, 0.73913)
+colors = PackedColorArray(1, 1, 1, 0.462745, 1, 1, 1, 0.0392157, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kf5cw"]
+gradient = SubResource("Gradient_y5bej")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y5bej"]
+size = Vector2(60, 163)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jja6h"]
+size = Vector2(60, 163)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y5bej"]
+shader = ExtResource("5_kf5cw")
+shader_parameter/bg_color = Vector4(0, 0, 0, 0)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("4_y5bej")
+
+[node name="Player" type="CanvasLayer" parent="."]
+layer = 0
+follow_viewport_enabled = true
+
+[node name="Player" parent="Player" instance=ExtResource("1_qpjmm")]
+position = Vector2(-287, 81)
+virtual_floor_bit = 5
+metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="Player/Player"]
+position = Vector2(0, -47)
+zoom = Vector2(2.3, 2.3)
+limit_left = -417
+limit_top = -144
+limit_right = 55
+limit_bottom = 109
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+drag_left_margin = 0.0
+drag_top_margin = 0.0
+drag_right_margin = 0.0
+drag_bottom_margin = 0.0
+
+[node name="PointLight2D" type="PointLight2D" parent="Player/Player"]
+position = Vector2(0, -25)
+shadow_enabled = true
+shadow_filter = 2
+texture = SubResource("GradientTexture2D_kf5cw")
+metadata/use_color_temperature = true
+metadata/color_temperature = 6500
+metadata/color_filter = Color(1, 1, 1, 0)
+
+[node name="HUD" parent="." instance=ExtResource("2_lfneh")]
+layer = 100
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-181, -17)
+texture = ExtResource("3_y5bej")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 48
+metadata/surface = "default"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+build_mode = 1
+polygon = PackedVector2Array(-418, 85, 56, 85, 55, -145, -418, -145)
+
+[node name="LeftExit" type="Area2D" parent="."]
+position = Vector2(-219, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftExit"]
+position = Vector2(-167, 27.5)
+shape = SubResource("RectangleShape2D_y5bej")
+
+[node name="RightExit" type="Area2D" parent="."]
+position = Vector2(190, -2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightExit"]
+position = Vector2(-167, 27.5)
+shape = SubResource("RectangleShape2D_y5bej")
+
+[node name="EntranceMine" type="Area2D" parent="."]
+position = Vector2(0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceMine"]
+position = Vector2(-167, 27.5)
+shape = SubResource("RectangleShape2D_jja6h")
+
+[node name="EntranceMineUI" type="PopupPanel" parent="."]
+position = Vector2i(323, 124)
+size = Vector2i(100, 50)
+visible = true
+
+[node name="Panel" type="Panel" parent="EntranceMineUI"]
+material = SubResource("ShaderMaterial_y5bej")
+clip_contents = true
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 96.0
+offset_bottom = 46.0
+
+[node name="Label" type="Label" parent="EntranceMineUI/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+text = "ВХОД В ШАХТУ
+Нажмите E"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("6_kf5cw")]
+
+[connection signal="body_entered" from="LeftExit" to="." method="_on_left_exit_body_entered"]
+[connection signal="body_entered" from="RightExit" to="." method="_on_right_exit_body_entered"]
+[connection signal="body_entered" from="EntranceMine" to="." method="_on_entrance_mine_body_entered"]
+[connection signal="body_exited" from="EntranceMine" to="." method="_on_entrance_mine_body_exited"]

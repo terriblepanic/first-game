@@ -1,0 +1,80 @@
+[gd_scene load_steps=13 format=3 uid="uid://djh7as6est3wg"]
+
+[ext_resource type="Texture2D" uid="uid://u42mn0q7fp4h" path="res://assets/test/boss.png" id="1_0pyax"]
+[ext_resource type="PackedScene" uid="uid://bn24h8j685tm8" path="res://scenes/Levels/BossDemonKing.tscn" id="1_5lkho"]
+[ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="2_1rafi"]
+[ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="3_liq05"]
+[ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="4_0pyax"]
+[ext_resource type="Script" uid="uid://y5w4xu86nbn0" path="res://scenes/Levels/boss_camera.gd" id="4_m0xnq"]
+[ext_resource type="Script" uid="uid://d15nobs3uuxeb" path="res://addons/postfx/nodes/PostFX.gd" id="5_ijvk1"]
+[ext_resource type="Script" uid="uid://bvbw3ejkm2bck" path="res://addons/postfx/scripts/FXBase.gd" id="6_m0xnq"]
+[ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="7_ape5k"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6kgtk"]
+radius = 7.0
+height = 38.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_liq05"]
+size = Vector2(1254, 56)
+
+[sub_resource type="Resource" id="Resource_50kcf"]
+script = ExtResource("7_ape5k")
+intensity = 0.2
+color = Color(0, 0, 0, 1)
+enabled = true
+metadata/_custom_type_script = "uid://cqqc7s7kp8uem"
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(373, 170)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_0pyax")
+
+[node name="BossDemonKing" parent="." instance=ExtResource("1_5lkho")]
+position = Vector2(395, 266)
+ground_y = 266.0
+arena_bounds = Rect2(0, 0, 500, 200)
+
+[node name="Player" type="CanvasLayer" parent="."]
+
+[node name="Player" parent="Player" instance=ExtResource("2_1rafi")]
+position = Vector2(156, 311)
+collision_layer = 5
+step_pixels = 44.0
+virtual_floor_bit = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Player"]
+position = Vector2(0, -18)
+shape = SubResource("CapsuleShape2D_6kgtk")
+
+[node name="PlayerCamera" type="Camera2D" parent="Player/Player"]
+limit_left = 0
+limit_top = -70
+limit_right = 740
+limit_bottom = 410
+script = ExtResource("4_m0xnq")
+
+[node name="HUD" parent="." instance=ExtResource("3_liq05")]
+layer = 100
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, -15)
+collision_layer = 16
+collision_mask = 3
+metadata/surface = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(396, 356)
+shape = SubResource("RectangleShape2D_liq05")
+
+[node name="Vignete" type="CanvasLayer" parent="."]
+
+[node name="PostFX" type="CanvasLayer" parent="Vignete"]
+script = ExtResource("5_ijvk1")
+effects = Array[ExtResource("6_m0xnq")]([SubResource("Resource_50kcf")])
+metadata/_custom_type_script = "uid://d15nobs3uuxeb"
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("4_0pyax")]

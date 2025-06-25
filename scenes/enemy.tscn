@@ -1,0 +1,185 @@
+[gd_scene load_steps=16 format=3 uid="uid://dkpppp5nyoaox"]
+
+[ext_resource type="Script" uid="uid://dy2htt0do5l76" path="res://scripts/enemy.gd" id="1"]
+[ext_resource type="Shader" uid="uid://bsla35snqxt2w" path="res://shaders/radial_shine.gdshader" id="2_md0e3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_md0e3"]
+shader = ExtResource("2_md0e3")
+shader_parameter/amplitude = 100.0
+shader_parameter/frequency = 8.0
+shader_parameter/light_magnitude = 18.0
+shader_parameter/color_spread = 0.0
+shader_parameter/light_distance = 0.18
+shader_parameter/speed = 0.0199776
+shader_parameter/cut_angle = true
+shader_parameter/angle = 53.0
+shader_parameter/yshift = -0.59
+
+[sub_resource type="Gradient" id="Gradient_7p1mj"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.250838, 0.222177, 0.126598, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_md0e3"]
+gradient = SubResource("Gradient_7p1mj")
+width = 32
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(32, 64)
+
+[sub_resource type="Gradient" id="Gradient_md0e3"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.337662)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4ra3w"]
+gradient = SubResource("Gradient_md0e3")
+width = 8
+height = 8
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_5uy6h"]
+colors = PackedColorArray(0.25098, 0.223529, 0.12549, 1, 0.25098, 0.223529, 0.12549, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_c4w8v"]
+gradient = SubResource("Gradient_5uy6h")
+width = 8
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xwavj"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(0.5, 0.5, 1)
+emission_shape = 3
+emission_box_extents = Vector3(32, 64, 1)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = 100.0
+radial_accel_min = -2.23517e-06
+radial_accel_max = 100.0
+color_ramp = SubResource("GradientTexture1D_c4w8v")
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7p1mj"]
+radius = 70.0
+height = 360.0
+
+[sub_resource type="Gradient" id="Gradient_4ra3w"]
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qhqgy"]
+gradient = SubResource("Gradient_4ra3w")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5uy6h"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(2, 0.6, 1)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 112.29
+emission_ring_inner_radius = 60.0
+emission_ring_cone_angle = 90.0
+orbit_velocity_min = -0.237
+orbit_velocity_max = 0.237
+radial_velocity_min = -707.69
+radial_velocity_max = -7.78002
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -30.0
+radial_accel_max = -3.33
+scale_min = 0.0
+scale_max = 6.75
+color = Color(0.543907, 1.78084e-06, 0.224954, 1)
+color_ramp = SubResource("GradientTexture1D_qhqgy")
+turbulence_enabled = true
+turbulence_noise_speed_random = 0.5
+turbulence_influence_max = 0.169
+turbulence_initial_displacement_min = 1.49012e-06
+turbulence_initial_displacement_max = 5.4
+
+[node name="Enemy" type="RigidBody2D"]
+z_index = 1
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+z_index = 1
+material = SubResource("ShaderMaterial_md0e3")
+offset_left = -184.0
+offset_top = -228.0
+offset_right = 66.0
+offset_bottom = 22.0
+scale = Vector2(1.47525, 1.04053)
+color = Color(1, 1, 1, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_md0e3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")
+
+[node name="HPBar" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -49.0
+offset_top = -69.0
+offset_right = 50.0
+offset_bottom = -48.0
+metadata/_edit_group_ = true
+
+[node name="ProgressBar" type="ProgressBar" parent="HPBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 10.0
+value = 10.0
+show_percentage = false
+
+[node name="HealthBarTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="DeathAnimation" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 160
+texture = SubResource("GradientTexture2D_4ra3w")
+one_shot = true
+speed_scale = 2.0
+explosiveness = 1.0
+fixed_fps = 60
+trail_sections = 64
+trail_section_subdivisions = 64
+process_material = SubResource("ParticleProcessMaterial_xwavj")
+
+[node name="AttackArea" type="Area2D" parent="."]
+monitoring = false
+
+[node name="CollisionShape2D_attack" type="CollisionShape2D" parent="AttackArea"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_7p1mj")
+
+[node name="AttackAnimation" type="GPUParticles2D" parent="."]
+texture_filter = 1
+emitting = false
+amount = 160
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+randomness = 0.3
+fixed_fps = 60
+trail_enabled = true
+trail_lifetime = 0.5
+trail_sections = 126
+trail_section_subdivisions = 126
+process_material = SubResource("ParticleProcessMaterial_5uy6h")
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="timeout" from="HealthBarTimer" to="." method="_on_health_bar_timer_timeout"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]

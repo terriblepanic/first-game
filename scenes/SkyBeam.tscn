@@ -1,0 +1,101 @@
+[gd_scene load_steps=15 format=3 uid="uid://bkvl5jk4yjofm"]
+
+[ext_resource type="Script" uid="uid://dxxfmx8553tql" path="res://scripts/sky_beam.gd" id="1_3onen"]
+[ext_resource type="AudioStream" uid="uid://de5kbyuq0w0p2" path="res://assets/sounds/boss/beam.wav" id="2_nuvq7"]
+[ext_resource type="AudioStream" uid="uid://t4pcygxynxf8" path="res://assets/sounds/boss/beam_2.wav" id="3_4vk7h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3onen"]
+size = Vector2(32, 128)
+
+[sub_resource type="Gradient" id="Gradient_nuvq7"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4vk7h"]
+gradient = SubResource("Gradient_nuvq7")
+width = 8
+height = 8
+
+[sub_resource type="Gradient" id="Gradient_4vk7h"]
+offsets = PackedFloat32Array(0, 0.613636, 1)
+colors = PackedColorArray(0.498039, 0.662745, 1, 1, 0.560784, 0, 0.737255, 0.788235, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_c5yob"]
+gradient = SubResource("Gradient_4vk7h")
+
+[sub_resource type="Curve" id="Curve_8g71b"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_dj3yh"]
+curve = SubResource("Curve_8g71b")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ggh8q"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 8.0
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 76.92
+initial_velocity_max = 276.92
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_dj3yh")
+color_ramp = SubResource("GradientTexture1D_c5yob")
+
+[sub_resource type="Gradient" id="Gradient_c5yob"]
+offsets = PackedFloat32Array(0, 0.613636, 1)
+colors = PackedColorArray(0.498039, 0.662745, 1, 0.596078, 0.560784, 0, 0.737255, 0.443137, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_o4iwb"]
+gradient = SubResource("Gradient_c5yob")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_o4iwb"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(8, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 59.88
+initial_velocity_max = 106.04
+radial_velocity_min = 15.39
+radial_velocity_max = 15.39
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_dj3yh")
+color_ramp = SubResource("GradientTexture1D_o4iwb")
+
+[node name="SkyBeam" type="Area2D"]
+script = ExtResource("1_3onen")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -56)
+shape = SubResource("RectangleShape2D_3onen")
+
+[node name="BeamParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 250
+texture = SubResource("GradientTexture2D_4vk7h")
+lifetime = 0.4
+one_shot = true
+fixed_fps = 60
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_ggh8q")
+
+[node name="BeamParticlesMarker" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 15
+texture = SubResource("GradientTexture2D_4vk7h")
+lifetime = 0.4
+one_shot = true
+fixed_fps = 60
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_o4iwb")
+
+[node name="cleanup_timer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+autostart = true
+
+[node name="MarkerSfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_nuvq7")
+
+[node name="ImpactSfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_4vk7h")
