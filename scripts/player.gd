@@ -573,29 +573,15 @@ func _emit_stats() -> void:
 # ───────── FOOTSTEPS ─────────
 # ───────── Определение поверхности под игроком ─────────
 func _surface_under_player() -> String:
-	print("[_surface] Enter. view_mode=", view_mode, " top_floor=", top_floor)
-
 	# 1) Top-Down + TileMapLayer
 	if view_mode == ViewMode.TOP_DOWN and top_floor:
-		print("  [1] Top-Down & top_floor present")
 		var local = top_floor.to_local(global_position)
-		print("    local coords in TileMapLayer:", local)
 		var cell  = top_floor.local_to_map(local)
-		print("    mapped to cell:", cell)
 		var td    = top_floor.get_cell_tile_data(cell)
-		print("    TileData:", td)
 		if td and td.has_custom_data("surface"):
 			var surf = td.get_custom_data("surface")
-			print("    → Found tile surface:", surf)
 			return surf
-		else:
-			print("    → No Custom Data.surface on this tile, fallback")
 
-	else:
-		print("  [1] Skipped (not Top-Down or no top_floor): view_mode=", view_mode, " top_floor_valid=", top_floor != null)
-
-	# 2) Любой режим: Point-Query для Area2D/StaticBody2D (виртуальный пол)
-	print("  [2] Point-query for virtual floors on layer", virtual_floor_bit)
 	var p = PhysicsPointQueryParameters2D.new()
 	p.position            = global_position
 	p.collision_mask      = 1 << virtual_floor_bit
@@ -603,58 +589,29 @@ func _surface_under_player() -> String:
 	p.collide_with_bodies = true
 	p.exclude             = [self]
 	var hits = get_world_2d().direct_space_state.intersect_point(p)
-	print("    hits count:", hits.size())
 	for i in range(hits.size()):
 		var h = hits[i]
-		print("    hit[", i, "]", h)
 		var col = h.collider
-		print("      collider:", col)
 		if col and col.has_meta("surface"):
 			var surf = col.get_meta("surface")
-			print("      → Found meta.surface on collider:", surf)
 			return surf
-		else:
-			print("      → No meta.surface on this collider")
-
-	print("    [2] No virtual-floor surface found")
-
 	# 3) Side-View: RayCast2D «под ногами»
 	var colliding = floor_ray.is_colliding()
-	print("  [3] RayCast2D is_colliding():", colliding)
-	print("  RayCast enabled:", floor_ray.enabled, 
-	  " mask:", floor_ray.collision_mask, 
-	  " cast_to:", floor_ray.target_position)
 	if colliding:
 		var col = floor_ray.get_collider()
-		print("    RayCast collider:", col)
 		if col.has_meta("surface"):
 			var surf = col.get_meta("surface")
-			print("    → Found meta.surface on collider:", surf)
 			return surf
-		else:
-			print("    → No meta.surface on collider, checking TileMapLayer")
 
 		if col is TileMapLayer:
-			print("    Collider is TileMapLayer, fetching tile data…")
 			var tm    : TileMapLayer = col
 			var lp    = tm.to_local(floor_ray.get_collision_point())
-			print("      local point:", lp)
 			var cell2 = tm.local_to_map(lp)
-			print("      mapped cell:", cell2)
 			var td2   = tm.get_cell_tile_data(cell2)
-			print("      TileData2:", td2)
 			if td2 and td2.has_custom_data("surface"):
 				var surf = td2.get_custom_data("surface")
-				print("      → Found tile surface (2):", surf)
 				return surf
-			else:
-				print("      → No Custom Data.surface on this tile")
 
-	else:
-		print("    RayCast not colliding, skip [3]")
-
-	# 4) Fallback
-	print("  [4] Fallback to default_surface:", default_surface)
 	return default_surface
 
 

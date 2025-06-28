@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://dkel0agqip5am"]
+[gd_scene load_steps=21 format=3 uid="uid://dkel0agqip5am"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_kx86s"]
 [ext_resource type="Script" uid="uid://1a8i70subq8c" path="res://scenes/Levels/guild_in.gd" id="1_xay07"]
 [ext_resource type="Texture2D" uid="uid://dvrrh0p602qjb" path="res://assets/test/guild_in.png" id="2_xay07"]
+[ext_resource type="PackedScene" uid="uid://c2of4wdeqdxhn" path="res://scenes/Npc/guild.tscn" id="4_0w7t7"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="4_2rxx5"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="5_0w7t7"]
 
@@ -48,6 +49,9 @@ radius = 18.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_r0h2e"]
 radius = 19.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_feqjg"]
+radius = 6.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_feqjg"]
 size = Vector2(50, 24)
 
@@ -88,6 +92,11 @@ shape = SubResource("CircleShape2D_kx86s")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_xay07")
+
+[node name="Guildmaster" parent="." instance=ExtResource("4_0w7t7")]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(101, -22)
 
 [node name="HUD" parent="." instance=ExtResource("4_2rxx5")]
 layer = 100
@@ -138,6 +147,10 @@ shape = SubResource("CircleShape2D_grh58")
 [node name="CollisionShape2D8" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-153, 107)
 shape = SubResource("CircleShape2D_r0h2e")
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(101, -21)
+shape = SubResource("CircleShape2D_feqjg")
 
 [node name="Exit" type="Area2D" parent="."]
 

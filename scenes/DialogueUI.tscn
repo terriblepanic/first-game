@@ -1,0 +1,153 @@
+[gd_scene load_steps=10 format=3 uid="uid://b40qatstynh6s"]
+
+[ext_resource type="Script" uid="uid://d2bfogp7lmxl8" path="res://scripts/MainMenu/dialogue_ui.gd" id="1_6q285"]
+[ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="2_jx1sv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e6usr"]
+shader = ExtResource("2_jx1sv")
+shader_parameter/bg_color = Vector4(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_imsod"]
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+corner_detail = 20
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wlc0t"]
+draw_center = false
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_blend = true
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+corner_detail = 20
+anti_aliasing = false
+
+[sub_resource type="Animation" id="Animation_jx1sv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6q285"]
+resource_name = "slide_in"
+step = 0.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0166667, 0.0333333, 0.05, 0.0666667, 0.0833333, 0.1, 0.116667, 0.133333, 0.15, 0.166667, 0.183333, 0.2, 0.216667, 0.233333, 0.25, 0.266667, 0.283333, 0.3, 0.316667, 0.333333, 0.35, 0.366667, 0.383333, 0.4, 0.416667, 0.433333, 0.45, 0.466667, 0.483333, 0.5, 0.516667, 0.533333, 0.55, 0.566667, 0.583333, 0.6, 0.616667, 0.633333, 0.65, 0.666667, 0.683333, 0.7, 0.716667, 0.733333, 0.75, 0.766667, 0.783333, 0.8, 0.816667, 0.833333, 0.85, 0.866667, 0.883333, 0.9, 0.916667, 0.933333, 0.95, 0.966667, 0.983333, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 140), Vector2(0, 132.807), Vector2(0, 125.87), Vector2(0, 119.184), Vector2(0, 112.744), Vector2(0, 106.545), Vector2(0, 100.583), Vector2(0, 94.8525), Vector2(0, 89.3484), Vector2(0, 84.066), Vector2(0, 79.0006), Vector2(0, 74.1472), Vector2(0, 69.5011), Vector2(0, 65.0574), Vector2(0, 60.8113), Vector2(0, 56.7581), Vector2(0, 52.893), Vector2(0, 49.2112), Vector2(0, 45.7081), Vector2(0, 42.3788), Vector2(0, 39.2188), Vector2(0, 36.2232), Vector2(0, 33.3874), Vector2(0, 30.7068), Vector2(0, 28.1768), Vector2(0, 25.7926), Vector2(0, 23.5497), Vector2(0, 21.4436), Vector2(0, 19.4696), Vector2(0, 17.6232), Vector2(0, 15.8999), Vector2(0, 14.2951), Vector2(0, 12.8044), Vector2(0, 11.4233), Vector2(0, 10.1473), Vector2(0, 8.97214), Vector2(0, 7.89326), Vector2(0, 6.90637), Vector2(0, 6.00708), Vector2(0, 5.19109), Vector2(0, 4.45409), Vector2(0, 3.79182), Vector2(0, 3.20004), Vector2(0, 2.67456), Vector2(0, 2.21117), Vector2(0, 1.80576), Vector2(0, 1.45419), Vector2(0, 1.15244), Vector2(0, 0.896439), Vector2(0, 0.68222), Vector2(0, 0.505859), Vector2(0, 0.363434), Vector2(0, 0.251129), Vector2(0, 0.165161), Vector2(0, 0.101807), Vector2(0, 0.0574493), Vector2(0, 0.0285187), Vector2(0, 0.0115662), Vector2(0, 0.00323486), Vector2(0, 0.000366211), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_e6usr"]
+resource_name = "slide_out"
+step = 0.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.05, 0.0666667, 0.0833333, 0.1, 0.116667, 0.133333, 0.15, 0.166667, 0.183333, 0.2, 0.216667, 0.233333, 0.25, 0.266667, 0.283333, 0.3, 0.316667, 0.333333, 0.35, 0.366667, 0.383333, 0.4, 0.416667, 0.433333, 0.45, 0.466667, 0.483333, 0.5, 0.516667, 0.533333, 0.55, 0.566667, 0.583333, 0.6, 0.616667, 0.633333, 0.65, 0.666667, 0.683333, 0.7, 0.716667, 0.733333, 0.75, 0.766667, 0.783333, 0.8, 0.816667, 0.833333, 0.85, 0.866667, 0.883333, 0.9, 0.916667, 0.933333, 0.95, 0.966667, 0.983333, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0.00051196), Vector2(0, 0.00274435), Vector2(0, 0.00903269), Vector2(0, 0.0227576), Vector2(0, 0.0484195), Vector2(0, 0.091675), Vector2(0, 0.159367), Vector2(0, 0.259552), Vector2(0, 0.401521), Vector2(0, 0.595824), Vector2(0, 0.854284), Vector2(0, 1.19002), Vector2(0, 1.61746), Vector2(0, 2.15234), Vector2(0, 2.81177), Vector2(0, 3.61418), Vector2(0, 4.57937), Vector2(0, 5.72852), Vector2(0, 7.08419), Vector2(0, 8.67033), Vector2(0, 10.5123), Vector2(0, 12.637), Vector2(0, 15.0724), Vector2(0, 17.8484), Vector2(0, 20.9959), Vector2(0, 24.5476), Vector2(0, 28.5374), Vector2(0, 33.0007), Vector2(0, 37.9746), Vector2(0, 43.4974), Vector2(0, 49.6092), Vector2(0, 56.3511), Vector2(0, 63.7663), Vector2(0, 71.8991), Vector2(0, 80.7955), Vector2(0, 90.5029), Vector2(0, 101.07), Vector2(0, 112.548), Vector2(0, 124.989), Vector2(0, 138.446), Vector2(0, 152.974), Vector2(0, 168.63), Vector2(0, 185.473), Vector2(0, 203.562), Vector2(0, 222.959), Vector2(0, 243.726), Vector2(0, 265.929), Vector2(0, 289.633), Vector2(0, 314.906), Vector2(0, 341.818), Vector2(0, 370.439), Vector2(0, 400.843), Vector2(0, 433.102), Vector2(0, 467.294), Vector2(0, 503.495), Vector2(0, 541.785), Vector2(0, 582.244), Vector2(0, 624.954), Vector2(0, 670)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e6usr"]
+_data = {
+&"RESET": SubResource("Animation_jx1sv"),
+&"slide_in": SubResource("Animation_6q285"),
+&"slide_out": SubResource("Animation_e6usr")
+}
+
+[node name="DialogueUI" type="CanvasLayer"]
+layer = 100
+visible = false
+script = ExtResource("1_6q285")
+name_label_path = NodePath("Panel/VBoxContainer/NameLabel")
+text_label_path = NodePath("Panel/VBoxContainer/DialogText")
+
+[node name="Panel" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_e6usr")
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -133.0
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_imsod")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 5.0
+offset_right = -15.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NameLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.360784, 0.360784, 0.360784, 1)
+theme_override_colors/font_outline_color = Color(0.764706, 0.764706, 0.764706, 1)
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 20
+
+[node name="DialogText" type="RichTextLabel" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.341176, 0.341176, 0.341176, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/line_separation = 2
+theme_override_font_sizes/normal_font_size = 18
+fit_content = true
+
+[node name="Fg" type="Panel" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -133.0
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wlc0t")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_e6usr")
+}
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

@@ -1,0 +1,94 @@
+[gd_scene load_steps=11 format=3 uid="uid://h354hmfq8gfi"]
+
+[ext_resource type="Script" uid="uid://demcr0026xppb" path="res://scenes/Npc/npc.gd" id="1_m0ur2"]
+[ext_resource type="Texture2D" uid="uid://msacq8ricc1x" path="res://assets/char/npc.png" id="2_xvjkc"]
+[ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="3_a6fxc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0ur2"]
+atlas = ExtResource("2_xvjkc")
+region = Rect2(0, 144, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xvjkc"]
+atlas = ExtResource("2_xvjkc")
+region = Rect2(32, 144, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6fxc"]
+atlas = ExtResource("2_xvjkc")
+region = Rect2(64, 144, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m7f7e"]
+atlas = ExtResource("2_xvjkc")
+region = Rect2(96, 144, 32, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tk8u4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0ur2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xvjkc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6fxc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m7f7e")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0kia1"]
+radius = 38.0132
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y12k4"]
+shader = ExtResource("3_a6fxc")
+shader_parameter/bg_color = Vector4(0, 0, 0, 0)
+
+[node name="Guard" type="Node2D"]
+script = ExtResource("1_m0ur2")
+area_path = NodePath("Area2D")
+popup_path = NodePath("DialogUI")
+npc_id = "royal_guard_1"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -13)
+sprite_frames = SubResource("SpriteFrames_tk8u4")
+frame_progress = 0.153217
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, -22)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 13)
+shape = SubResource("CircleShape2D_0kia1")
+
+[node name="DialogUI" type="PopupPanel" parent="."]
+auto_translate_mode = 1
+position = Vector2i(323, 32)
+size = Vector2i(110, 50)
+visible = true
+
+[node name="Panel" type="Panel" parent="DialogUI"]
+material = SubResource("ShaderMaterial_y12k4")
+clip_contents = true
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 106.0
+offset_bottom = 46.0
+
+[node name="Label" type="Label" parent="DialogUI/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+text = "ПОГОВОРИТЬ
+Нажмите E"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

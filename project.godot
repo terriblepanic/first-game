@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="first_game"
+config/name="isekai"
 run/main_scene="uid://j8tyoq1hd1bx"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=60
@@ -24,6 +24,8 @@ BlessingManager="*res://scripts/blessing_manager.gd"
 SceneManager="*res://addons/scene_manager/SceneManager.tscn"
 SaveManager="*res://scripts/Save/save_manager.gd"
 InventoryData="*res://scripts/Save/inventory_data.gd"
+GameState="*res://scripts/GameState.gd"
+DialogueMgr="*res://scripts/DialogueManager.gd"
 
 [display]
 
