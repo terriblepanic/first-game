@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://drcpid30wp65t"]
+[gd_scene load_steps=29 format=3 uid="uid://drcpid30wp65t"]
 
 [ext_resource type="Texture2D" uid="uid://j5uws3p6obw1" path="res://assets/Levels/Kingdom holl/0.png" id="1_606s2"]
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_myoku"]
@@ -12,25 +12,37 @@
 [ext_resource type="Texture2D" uid="uid://di1va0jwpjwx6" path="res://assets/Levels/Kingdom holl/6.png" id="7_myoku"]
 [ext_resource type="Shader" uid="uid://bt6wdw7dwo2af" path="res://shaders/kingdom_holl_foliage_wind.gdshader" id="9_4hhpu"]
 [ext_resource type="Script" uid="uid://d15nobs3uuxeb" path="res://addons/postfx/nodes/PostFX.gd" id="11_bbgxk"]
+[ext_resource type="Shader" uid="uid://gwe0vf0j2ng3" path="res://shaders/kingdom_holl_god_rays.gdshader" id="12_bbgxk"]
 [ext_resource type="Script" uid="uid://bvbw3ejkm2bck" path="res://addons/postfx/scripts/FXBase.gd" id="12_vb0pl"]
 [ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="13_r68dp"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="14_4tqme"]
 
-[sub_resource type="Gradient" id="Gradient_ucs00"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.554348, 0.73913)
-colors = PackedColorArray(1, 1, 1, 0.462745, 1, 1, 1, 0.0392157, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_xosg7"]
-gradient = SubResource("Gradient_ucs00")
-width = 256
-height = 256
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ucs00"]
 radius = 2.61
 height = 13.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bbgxk"]
+frequency = 0.0007
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vb0pl"]
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_bbgxk")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r68dp"]
+shader = ExtResource("9_4hhpu")
+shader_parameter/pixel_mode = true
+shader_parameter/pixel_amount = 8000.0
+shader_parameter/distortion = 0.004
+shader_parameter/texture_noise_system = true
+shader_parameter/noise_speed = 0.245
+shader_parameter/noise_direction = -1
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_vb0pl")
+shader_parameter/worley_noise_system = false
+shader_parameter/worley_cell_density = 10.0
+shader_parameter/worley_speed = 2.0
+shader_parameter/edge_and_mask = false
+shader_parameter/alpha_value = 1.0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4hhpu"]
 frequency = 0.0295
@@ -60,6 +72,35 @@ shader_parameter/worley_speed = 2.0
 shader_parameter/edge_and_mask = false
 shader_parameter/alpha_value = 1.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bbgxk"]
+shader = ExtResource("12_bbgxk")
+shader_parameter/angle = -0.175
+shader_parameter/position = -0.2
+shader_parameter/spread = 1.0
+shader_parameter/cutoff = -0.047
+shader_parameter/falloff = 0.337
+shader_parameter/edge_fade = 0.466
+shader_parameter/speed = 1.0
+shader_parameter/ray1_density = 8.0
+shader_parameter/ray2_density = 30.0
+shader_parameter/ray2_intensity = 0.3
+shader_parameter/ray_color = Color(1, 0.9, 0.65, 0.8)
+shader_parameter/hdr = false
+shader_parameter/seed = 5.0
+shader_parameter/pixelation = 100.0
+shader_parameter/quantize_colors = true
+shader_parameter/color_levels = 9
+shader_parameter/dither = false
+shader_parameter/dither_strength = 0.5
+shader_parameter/opacity = 0.495
+
+[sub_resource type="Gradient" id="Gradient_vb0pl"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_r68dp"]
+gradient = SubResource("Gradient_vb0pl")
+width = 352
+height = 192
+
 [sub_resource type="Resource" id="Resource_myoku"]
 script = ExtResource("13_r68dp")
 intensity = 0.2
@@ -74,7 +115,6 @@ size = Vector2(60, 231)
 script = ExtResource("1_ucs00")
 
 [node name="Player" type="CanvasLayer" parent="."]
-layer = 0
 follow_viewport_enabled = true
 
 [node name="Player" parent="Player" instance=ExtResource("1_myoku")]
@@ -95,15 +135,6 @@ drag_left_margin = 0.0
 drag_top_margin = 0.0
 drag_right_margin = 0.0
 drag_bottom_margin = 0.0
-
-[node name="PointLight2D" type="PointLight2D" parent="Player/Player"]
-position = Vector2(0, -25)
-shadow_enabled = true
-shadow_filter = 2
-texture = SubResource("GradientTexture2D_xosg7")
-metadata/use_color_temperature = true
-metadata/color_temperature = 6500
-metadata/color_filter = Color(1, 1, 1, 0)
 
 [node name="CollisionShape2D_body2" type="CollisionShape2D" parent="Player/Player"]
 position = Vector2(0, -3)
@@ -169,6 +200,8 @@ position = Vector2(-320, -67)
 motion_mirroring = Vector2(352, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Banners"]
+material = SubResource("ShaderMaterial_r68dp")
+position = Vector2(0, -24)
 texture = ExtResource("4_4hhpu")
 centered = false
 
@@ -198,6 +231,19 @@ motion_mirroring = Vector2(352, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Pods"]
 texture = ExtResource("6_7pia3")
+centered = false
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+z_index = 2
+texture_filter = 1
+texture_repeat = 3
+position = Vector2(-320, -78)
+motion_mirroring = Vector2(352, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+z_index = 2
+material = SubResource("ShaderMaterial_bbgxk")
+texture = SubResource("GradientTexture2D_r68dp")
 centered = false
 
 [node name="FX" type="CanvasLayer" parent="."]

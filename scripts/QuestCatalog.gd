@@ -21,8 +21,18 @@ const _TEMPLATE := {
 # ---------- БАЗА КВЕСТОВ ----------
 var QUESTS: Dictionary = {
 	"guild_copper": {
-		"title"  : "Добыть 2 медных руды",
+		"title"  : "Добыть 3 медных руды",
 		"need"   : { ITEM_COPPER_ORE : 2 },
+		"reward" : { ITEM_GOLD_COIN  : 1 }
+	},
+	"guild_stone": {
+		"title"  : "Добыть 5 камня",
+		"need"   : { ITEM_STONE : 5 },
+		"reward" : { ITEM_GOLD_COIN  : 1 }
+	},
+	"guild_iron": {
+		"title"  : "Добыть 1 железную руду",
+		"need"   : { ITEM_IRON_ORE : 1 },
 		"reward" : { ITEM_GOLD_COIN  : 1 }
 	}
 	# добавляй новые ниже…

@@ -1,112 +1,102 @@
 extends Node2D
 class_name NPCController
 ## --------------------------------------------------
-##  • всплывающая подсказка «E»
-##  • запуск диалога через DialogueMgr / DialogueUI
-##  • интеграция с QuestMgr через QuestCatalog
+##  всплывающая подсказка «E» • диалоги • цепочка квестов
 ## --------------------------------------------------
 
-# ---------- Editor exports ----------
 @export var area_path  : NodePath
 @export var popup_path : NodePath
-@export var npc_id     : String      = "king"
-@export var flip_sprite: bool        = false
+@export var npc_id     : String = "king"
+@export var flip_sprite: bool   = false
 
-# ---------- onready ----------
 @onready var area_detector : Area2D           = get_node(area_path)
 @onready var hint_popup    : PopupPanel       = get_node(popup_path)
 @onready var sprite        : AnimatedSprite2D = $AnimatedSprite2D
 @onready var dialogue_ui   : DialogueUI       = preload("res://scenes/DialogueUI.tscn").instantiate()
 
-var _player_inside := false        # стоит ли игрок в зоне
+var _player_inside := false
 
-# ---------- КТО КАКИЕ КВЕСТЫ ОБСЛУЖИВАЕТ ----------
-# порядок в массиве = порядок цепочки (первый выдаём, потом сдаём, переходим ко второму…)
-const NPC_QUEST_CHAIN : Dictionary = {
-	"guildmaster": ["guild_copper"]    # добавляй ещё id по мере роста цепочки
-	# "blacksmith": ["forge_sword", "sharpen_blade"],
+# порядок = порядок выполнения
+const NPC_QUEST_CHAIN := {
+	"guildmaster": [
+		"guild_copper",
+		"guild_stone",
+		"guild_iron"
+	]
 }
 
-# ==================================================
-#  READY
-# ==================================================
+# --------------------------------------------------
 func _ready() -> void:
 	sprite.play()
 	sprite.flip_h = flip_sprite
-
 	get_tree().root.call_deferred("add_child", dialogue_ui)
 	dialogue_ui.dialogue_closed.connect(_on_dialogue_closed)
-
 	area_detector.body_entered.connect(_on_body_entered)
 	area_detector.body_exited .connect(_on_body_exited)
-
 	hint_popup.hide()
 
-# ==================================================
-#  TRIGGER ZONE
-# ==================================================
-func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		_player_inside = true
-		_show_popup()
+# ---------- зона ----------
+func _on_body_entered(b): if b.is_in_group("player"): _player_inside = true;  _show_popup()
+func _on_body_exited(b) : if b.is_in_group("player"): _player_inside = false; hint_popup.hide()
 
-func _on_body_exited(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		_player_inside = false
-		hint_popup.hide()
+# ---------- процесс ----------
+func _process(_d): if _player_inside and Input.is_action_just_pressed("interact"): _start_dialogue()
 
-# ==================================================
-#  PROCESS
-# ==================================================
-func _process(_delta: float) -> void:
-	if _player_inside and Input.is_action_just_pressed("interact"):
-		_start_dialogue()
-
-# ==================================================
-#  DIALOGUE
-# ==================================================
+# --------------------------------------------------
+#  ОСНОВНАЯ БЕСЕДА
+# --------------------------------------------------
 func _start_dialogue() -> void:
 	_player_inside = false
 	hint_popup.hide()
+
+	_resolve_quests()                                   # ← сначала логика
 
 	var speaker := DialogueMgr.get_npc_name(npc_id)
 	var lines   := DialogueMgr.get_line(npc_id).split("\n")
 	dialogue_ui.show_dialogue(speaker, lines)
 
 func _on_dialogue_closed() -> void:
-	_handle_quests_for_npc()
-
-	# если игрок всё ещё рядом — снова показать подсказку
 	if area_detector.get_overlapping_bodies().any(func(b): return b.is_in_group("player")):
 		_player_inside = true
 		_show_popup()
 
-# ==================================================
-#  QUEST LOGIC (generic)
-# ==================================================
-func _handle_quests_for_npc() -> void:
+# --------------------------------------------------
+#  РЕШЕНИЕ КВЕСТОВ (до диалога!)
+# --------------------------------------------------
+func _resolve_quests() -> void:
 	if !NPC_QUEST_CHAIN.has(npc_id):
-		return                             # этот NPC не связан с квестами
+		return
 
-	for quest_id in NPC_QUEST_CHAIN[npc_id]:
-		# 1) ещё не получен -> выдаём
-		if !QuestMgr.has_quest(quest_id):
-			var q := QuestCatalog.get_quest(quest_id)
-			QuestMgr.add_quest(quest_id, q.title, q.need, q.reward, QuestMgr.State.ACTIVE)
-			GameState.set_flag("hero_joined_guild")        # пример: можешь заменить/убрать
-			return
-		# 2) готов к сдаче -> принимаем
-		elif QuestMgr.ready_to_complete(quest_id):
-			QuestMgr.complete_quest(quest_id)
-			GameState.set_flag("guild_quest_completed")    # пример: можешь заменить/убрать
-			return
-		# 3) иначе: либо уже выполнен, либо ещё собирается — проверяем следующий
+	var chain : Array = NPC_QUEST_CHAIN[npc_id]
+	var active : String = ""
+	var ready  : String = ""
+	var next   : String = ""
 
-# ==================================================
-#  UI HELPERS
-# ==================================================
-func _show_popup() -> void:
+	for qid in chain:
+		if QuestMgr.has_quest(qid):
+			if QuestMgr.is_completed(qid): continue
+			active = qid
+			if QuestMgr.ready_to_complete(qid):
+				ready = qid
+			break
+		else:
+			next = qid
+			break
+
+	# ----- сдача -----
+	if ready != "":
+		QuestMgr.complete_quest(ready)                       # награда сразу
+		GameState.set_flag("%s_completed" % ready)           # напр. guild_stone_completed
+		return                                               # новая задача – в след. визит
+
+	# ----- выдача -----
+	if active == "" and next != "":
+		var q := QuestCatalog.get_quest(next)
+		QuestMgr.add_quest(next, q.title, q.need, q.reward, QuestMgr.State.ACTIVE)
+		GameState.set_flag("%s_taken" % next)                # guild_stone_taken
+
+# --------------------------------------------------
+func _show_popup():
 	hint_popup.popup()
 	var panel := hint_popup.get_child(0) as Control
-	if panel:
-		panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if panel: panel.mouse_filter = Control.MOUSE_FILTER_IGNORE

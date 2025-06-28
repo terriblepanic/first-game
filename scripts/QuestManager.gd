@@ -132,3 +132,6 @@ func _inventory_remove(res_path: String, amount: int) -> void:
 
 	if remaining > 0:
 		push_warning("Wanted to remove %d×%s but inventory had less" % [amount, res_path])
+
+func is_completed(id: String) -> bool:
+	return has_quest(id) and quests[id]["state"] == State.DONE
