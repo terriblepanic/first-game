@@ -26,6 +26,8 @@ SaveManager="*res://scripts/Save/save_manager.gd"
 InventoryData="*res://scripts/Save/inventory_data.gd"
 GameState="*res://scripts/GameState.gd"
 DialogueMgr="*res://scripts/DialogueManager.gd"
+QuestMgr="*res://scripts/QuestManager.gd"
+QuestCatalog="*res://scripts/QuestCatalog.gd"
 
 [display]
 

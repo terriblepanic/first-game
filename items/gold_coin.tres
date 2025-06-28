@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://6myceb6wclty"]
+
+[ext_resource type="Script" uid="uid://enlx7m7e75n4" path="res://scripts/item.gd" id="1_51cct"]
+[ext_resource type="Texture2D" uid="uid://vkdmxgbldh7q" path="res://assets/items/Golden Coin.png" id="1_mt7g1"]
+
+[resource]
+script = ExtResource("1_51cct")
+name = "Gold Coin"
+icon = ExtResource("1_mt7g1")
+stack_size = 99
+count = 0
+metadata/_custom_type_script = "uid://enlx7m7e75n4"

@@ -32,6 +32,10 @@ shader_parameter/samples = 30
 shader_parameter/weight = 0.5
 shader_parameter/threshold = 0.6
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_arvd1"]
+shader = ExtResource("18_gihd7")
+shader_parameter/bg_color = Vector4(0, 0, 0, 0)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_w4nba"]
 radius = 95.021
 
@@ -66,10 +70,6 @@ shader_parameter/seed = 5.0
 gradient = SubResource("Gradient_p75bh")
 width = 128
 height = 128
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_arvd1"]
-shader = ExtResource("18_gihd7")
-shader_parameter/bg_color = Vector4(0, 0, 0, 0)
 
 [node name="Main" type="Node"]
 script = ExtResource("1_7vjiv")
@@ -210,24 +210,6 @@ texture_repeat = 3
 [node name="WorldMap" type="TileMapLayer" parent="."]
 tile_set = ExtResource("15_nfivy")
 
-[node name="HUD" parent="." instance=ExtResource("17_ft6cd")]
-layer = 100
-
-[node name="InGameMenu" type="CanvasLayer" parent="."]
-
-[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("17_7vjiv")]
-
-[node name="Exit" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
-position = Vector2(0, -13)
-shape = SubResource("CircleShape2D_w4nba")
-
-[node name="Orb" type="Sprite2D" parent="Exit"]
-material = SubResource("ShaderMaterial_xu6hb")
-position = Vector2(0, -13)
-texture = SubResource("GradientTexture2D_in8h1")
-
 [node name="ExitUI" type="PopupPanel" parent="."]
 auto_translate_mode = 1
 position = Vector2i(323, 124)
@@ -255,6 +237,24 @@ text = "ВЫХОД ИЗ ПЕЩЕР
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="HUD" parent="." instance=ExtResource("17_ft6cd")]
+layer = 100
+
+[node name="InGameMenu" type="CanvasLayer" parent="."]
+
+[node name="InGameMenu" parent="InGameMenu" instance=ExtResource("17_7vjiv")]
+
+[node name="Exit" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+position = Vector2(0, -13)
+shape = SubResource("CircleShape2D_w4nba")
+
+[node name="Orb" type="Sprite2D" parent="Exit"]
+material = SubResource("ShaderMaterial_xu6hb")
+position = Vector2(0, -13)
+texture = SubResource("GradientTexture2D_in8h1")
 
 [connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
 [connection signal="body_exited" from="Exit" to="." method="_on_exit_body_exited"]

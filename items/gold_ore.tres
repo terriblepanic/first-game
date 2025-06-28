@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BlockItem" load_steps=3 format=3 uid="uid://bnjyhmu3vyagg"]
 
-[ext_resource type="Texture2D" uid="uid://b4g7kfegeli2p" path="res://assets/tiles/nature/ore/ore_gold.png" id="1_sb1er"]
+[ext_resource type="Texture2D" uid="uid://d0pwagvs3r16c" path="res://assets/items/Gold Nugget.png" id="1_sb1er"]
 [ext_resource type="Script" uid="uid://uvmd65hksovi" path="res://scripts/block_item.gd" id="2_sb1er"]
 
 [resource]
