@@ -29,7 +29,7 @@ func show_splash() -> void:
 	bg.color = Color.BLACK                  # исправили
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
 	bg.process_mode = Node.PROCESS_MODE_ALWAYS
-	bg.mouse_filter = Control.MOUSE_FILTER_STOP
+	bg.mouse_filter = Control.MOUSE_FILTER_PASS
 	splash_layer.add_child(bg)
 
 	# видеоплеер
@@ -50,9 +50,10 @@ func show_splash() -> void:
 
 func _on_splash_finished() -> void:
 	var layer := get_node_or_null("SplashLayer")
-	if layer: layer.queue_free()
-	get_tree().paused = false               # снимаем паузу
-	_spawn_altars()                         # запускаем логику уровня
+	if layer:
+		layer.queue_free()
+	get_tree().paused = false
+	_spawn_altars()                   # запускаем логику уровня
 
 func _on_splash_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
@@ -66,45 +67,40 @@ func _process(delta: float) -> void:
 
 
 func _spawn_altars() -> void:
-	var hud := get_node_or_null("HUD")
+	# ──────────────────────────────────────────────────
+	# ищем HUD надёжно: либо по имени узла, либо по группе
+	# ──────────────────────────────────────────────────
+	var hud: Node = get_tree().root.get_node_or_null("HUD")
+	# если предпочитаешь группу:  
+	# var hud: Node = get_tree().get_first_node_in_group("hud")
 
+	# ---------- ALTAR 1 ----------
 	var altar1: GodAltar = _altar_scene.instantiate()
-	altar1.position = Vector2(-72, 64)
-	altar1.god_name = "GodA"
-	altar1.blessings = ["Сила", "Защита"]
+	altar1.position   = Vector2(-72, 64)
+	altar1.god_name   = "Бог воды — Акуэно"
+	altar1.blessings  = ["Благословение прилива", "Глубинный покой"]
 	add_child(altar1)
 
-	altar1.connect(
-		"player_near",
-		Callable(self, "_on_altar_player_near").bind(altar1)
-	)
-	altar1.connect(
-		"player_far",
-		Callable(self, "_on_altar_player_far")
-	)
-	
+	altar1.player_near.connect(Callable(self, "_on_altar_player_near").bind(altar1))
+	altar1.player_far .connect(_on_altar_player_far)
 	altar1.blessing_selected.connect(_on_blessing_selected)
-	if hud:
-		altar1.blessing_selected.connect(hud.update_blessings_list)
 
+	if hud and hud.has_method("update_blessings_list"):
+		altar1.blessing_selected.connect(Callable(hud, "update_blessings_list"))
+
+	# ---------- ALTAR 2 ----------
 	var altar2: GodAltar = _altar_scene.instantiate()
-	altar2.position = Vector2(72, 64)
-	altar2.god_name = "GodB"
-	altar2.blessings = ["Мудрость", "Удача"]
+	altar2.position   = Vector2( 72, 64)
+	altar2.god_name   = "Богиня Пламени — Ируна"
+	altar2.blessings  = ["Пылающий клинок", "Фениксовое пламя"]
 	add_child(altar2)
-		
-	altar2.connect(
-		"player_near",
-		Callable(self, "_on_altar_player_near").bind(altar2)
-	)
-	altar2.connect(
-		"player_far",
-		Callable(self, "_on_altar_player_far")
-	)
 
+	altar2.player_near.connect(Callable(self, "_on_altar_player_near").bind(altar2))
+	altar2.player_far .connect(_on_altar_player_far)
 	altar2.blessing_selected.connect(_on_blessing_selected)
-	if hud:
-		altar2.blessing_selected.connect(hud.update_blessings_list)
+
+	if hud and hud.has_method("update_blessings_list"):
+		altar2.blessing_selected.connect(Callable(hud, "update_blessings_list"))
 
 
 func _on_blessing_selected(god: String, blessing: String) -> void:

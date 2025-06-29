@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://ja0rruw8weub"]
+[gd_scene load_steps=30 format=4 uid="uid://ja0rruw8weub"]
 
 [ext_resource type="Script" uid="uid://ty7cl5ntqcfa" path="res://scenes/Levels/kingdom_king.gd" id="1_5a2w1"]
 [ext_resource type="TileSet" uid="uid://ctxbcpswxbrha" path="res://assets/tilesets/kingdom_king.tres" id="1_uybik"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="7_u2yx4"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="8_pdvh7"]
 [ext_resource type="PackedScene" uid="uid://h354hmfq8gfi" path="res://scenes/Npc/guard.tscn" id="10_g5c1c"]
+[ext_resource type="AudioStream" uid="uid://p7forsiurxm5" path="res://assets/music/king.wav" id="11_tafii"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bmc7u"]
 
@@ -80,8 +81,9 @@ color = Color(0, 0, 0, 1)
 enabled = true
 metadata/_custom_type_script = "uid://cqqc7s7kp8uem"
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lvkt7"]
-size = Vector2(98, 33)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kt3jn"]
+radius = 28.0
+height = 162.0
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -284,7 +286,6 @@ flip_sprite = true
 
 [node name="HUD" parent="." instance=ExtResource("3_sn8u8")]
 layer = 100
-visible = false
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(271, -47)
@@ -314,18 +315,27 @@ script = ExtResource("5_fwsy5")
 effects = Array[ExtResource("6_pdvh7")]([SubResource("Resource_myoku")])
 metadata/_custom_type_script = "uid://d15nobs3uuxeb"
 
-[node name="Entrance" type="Marker2D" parent="."]
-position = Vector2(336, 478)
-
-[node name="Exit" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
-position = Vector2(336, 527)
-shape = SubResource("RectangleShape2D_lvkt7")
-
 [node name="InGameMenu" type="CanvasLayer" parent="."]
-visible = false
+layer = 128
 
 [node name="InGameMenu" parent="InGameMenu" instance=ExtResource("8_pdvh7")]
+top_level = true
 
-[connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
+[node name="SpawnMarkers" type="Node2D" parent="."]
+
+[node name="Center" type="Marker2D" parent="SpawnMarkers"]
+position = Vector2(339, 407)
+
+[node name="CenterExit" type="Area2D" parent="SpawnMarkers"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnMarkers/CenterExit"]
+position = Vector2(336, 538)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_kt3jn")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("11_tafii")
+autoplay = true
+
+[connection signal="body_entered" from="SpawnMarkers/CenterExit" to="." method="_on_center_exit_body_entered"]

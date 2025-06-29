@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dkel0agqip5am"]
+[gd_scene load_steps=22 format=3 uid="uid://dkel0agqip5am"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_kx86s"]
 [ext_resource type="Script" uid="uid://1a8i70subq8c" path="res://scenes/Levels/guild_in.gd" id="1_xay07"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c2of4wdeqdxhn" path="res://scenes/Npc/guild.tscn" id="4_0w7t7"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="4_2rxx5"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="5_0w7t7"]
+[ext_resource type="AudioStream" uid="uid://b8gpaxy0g4r32" path="res://assets/music/guild.wav" id="7_72bti"]
 
 [sub_resource type="Gradient" id="Gradient_sn8u8"]
 interpolation_mode = 2
@@ -64,8 +65,7 @@ light_mask = 9
 y_sort_enabled = true
 position = Vector2(0, 40)
 view_mode = 1
-step_pixels = 44.0
-virtual_floor_bit = 4
+default_surface = "wood"
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -152,17 +152,26 @@ shape = SubResource("CircleShape2D_r0h2e")
 position = Vector2(101, -21)
 shape = SubResource("CircleShape2D_feqjg")
 
-[node name="Exit" type="Area2D" parent="."]
+[node name="SpawnMarkers" type="Node2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+[node name="CenterExit" type="Area2D" parent="SpawnMarkers"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnMarkers/CenterExit"]
 position = Vector2(0, 124)
 shape = SubResource("RectangleShape2D_feqjg")
 
-[node name="Entrance" type="Marker2D" parent="."]
+[node name="Center" type="Marker2D" parent="SpawnMarkers"]
 position = Vector2(0, 101)
 
 [node name="InGameMenu" type="CanvasLayer" parent="."]
+process_mode = 2
+layer = 128
 
 [node name="InGameMenu" parent="InGameMenu" instance=ExtResource("5_0w7t7")]
 
-[connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("7_72bti")
+autoplay = true
+
+[connection signal="body_entered" from="SpawnMarkers/CenterExit" to="." method="_on_exit_body_entered"]

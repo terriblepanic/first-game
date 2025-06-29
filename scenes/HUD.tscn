@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://i60btftcy6ji"]
+[gd_scene load_steps=16 format=3 uid="uid://i60btftcy6ji"]
 
 [ext_resource type="Script" uid="uid://dbqvta4b25f55" path="res://scripts/hud.gd" id="1_nysna"]
 [ext_resource type="Script" uid="uid://cspwhrut3nv8d" path="res://scripts/inventory.gd" id="2_f6qnu"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="4_f6qnu"]
 [ext_resource type="Script" uid="uid://bqb1l0y2cyjop" path="res://scripts/mini_map_viewport.gd" id="4_twldb"]
 [ext_resource type="Script" uid="uid://b3h4lpeh81nkb" path="res://scripts/debug_hud.gd" id="5_8cuoo"]
+[ext_resource type="FontFile" uid="uid://me757ermgvb3" path="res://assets/ui/Ithaca-LVB75.ttf" id="5_k4w17"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k4w17"]
 shader = ExtResource("4_f6qnu")
@@ -23,6 +24,21 @@ bg_color = Color(0, 0, 0, 0.360784)
 [sub_resource type="Theme" id="Theme_tvl7m"]
 Label/font_sizes/font_size = 16
 Label/styles/normal = SubResource("StyleBoxFlat_1iba3")
+
+[sub_resource type="Gradient" id="Gradient_twldb"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.272727, 0.681818)
+colors = PackedColorArray(0.410854, 3.60981e-06, 0.273125, 1, 0.215492, 2.45166e-07, 4.81308e-08, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8cuoo"]
+gradient = SubResource("Gradient_twldb")
+width = 356
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cf6ij"]
+texture = SubResource("GradientTexture2D_8cuoo")
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_nysna")
@@ -48,6 +64,7 @@ position = Vector2(88, 32)
 scale = Vector2(0.2, 0.2)
 
 [node name="QuickSlots" type="HBoxContainer" parent="HUD"]
+visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -124,6 +141,8 @@ offset_right = -60.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_k4w17")
+theme_override_font_sizes/font_size = 32
 tab_alignment = 1
 current_tab = 0
 
@@ -219,19 +238,19 @@ script = ExtResource("5_8cuoo")
 
 [node name="DeathLabel" type="Label" parent="."]
 visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -87.0
-offset_top = -21.0
-offset_right = 87.0
-offset_bottom = 21.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
+theme_override_colors/font_shadow_color = Color(0.45, 0, 0, 0.470588)
+theme_override_colors/font_outline_color = Color(0.71, 0, 0, 0.678431)
+theme_override_constants/outline_size = 16
+theme_override_constants/shadow_outline_size = 32
+theme_override_fonts/font = ExtResource("5_k4w17")
+theme_override_font_sizes/font_size = 70
+theme_override_styles/normal = SubResource("StyleBoxTexture_cf6ij")
 text = "Вы умерли!"
+horizontal_alignment = 1
+vertical_alignment = 1

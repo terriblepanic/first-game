@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b1jldarqwjutx"]
+[gd_scene load_steps=13 format=3 uid="uid://b1jldarqwjutx"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_qpjmm"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_lfneh"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://xr34ja4tsdr" path="res://scripts/mining_entrance_mine.gd" id="4_y5bej"]
 [ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="5_kf5cw"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="6_kf5cw"]
+[ext_resource type="AudioStream" uid="uid://drjsr8udjjv0a" path="res://assets/music/street.mp3" id="7_jja6h"]
 
 [sub_resource type="Gradient" id="Gradient_y5bej"]
 interpolation_mode = 2
@@ -38,7 +39,7 @@ follow_viewport_enabled = true
 
 [node name="Player" parent="Player" instance=ExtResource("1_qpjmm")]
 position = Vector2(-287, 81)
-virtual_floor_bit = 5
+virtual_floor_bit = 4
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player/Player"]
@@ -78,28 +79,39 @@ metadata/surface = "default"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
 build_mode = 1
-polygon = PackedVector2Array(-418, 85, 56, 85, 55, -145, -418, -145)
+polygon = PackedVector2Array(-418, 74.85, 56, 74.85, 55, -145, -418, -145)
 
-[node name="LeftExit" type="Area2D" parent="."]
+[node name="SpawnMarkers" type="Node2D" parent="."]
+
+[node name="LeftExit" type="Area2D" parent="SpawnMarkers"]
 position = Vector2(-219, -1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftExit"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnMarkers/LeftExit"]
 position = Vector2(-167, 27.5)
 shape = SubResource("RectangleShape2D_y5bej")
 
-[node name="RightExit" type="Area2D" parent="."]
+[node name="RightExit" type="Area2D" parent="SpawnMarkers"]
 position = Vector2(190, -2)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightExit"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnMarkers/RightExit"]
 position = Vector2(-167, 27.5)
 shape = SubResource("RectangleShape2D_y5bej")
 
-[node name="EntranceMine" type="Area2D" parent="."]
+[node name="EntranceMine" type="Area2D" parent="SpawnMarkers"]
 position = Vector2(0, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceMine"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnMarkers/EntranceMine"]
 position = Vector2(-167, 27.5)
 shape = SubResource("RectangleShape2D_jja6h")
+
+[node name="Left" type="Marker2D" parent="SpawnMarkers"]
+position = Vector2(-340, 74.85)
+
+[node name="Center" type="Marker2D" parent="SpawnMarkers"]
+position = Vector2(-169, 74.85)
+
+[node name="Right" type="Marker2D" parent="SpawnMarkers"]
+position = Vector2(-19, 74.85)
 
 [node name="EntranceMineUI" type="PopupPanel" parent="."]
 position = Vector2i(323, 124)
@@ -129,10 +141,17 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="InGameMenu" type="CanvasLayer" parent="."]
+process_mode = 2
+layer = 128
 
 [node name="InGameMenu" parent="InGameMenu" instance=ExtResource("6_kf5cw")]
 
-[connection signal="body_entered" from="LeftExit" to="." method="_on_left_exit_body_entered"]
-[connection signal="body_entered" from="RightExit" to="." method="_on_right_exit_body_entered"]
-[connection signal="body_entered" from="EntranceMine" to="." method="_on_entrance_mine_body_entered"]
-[connection signal="body_exited" from="EntranceMine" to="." method="_on_entrance_mine_body_exited"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("7_jja6h")
+autoplay = true
+
+[connection signal="body_entered" from="SpawnMarkers/LeftExit" to="." method="_on_left_exit_body_entered"]
+[connection signal="body_entered" from="SpawnMarkers/RightExit" to="." method="_on_right_exit_body_entered"]
+[connection signal="body_entered" from="SpawnMarkers/EntranceMine" to="." method="_on_entrance_mine_body_entered"]
+[connection signal="body_exited" from="SpawnMarkers/EntranceMine" to="." method="_on_entrance_mine_body_exited"]

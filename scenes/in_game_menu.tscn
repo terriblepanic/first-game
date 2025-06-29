@@ -1,7 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://dk5n7gglkk0k5"]
+[gd_scene load_steps=15 format=3 uid="uid://dk5n7gglkk0k5"]
 
 [ext_resource type="Script" uid="uid://cwk4qbp01syqx" path="res://scripts/MainMenu/in_game_menu.gd" id="1_0cve7"]
 [ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="2_q5csu"]
+[ext_resource type="FontFile" uid="uid://me757ermgvb3" path="res://assets/ui/Ithaca-LVB75.ttf" id="3_0rq4b"]
+[ext_resource type="Shader" uid="uid://gnqa13nboi10" path="res://shaders/glare.gdshader" id="3_efgmv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0rq4b"]
 shader = ExtResource("2_q5csu")
@@ -24,6 +26,13 @@ shadow_size = 5
 
 [sub_resource type="Theme" id="Theme_0rq4b"]
 Panel/styles/panel = SubResource("StyleBoxFlat_q5csu")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r4chg"]
+shader = ExtResource("3_efgmv")
+shader_parameter/base_color = Color(0.921675, 0.767929, 1, 1)
+shader_parameter/flame_color = Color(0.763553, 0.84492, 0.937124, 1)
+shader_parameter/speed = 3.0
+shader_parameter/noise_scale = 10.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0rq4b"]
 content_margin_bottom = 4.0
@@ -148,6 +157,7 @@ _data = {
 }
 
 [node name="InGameMenu" type="Control"]
+process_mode = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -184,13 +194,18 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Label" type="Label" parent="MenuContainer"]
+material = SubResource("ShaderMaterial_r4chg")
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_0rq4b")
+theme_override_font_sizes/font_size = 32
 text = "Пауза"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Button_Continue" type="Button" parent="MenuContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_0rq4b")
+theme_override_font_sizes/font_size = 28
 theme_override_styles/focus = SubResource("StyleBoxFlat_0rq4b")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_0rq4b")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0rq4b")
@@ -200,6 +215,8 @@ text = "Продолжить"
 
 [node name="Button_Save" type="Button" parent="MenuContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_0rq4b")
+theme_override_font_sizes/font_size = 28
 theme_override_styles/focus = SubResource("StyleBoxFlat_0rq4b")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_0rq4b")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0rq4b")
@@ -209,6 +226,8 @@ text = "Сохранить"
 
 [node name="Button_Quit" type="Button" parent="MenuContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_0rq4b")
+theme_override_font_sizes/font_size = 28
 theme_override_styles/focus = SubResource("StyleBoxFlat_0rq4b")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_0rq4b")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0rq4b")

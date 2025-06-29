@@ -14,6 +14,9 @@ extends Control
 @onready var save_button:     Button          = $MenuContainer/Button_Save
 @onready var quit_button:     Button          = $MenuContainer/Button_Quit
 
+var menu_opened: bool = false
+
+
 # ─────────────── Подготовка ───────────────────────────────────────────────────
 func _ready() -> void:
 	process_mode                 = Node.PROCESS_MODE_ALWAYS
@@ -27,11 +30,18 @@ func _ready() -> void:
 #                               ОТКРЫТЬ / ЗАКРЫТЬ
 # ==============================================================================#
 func open_menu() -> void:
+	if menu_opened:
+		return
+	menu_opened = true
 	show()
+	await get_tree().process_frame
 	get_tree().paused = true
 	animation_player.play("fade_in")
 
 func close_menu() -> void:
+	if not menu_opened:
+		return
+	menu_opened = false
 	get_tree().paused = false
 	hide()
 

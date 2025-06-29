@@ -267,9 +267,10 @@ collision_mask = 20
 script = ExtResource("1_1myhr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_aa1w8")
 animation = &"1_form"
-frame_progress = 0.0925501
+frame_progress = 0.899847
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 3)
@@ -327,6 +328,9 @@ texture = ExtResource("5_1myhr")
 randomness = 1.0
 fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_04lnv")
+
+[node name="HitPivot" type="Marker2D" parent="."]
+position = Vector2(0, -48)
 
 [connection signal="body_entered" from="MagicSplashArea" to="." method="_on_magic_splash_area_body_entered"]
 [connection signal="timeout" from="attack_timer" to="." method="_on_timer_timeout"]

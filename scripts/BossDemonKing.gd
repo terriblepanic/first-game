@@ -2,10 +2,11 @@ extends CharacterBody2D
 ###############################################################################
 # BossDemonKing.gd  v4.5 — сверх-подробный DEBUG-лог                          #
 ###############################################################################
-
+signal boss_died
 # ── LOGGING ────────────────────────────────────────────────────────────────
-const DEBUG_LOG     := true    # основной лог
-const DEBUG_VERBOSE := true    # мелкие детали (можно выключить)
+const DEBUG_LOG     := false    # основной лог
+const DEBUG_VERBOSE := false    # мелкие детали (можно выключить)
+const NUM_SCENE := preload("res://ui/damage_number.tscn")   # добавить
 
 func _log(msg:String, verbose:bool=false) -> void:
 	if DEBUG_LOG and (not verbose or DEBUG_VERBOSE):
@@ -13,11 +14,12 @@ func _log(msg:String, verbose:bool=false) -> void:
 
 # ╔══════════════  EXPORTED  ══════════════╗
 @export_group("⛑  Core")
-@export var max_health       : int   = 1200
+@export var max_health       : int   = 10
 @export var phase2_threshold : float = 0.5
 @export var ground_y         : float = 440.0
 @export var arena_bounds     : Rect2 = Rect2(Vector2.ZERO, Vector2(700, 500))
 @export var attack_gap       : float = 1.0     # пауза между атаками
+@export var attack_windup : float = 0.4   # НОВОЕ: задержка перед началом атаки
 
 @export_group("✧ Splash")
 @export var teleport_distance_near : float = 128.0
@@ -31,8 +33,9 @@ func _log(msg:String, verbose:bool=false) -> void:
 @export var lift_height  : float = 200.0
 
 @export_group("✧ Dash")
-@export var dash_speed : float = 600.0
-@export var dash_time  : float = 0.6
+@export var dash_speed  : float = 600.0
+@export var dash_time   : float = 0.6
+@export var dash_damage : int   = 40
 
 @export_group("✧ Teleport Sky + Orbs")
 @export var teleport_height_far : float = 200.0
@@ -55,6 +58,7 @@ func _log(msg:String, verbose:bool=false) -> void:
 @onready var proj_root    : Node               = $projectiles_root
 @onready var splash_area  : Area2D             = $MagicSplashArea
 @onready var splash_sfx   : AudioStreamPlayer2D = $sfxSplash
+@onready var hit_pivot : Node2D = $HitPivot
 
 # ── STATE ──────────────────────────────────────────────────────────────────
 enum State { IDLE, ATTACK, DASH }
@@ -125,7 +129,13 @@ func _ready() -> void:
 func _physics_process(delta:float) -> void:
 	if state == State.DASH:
 		move_and_slide()
-		_log("DASH move pos=%s vel=%s" % [global_position, velocity], true)
+
+		for i in get_slide_collision_count():
+			var col := get_slide_collision(i)
+			var other := col.get_collider()
+			if other.is_in_group("player") and other.has_method("take_damage"):
+				other.take_damage(dash_damage)
+				_log("Dash hit player, dealt %d dmg" % dash_damage, true)
 
 	# ограничение X-координаты
 	var old_x := global_position.x
@@ -163,9 +173,12 @@ func _choose_attack() -> void:
 
 	var atk : Callable = _bag[rng.randi() % _bag.size()]
 	_log("Случайно выбрана атака: %s" % atk.get_method())
+	state = State.ATTACK
 	_bag.erase(atk)
 
-	state = State.ATTACK
+	_log("Wind-up %.2fs перед %s" % [attack_windup, atk.get_method()])
+	await get_tree().create_timer(attack_windup).timeout
+
 	_log("ATTACK → %s  HP=%d  bag=%d" %
 		[atk.get_method(), health, _bag.size()])
 	atk.call()
@@ -211,7 +224,6 @@ func attack_splash() -> void:
 			arena_bounds.end.x       - 32
 		)
 
-	splash_sfx.play()
 	global_position = Vector2(target_x, ground_y)
 	_log("Splash TP на землю → %s" % global_position)
 
@@ -226,6 +238,8 @@ func attack_splash() -> void:
 	splash_fx.rotation_degrees  = rot
 	splash_area.rotation_degrees = rot
 
+	await get_tree().create_timer(0.7).timeout
+	splash_sfx.play()
 	splash_fx.restart()
 	splash_area.global_position = global_position
 	splash_area.monitoring      = true
@@ -330,26 +344,32 @@ func _spawn_beams(cnt:int) -> void:
 	
 # 4  Dash ───────────────────────────────────────────────────────────────────
 func attack_dash() -> void:
-	_go_ground()                                     # стартуем с земли
+	_go_ground()
 
 	var p := _player()
 	if p == null:
 		_finish(0.1)
 		return
 
-	# только горизонтальный рывок
-	var dir : int = sign(p.global_position.x - global_position.x)
-	velocity = Vector2(dir, 0) * dash_speed
-	_log("Dash start  dir=%d  vel=%s" % [dir, velocity])
+	# 1. начинаем движение СРАЗУ
+	state = State.DASH
+
+	var dir: int = int(sign(p.global_position.x - global_position.x))
+	if dir == 0:
+		dir = 1        # чтобы босс всегда двигался, даже если стоит «поверх» игрока
+
+	velocity = Vector2(dir * dash_speed, 0)
+	_log("Dash start dir=%d vel=%s" % [dir, velocity])
 
 	dash_fx.emitting = true
 	await get_tree().create_timer(dash_time).timeout
 
+	# 2. тормозим
 	dash_fx.emitting = false
 	velocity = Vector2.ZERO
 	_log("Dash end")
-	_finish(0.1)
-	state = State.DASH   # движение обрабатывается в _physics_process
+
+	_finish(0.1)            # _finish вернёт состояние в IDLE
 
 # 5  Teleport Sky + Orbs ----------------------------------------------------
 func attack_teleport_orbs() -> void:
@@ -382,12 +402,18 @@ func _spawn_orb() -> void:
 
 # ── DAMAGE / DEATH ---------------------------------------------------------
 func take_damage(amount:int) -> void:
+	if amount <= 0:
+		return
+		
+	_show_number(amount)
+	
 	var old := health
 	health = max(health - amount, 0)
 	_log("HP %d → %d (-%d)" % [old, health, amount])
 	if health == 0:
 		_log("DEAD (босс уничтожен)")
 		queue_free()
+		emit_signal("boss_died")
 
 
 func _on_magic_splash_area_body_entered(body: Node) -> void:
@@ -401,3 +427,11 @@ func _on_magic_splash_area_body_entered(body: Node) -> void:
 	else:
 		_log("  → тело не подходит: groups=%s, has take_damage? %s"
 			% [body.get_groups(), body.has_method("take_damage")])
+
+func _show_number(amount:int) -> void:
+	if not is_inside_tree():   # на всякий случай
+		return
+	var n := NUM_SCENE.instantiate() as Label
+	n.text = str(amount)
+	get_tree().current_scene.add_child(n)
+	n.global_position = hit_pivot.global_position

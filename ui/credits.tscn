@@ -1,0 +1,262 @@
+[gd_scene load_steps=11 format=3 uid="uid://dhjjb3ufurkm8"]
+
+[ext_resource type="Script" uid="uid://c2umdlfldi0vf" path="res://scripts/credits.gd" id="1_icdkc"]
+[ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="2_42u7w"]
+[ext_resource type="Shader" uid="uid://gnqa13nboi10" path="res://shaders/glare.gdshader" id="3_d0gn6"]
+[ext_resource type="FontFile" uid="uid://me757ermgvb3" path="res://assets/ui/Ithaca-LVB75.ttf" id="4_dyfqb"]
+[ext_resource type="AudioStream" uid="uid://b01kwmj1dnna2" path="res://assets/music/pantheon.wav" id="5_swjq5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_43xik"]
+shader = ExtResource("2_42u7w")
+shader_parameter/bg_color = Vector4(0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b41pb"]
+shader = ExtResource("3_d0gn6")
+shader_parameter/base_color = Color(1, 0.737525, 0.855412, 1)
+shader_parameter/flame_color = Color(0.508675, 0.511911, 1, 1)
+shader_parameter/speed = 3.0
+shader_parameter/noise_scale = 10.0
+
+[sub_resource type="Animation" id="Animation_wyfq4"]
+resource_name = "credits"
+length = 16.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/CreditsContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 16),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 395), Vector2(0, -410)]
+}
+
+[sub_resource type="Animation" id="Animation_4xmwn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/CreditsContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_thxm2"]
+_data = {
+&"RESET": SubResource("Animation_4xmwn"),
+&"credits": SubResource("Animation_wyfq4")
+}
+
+[node name="Credits" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_icdkc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_43xik")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CreditsContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -410.0
+offset_bottom = -410.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/CreditsContainer"]
+material = SubResource("ShaderMaterial_b41pb")
+layout_mode = 2
+theme_override_constants/shadow_outline_size = -1
+theme_override_fonts/font = ExtResource("4_dyfqb")
+theme_override_font_sizes/font_size = 16
+text = "Игровой дизайн и основное программирование:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/CreditsContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.517647)
+theme_override_colors/font_outline_color = Color(0.73, 0.73, 0.73, 0.517647)
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+theme_override_fonts/font = ExtResource("4_dyfqb")
+text = "Паничкин Кирилл"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="CanvasLayer/CreditsContainer"]
+material = SubResource("ShaderMaterial_b41pb")
+layout_mode = 2
+theme_override_constants/shadow_outline_size = -1
+theme_override_fonts/font = ExtResource("4_dyfqb")
+theme_override_font_sizes/font_size = 16
+text = "Программирование (в команде по практике):"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="CanvasLayer/CreditsContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.517647)
+theme_override_colors/font_outline_color = Color(0.73, 0.73, 0.73, 0.517647)
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+theme_override_fonts/font = ExtResource("4_dyfqb")
+text = "Иван Шамшурин"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label5" type="Label" parent="CanvasLayer/CreditsContainer"]
+material = SubResource("ShaderMaterial_b41pb")
+layout_mode = 2
+theme_override_constants/shadow_outline_size = -1
+theme_override_fonts/font = ExtResource("4_dyfqb")
+theme_override_font_sizes/font_size = 16
+text = "Концепция и идея:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label6" type="Label" parent="CanvasLayer/CreditsContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.517647)
+theme_override_colors/font_outline_color = Color(0.73, 0.73, 0.73, 0.517647)
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+theme_override_fonts/font = ExtResource("4_dyfqb")
+text = "Паничкин Кирилл"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label7" type="Label" parent="CanvasLayer/CreditsContainer"]
+material = SubResource("ShaderMaterial_b41pb")
+layout_mode = 2
+theme_override_constants/shadow_outline_size = -1
+theme_override_fonts/font = ExtResource("4_dyfqb")
+theme_override_font_sizes/font_size = 16
+text = "Арты и текстуры (основная часть):"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label8" type="Label" parent="CanvasLayer/CreditsContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.517647)
+theme_override_colors/font_outline_color = Color(0.73, 0.73, 0.73, 0.517647)
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+theme_override_fonts/font = ExtResource("4_dyfqb")
+text = "Паничкин Кирилл"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label9" type="Label" parent="CanvasLayer/CreditsContainer"]
+material = SubResource("ShaderMaterial_b41pb")
+layout_mode = 2
+theme_override_constants/shadow_outline_size = -1
+theme_override_fonts/font = ExtResource("4_dyfqb")
+theme_override_font_sizes/font_size = 16
+text = "Дополнительные текстуры:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label10" type="Label" parent="CanvasLayer/CreditsContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.517647)
+theme_override_colors/font_outline_color = Color(0.73, 0.73, 0.73, 0.517647)
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+theme_override_fonts/font = ExtResource("4_dyfqb")
+text = "itch.io"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label11" type="Label" parent="CanvasLayer/CreditsContainer"]
+material = SubResource("ShaderMaterial_b41pb")
+layout_mode = 2
+theme_override_constants/shadow_outline_size = -1
+theme_override_fonts/font = ExtResource("4_dyfqb")
+theme_override_font_sizes/font_size = 16
+text = "Музыкальное сопровождение:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label12" type="Label" parent="CanvasLayer/CreditsContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.517647)
+theme_override_colors/font_outline_color = Color(0.73, 0.73, 0.73, 0.517647)
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+theme_override_fonts/font = ExtResource("4_dyfqb")
+text = "Различные источники из интернета"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label13" type="Label" parent="CanvasLayer/CreditsContainer"]
+material = SubResource("ShaderMaterial_b41pb")
+layout_mode = 2
+theme_override_constants/shadow_outline_size = -1
+theme_override_fonts/font = ExtResource("4_dyfqb")
+theme_override_font_sizes/font_size = 16
+text = "Вдохновение:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label14" type="Label" parent="CanvasLayer/CreditsContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.517647)
+theme_override_colors/font_outline_color = Color(0.73, 0.73, 0.73, 0.517647)
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+theme_override_fonts/font = ExtResource("4_dyfqb")
+text = "Аниме-исекай"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label15" type="Label" parent="CanvasLayer/CreditsContainer"]
+material = SubResource("ShaderMaterial_b41pb")
+layout_mode = 2
+theme_override_constants/shadow_outline_size = -1
+theme_override_fonts/font = ExtResource("4_dyfqb")
+theme_override_font_sizes/font_size = 16
+text = "Игра создана для производственной практики"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label16" type="Label" parent="CanvasLayer/CreditsContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.517647)
+theme_override_colors/font_outline_color = Color(0.73, 0.73, 0.73, 0.517647)
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 3
+theme_override_fonts/font = ExtResource("4_dyfqb")
+text = "© 2025 Паничкин Кирилл и Иван Шамшурин"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_thxm2")
+}
+
+[node name="AnimationPlayer2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_swjq5")
+autoplay = true

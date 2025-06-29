@@ -1,12 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://cn3k05cpbscjx"]
+[gd_scene load_steps=14 format=3 uid="uid://cn3k05cpbscjx"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_c1362"]
 [ext_resource type="Script" uid="uid://c4rn77vqysc0" path="res://scenes/Levels/guild.gd" id="1_j1y07"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_j1y07"]
 [ext_resource type="Texture2D" uid="uid://dbk3pdbrjg1lv" path="res://assets/test/guild.png" id="3_63ly8"]
 [ext_resource type="Shader" uid="uid://8wg2iwar8qby" path="res://shaders/pantheon_sky_stars.gdshader" id="4_482si"]
+[ext_resource type="PackedScene" uid="uid://dfiimmqk60ra" path="res://scenes/TrainingDummy.tscn" id="4_skdc8"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="6_63ly8"]
 [ext_resource type="PackedScene" uid="uid://scjglgbhrtk" path="res://scenes/Npc/trade.tscn" id="7_482si"]
+[ext_resource type="AudioStream" uid="uid://drjsr8udjjv0a" path="res://assets/music/street.mp3" id="9_g2gek"]
 
 [sub_resource type="Gradient" id="Gradient_sn8u8"]
 interpolation_mode = 2
@@ -67,6 +69,10 @@ metadata/color_filter = Color(1, 1, 1, 0)
 z_index = 1
 position = Vector2(-249, 62)
 
+[node name="TrainingDummy" parent="." instance=ExtResource("4_skdc8")]
+z_index = 1
+position = Vector2(-318, 66)
+
 [node name="HUD" parent="." instance=ExtResource("2_j1y07")]
 layer = 100
 
@@ -81,21 +87,29 @@ metadata/surface = "default"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
 build_mode = 1
-polygon = PackedVector2Array(-373, 85, 11, 85, 11, -145, -373, -145)
+polygon = PackedVector2Array(-373, 74.85, 11, 74.85, 11, -145, -373, -145)
 
-[node name="EntranceGuild" type="Area2D" parent="."]
+[node name="SpawnMarkers" type="Node2D" parent="."]
+
+[node name="EntranceGuild" type="Area2D" parent="SpawnMarkers"]
 position = Vector2(-13, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceGuild"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnMarkers/EntranceGuild"]
 position = Vector2(-167, 27.5)
 shape = SubResource("RectangleShape2D_g2gek")
 
-[node name="RightExit" type="Area2D" parent="."]
+[node name="RightExit" type="Area2D" parent="SpawnMarkers"]
 position = Vector2(147, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightExit"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnMarkers/RightExit"]
 position = Vector2(-167, 27.5)
 shape = SubResource("RectangleShape2D_g2gek")
+
+[node name="Right" type="Marker2D" parent="SpawnMarkers"]
+position = Vector2(-83, 74.85)
+
+[node name="Center" type="Marker2D" parent="SpawnMarkers"]
+position = Vector2(-179, 74.85)
 
 [node name="EntranceGuildUI" type="PopupPanel" parent="."]
 auto_translate_mode = 1
@@ -125,13 +139,17 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="EntranceRight" type="Marker2D" parent="."]
-position = Vector2(-90, 73)
-
 [node name="InGameMenu" type="CanvasLayer" parent="."]
+process_mode = 2
+layer = 128
 
 [node name="InGameMenu" parent="InGameMenu" instance=ExtResource("6_63ly8")]
 
-[connection signal="body_entered" from="EntranceGuild" to="." method="_on_entrance_guild_body_entered"]
-[connection signal="body_exited" from="EntranceGuild" to="." method="_on_entrance_guild_body_exited"]
-[connection signal="body_entered" from="RightExit" to="." method="_on_right_exit_body_entered"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("9_g2gek")
+autoplay = true
+
+[connection signal="body_entered" from="SpawnMarkers/EntranceGuild" to="." method="_on_entrance_guild_body_entered"]
+[connection signal="body_exited" from="SpawnMarkers/EntranceGuild" to="." method="_on_entrance_guild_body_exited"]
+[connection signal="body_entered" from="SpawnMarkers/RightExit" to="." method="_on_right_exit_body_entered"]

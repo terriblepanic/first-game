@@ -1,46 +1,51 @@
 extends Node2D
 
+@onready var player = $Player/Player
+@onready var player_sprite = $Player/Player/AnimatedSprite2D
+@onready var spawn_points = {
+	"left": $SpawnMarkers/Left,
+	"right": $SpawnMarkers/Right
+}
 
-func _ready() -> void:
-	var player = $Player/Player
-	var camera = player.get_node("Camera2D")
-	var spawn_point_node = $EntranceRight
-	var spawn_position = spawn_point_node.position
+var is_spawning = true
 
-	$RightExit.monitoring = false
+func _ready():
+	_setup_spawn()
 
-	if spawn_position:
-		player.position = spawn_position + Vector2(100, 0)
-		player.set_process(false)
-		camera.make_current()
+func _setup_spawn():
+	var entry_dir = Global.last_exit_direction if "last_exit_direction" in Global else "center"
+	var spawn_point = spawn_points.left
+	var start_offset = Vector2(-100, 0)  # Стандартное смещение для левого появления
+	var flip_h = false
+	
+	if entry_dir == "right": # Пришли из королевского зала
+		spawn_point = spawn_points.right
+		start_offset = Vector2(100, 0)  # Смещение влево для правого появления
+		flip_h = true
+	
+	# Начальная позиция (за пределами экрана)
+	player.position = spawn_point.position + start_offset
+	player.set_physics_process(false)
+	player_sprite.play("walking")
+	player_sprite.flip_h = flip_h
+	
+	# Анимация движения к точке спавна
+	var tween = create_tween().set_trans(Tween.TRANS_SINE)
+	tween.tween_property(player, "position", spawn_point.position, 1.0)
+	tween.tween_callback(_enable_player)
 
-	if camera.position_smoothing_enabled:
-		camera.reset_smoothing()
-		var tween = get_tree().create_tween()
-		tween.tween_property(player, "position", spawn_position, 1.0)
-		tween.tween_callback(Callable(self, "_enable_transition_and_player"))
-	else:
-		player.position = Vector2(100, 100)
+func _enable_player():
+	player.set_physics_process(true)
+	player_sprite.stop()
+	is_spawning = false
 
-
-func _enable_transition_and_player():
-	var player = $Player/Player
-	player.set_process(true)
-	$RightExit.monitoring = true
-
-
-
-func _on_right_exit_body_entered(body: Node2D) -> void:
-	if body.name == "Player":
-		body.set_process(false)
+# Остальные функции без изменений
+func _on_right_exit_body_entered(body: Node2D):
+	if body.name == "Player" and not is_spawning:
+		Global.last_exit_direction = "right"
 		TransitionManager.change_scene("res://scenes/Levels/kingdom_king.tscn")
 
-
-func _load_next_scene():
-	pass
- 
-
-func _on_left_exit_body_entered(body: Node2D) -> void:
-	if body.name == "Player":
-		body.set_process(false)
+func _on_left_exit_body_entered(body: Node2D):
+	if body.name == "Player" and not is_spawning:
+		Global.last_exit_direction = "center"
 		TransitionManager.change_scene("res://scenes/Levels/Street.tscn")

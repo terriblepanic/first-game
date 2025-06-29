@@ -63,24 +63,36 @@ shape = SubResource("CircleShape2D_si8oa")
 
 [node name="BlessingMenu" type="PopupPanel" parent="."]
 initial_position = 1
-size = Vector2i(285, 210)
+size = Vector2i(290, 210)
 theme_override_styles/panel = SubResource("StyleBoxFlat_si8oa")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="BlessingMenu"]
 offset_left = 5.0
 offset_top = 10.0
-offset_right = 280.0
+offset_right = 285.0
 offset_bottom = 200.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="BlessingMenu/VBoxContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="BlessingMenu/VBoxContainer/HBoxContainer"]
+[node name="Mask" type="Panel" parent="BlessingMenu/VBoxContainer/HBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(240, 31)
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_dwhmf")
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dwhmf")
+
+[node name="Label" type="Label" parent="BlessingMenu/VBoxContainer/HBoxContainer/Mask"]
+layout_mode = 2
+offset_left = 4.0
+offset_right = 232.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Выберите благословение:"
-horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Button" type="Button" parent="BlessingMenu/VBoxContainer/HBoxContainer"]
 layout_mode = 2

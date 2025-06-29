@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cw7x5oiy76kr6"]
+
+[ext_resource type="FontFile" uid="uid://me757ermgvb3" path="res://assets/ui/Ithaca-LVB75.ttf" id="1_613vb"]
+[ext_resource type="Script" uid="uid://crwds85sn1jyg" path="res://assets/ui/damage_number.gd" id="2_47dte"]
+
+[node name="DamageNumber" type="Label"]
+z_index = 4
+offset_right = 27.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(0.604139, 0.0742312, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.22, 0.011, 0, 0.603922)
+theme_override_colors/font_outline_color = Color(0.41, 0.0341667, 0, 0.705882)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("1_613vb")
+theme_override_font_sizes/font_size = 16
+text = "40"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_47dte")

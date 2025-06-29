@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://boqsofovwxqog"]
+[gd_scene load_steps=5 format=3 uid="uid://boqsofovwxqog"]
 
 [ext_resource type="Script" uid="uid://cmkvhxdwwt8kp" path="res://ui/quest_entry.gd" id="1_bhrl0"]
 [ext_resource type="Texture2D" uid="uid://b4m5tl53f80le" path="res://assets/test/ChatGPT Image 28 июн. 2025 г., 19_05_23.png" id="2_in0ly"]
+[ext_resource type="FontFile" uid="uid://me757ermgvb3" path="res://assets/ui/Ithaca-LVB75.ttf" id="3_in0ly"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gbu45"]
 draw_center = false
@@ -69,11 +70,15 @@ theme_override_colors/font_shadow_color = Color(0.28, 0.254193, 0.0588, 1)
 theme_override_colors/font_outline_color = Color(0.503332, 0.540237, 0.282924, 1)
 theme_override_constants/outline_size = 6
 theme_override_constants/shadow_outline_size = 12
+theme_override_fonts/font = ExtResource("3_in0ly")
+theme_override_font_sizes/font_size = 28
 
 [node name="Description" type="Label" parent="Panel/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 3
 theme_override_constants/shadow_outline_size = 6
+theme_override_fonts/font = ExtResource("3_in0ly")
+theme_override_font_sizes/font_size = 16
 
 [node name="Status" type="Label" parent="Panel/HBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
@@ -81,3 +86,5 @@ layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/outline_size = 3
 theme_override_constants/shadow_outline_size = 6
+theme_override_fonts/font = ExtResource("3_in0ly")
+theme_override_font_sizes/font_size = 28

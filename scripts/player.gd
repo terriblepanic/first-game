@@ -48,7 +48,8 @@ const MINING_TIME     : float = 1.2
 @export var dash_cooldown          : float = 0.35
 
 # Бой
-@export var melee_damage           : int   = 1
+@export var melee_damage           : int   = 12
+@export var magic_damage : int = 30  
 @export var critical_hit_chance    : float = 0.1
 
 @export_group("SFX • Footsteps")
@@ -88,6 +89,7 @@ var _mana_regen_timer: float = 0.0
 var _melee_is_critical : bool = false
 var _melee_offset_x: float
 var _magic_offset_x: float
+var _hurt_cd    : float = 0.0
 
 # ───── Добыча ─────
 var _is_mining        : bool     = false
@@ -114,12 +116,20 @@ var _footstep_sets : Dictionary
 var _step_accum    : float = 0.0
 var stationary_t : float = 0.0
 
+# --- базовые статы, не меняются в ходе игры ---
+var _base_max_health        : float
+var _base_health_regen_rate : float
+var _base_max_mana          : float
+var _base_mana_regen_rate   : float
+var _base_melee_damage      : int
+var _current_phys_mult  := 1.0
+var _current_magic_mult := 1.0
+
 # ──────── Ноды ────────
 @onready var anim            : AnimatedSprite2D = $AnimatedSprite2D
 @onready var melee_area      : Area2D           = $MeleeAttackArea
 @onready var magic_area      : Area2D           = $MagicAttackArea
-@onready var part_attack_1   : GPUParticles2D   = $AttackAnimation
-@onready var part_attack_2   : GPUParticles2D   = $AttackAnimation2
+@onready var part_attack   : GPUParticles2D   = $AttackAnimation
 @onready var part_hurt       : GPUParticles2D   = $TakeDamageAnimation
 @onready var jump_handler                    = $CoyoteJump
 @onready var interact_area   : Area2D           = $InteractArea
@@ -130,6 +140,8 @@ var stationary_t : float = 0.0
 @onready var world_map                        = get_parent().get_parent()
 @onready var tilemap: TileMapLayer = (world_map.get_node_or_null("WorldMap") as TileMapLayer)
 @onready var inv_data := InventoryData
+@export var blast_effect_path : NodePath = "CanvasLayer/BlastEffect"
+@onready var blast_effect : ColorRect   = get_tree().current_scene.get_node_or_null(blast_effect_path)
 
 func _load_footstep_bank(path: String) -> Array[AudioStream]:
 	var result: Array[AudioStream] = []
@@ -158,6 +170,18 @@ func _load_footstep_bank(path: String) -> Array[AudioStream]:
 
 # ───────────── READY ─────────────
 func _ready() -> void:
+	# ▼ 3.1  Сохраняем «чистые» статы, чтобы потом масштабировать
+	_base_max_health        = max_health
+	_base_max_mana          = max_mana
+	_base_health_regen_rate = health_regen_rate
+	_base_mana_regen_rate   = mana_regen_rate
+	_base_melee_damage      = melee_damage
+
+	# ▼ 3.2  Применяем благословения и подписываемся на обновления
+	_apply_blessing_mods()
+	BlessingManager.blessing_changed.connect(_apply_blessing_mods)
+
+	# ▼ 3.3  (ваш существующий код остаётся без изменений)
 	add_to_group("player")
 	health = max_health
 	mana   = max_mana
@@ -165,8 +189,11 @@ func _ready() -> void:
 
 	melee_area.monitoring = false
 	magic_area.monitoring = false
-	melee_area.body_entered.connect(_on_melee_body_entered)
-	magic_area.body_entered.connect(_on_magic_body_entered)
+	melee_area.body_entered.connect(_on_melee_hit_entered)
+	melee_area.area_entered.connect(_on_melee_hit_entered)
+
+	magic_area.body_entered.connect(_on_magic_hit_entered)
+	magic_area.area_entered.connect(_on_magic_hit_entered)
 
 	_melee_offset_x = melee_area.position.x
 	_magic_offset_x = magic_area.position.x
@@ -194,6 +221,17 @@ func _ready() -> void:
 	if tilemap:
 		_tile_size = tilemap.tile_set.tile_size
 		
+func _on_melee_hit_entered(hit: Node) -> void:
+	var dmg := roundi(melee_damage * _current_phys_mult)
+	if _melee_is_critical:
+		dmg *= 2
+	_deal_damage(hit, dmg)
+
+func _on_magic_hit_entered(hit: Node) -> void:
+	var dmg := roundi(magic_damage * _current_magic_mult)
+	_deal_damage(hit, dmg)
+
+
 # ───────── ДВИЖЕНИЕ / ДЭШ ─────────
 func _apply_horizontal(delta: float, dir: float) -> void:
 	var target := dir * max_speed
@@ -240,9 +278,9 @@ func _orient_dash_particles(dir: int) -> void:
 # ───────── ДОБАВЬТЕ ГДЕ-НИБУДЬ В ЛЮБОМ МЕСТЕ СКРИПТА (лучше сразу после _ready) ─────────
 func take_damage(amount: int) -> void:
 	# отфильтруем «мусорные» вызовы
-	if amount <= 0 or health <= 0:
+	if amount <= 0 or health <= 0 or _hurt_cd > 0:
 		return
-
+	_hurt_cd = 0.5 
 	# частицы урона, если есть
 	if is_instance_valid(part_hurt):
 		part_hurt.restart()
@@ -365,7 +403,8 @@ func _tick_timers(delta: float) -> void:
 	if _jump_prep_timer > 0: _jump_prep_timer -= delta
 	if _apex_timer      > 0: _apex_timer      -= delta
 	if _landing_timer   > 0: _landing_timer   -= delta
-
+	if _hurt_cd > 0: _hurt_cd -= delta
+		
 	# Добыча через оверлей
 	if _is_mining:
 		_mining_timer -= delta
@@ -426,18 +465,22 @@ func _melee_attack() -> void:
 		melee_area.monitoring = true)
 
 func _magic_attack() -> void:
-	if mana < mana_cost_magic: return
+	if mana < mana_cost_magic:
+		return
 	use_mana(mana_cost_magic)
 	_is_attacking = true
 	anim.play("spell_cast")
 	_attack_timer = MAGIC_ANIM_TIME
+
 	get_tree().create_timer(MAGIC_HIT_DELAY).timeout.connect(func():
 		magic_area.monitoring = true
-		part_attack_1.restart()
-		part_attack_2.restart())
-
+		part_attack.restart()
+		BlastFX.trigger_blast(global_position)   # ← теперь точно игрок
+	)
+	
 func _on_melee_body_entered(body: Node) -> void:
 	if body != self and body.has_method("take_damage"):
+		print(">> Ударили: ", body)
 		var dmg: int = melee_damage * (2 if _melee_is_critical else 1)
 		body.take_damage(dmg)
 
@@ -644,3 +687,31 @@ func _maybe_footstep(delta: float) -> void:
 		$FootstepPlayer.stream      = clip
 		$FootstepPlayer.pitch_scale = randf_range(0.95, 1.05)
 		$FootstepPlayer.play()
+
+func _trigger_blast(world_pos: Vector2) -> void:
+	# Autoload теперь видитcя, потому что BlastFX.gd компилируется без ошибок
+	BlastFX.trigger_blast(world_pos)
+
+func _apply_blessing_mods(_g := "", _b := "") -> void:
+	var m = BlessingManager.get_modifiers()
+
+	max_health        = _base_max_health        * m.hp_mult
+	health_regen_rate = _base_health_regen_rate              # не меняем
+	max_mana          = _base_max_mana                       # тоже без изменений
+	mana_regen_rate   = _base_mana_regen_rate * m.mana_regen_mult
+
+	_current_phys_mult  = m.phys_mult
+	_current_magic_mult = m.magic_mult
+
+	# приводим текущие ресурсы в рамки
+	health = clamp(health, 0, max_health)
+	mana   = clamp(mana,   0, max_mana)
+	_emit_stats()
+
+func _deal_damage(target: Node, amount: int) -> void:
+	if target == self or amount <= 0:
+		return
+	if target.has_method("take_damage"):
+		target.take_damage(amount)
+	elif target.has_method("apply_damage"):
+		target.apply_damage(amount)

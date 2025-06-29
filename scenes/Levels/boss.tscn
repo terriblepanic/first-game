@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://djh7as6est3wg"]
+[gd_scene load_steps=19 format=3 uid="uid://djh7as6est3wg"]
 
 [ext_resource type="Texture2D" uid="uid://u42mn0q7fp4h" path="res://assets/test/boss.png" id="1_0pyax"]
 [ext_resource type="PackedScene" uid="uid://bn24h8j685tm8" path="res://scenes/Levels/BossDemonKing.tscn" id="1_5lkho"]
+[ext_resource type="Script" uid="uid://b0crejtvxrk17" path="res://scenes/Levels/boss.gd" id="1_hfesx"]
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="2_1rafi"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="3_liq05"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="4_0pyax"]
@@ -9,6 +10,9 @@
 [ext_resource type="Script" uid="uid://d15nobs3uuxeb" path="res://addons/postfx/nodes/PostFX.gd" id="5_ijvk1"]
 [ext_resource type="Script" uid="uid://bvbw3ejkm2bck" path="res://addons/postfx/scripts/FXBase.gd" id="6_m0xnq"]
 [ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="7_ape5k"]
+[ext_resource type="Script" uid="uid://bkhxqrg1vl7yd" path="res://addons/postfx/effects/ColorCorrectionFX.gd" id="10_psm4i"]
+[ext_resource type="AudioStream" uid="uid://buruxhlu006d5" path="res://assets/music/boss.wav" id="11_ic7el"]
+[ext_resource type="Script" uid="uid://bxsk7uywkd145" path="res://addons/postfx/effects/ChromaticAberrationFX.gd" id="11_inln2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6kgtk"]
 radius = 7.0
@@ -24,7 +28,22 @@ color = Color(0, 0, 0, 1)
 enabled = true
 metadata/_custom_type_script = "uid://cqqc7s7kp8uem"
 
+[sub_resource type="Resource" id="Resource_s2uxd"]
+script = ExtResource("10_psm4i")
+tint = Color(0.996891, 0.817068, 0.785367, 1)
+brightness = 0.0
+saturation = 0.0
+enabled = true
+metadata/_custom_type_script = "uid://bkhxqrg1vl7yd"
+
+[sub_resource type="Resource" id="Resource_v7sgg"]
+script = ExtResource("11_inln2")
+strength = 2.0
+enabled = true
+metadata/_custom_type_script = "uid://bxsk7uywkd145"
+
 [node name="Node2D" type="Node2D"]
+script = ExtResource("1_hfesx")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(373, 170)
@@ -33,6 +52,7 @@ texture = ExtResource("1_0pyax")
 
 [node name="BossDemonKing" parent="." instance=ExtResource("1_5lkho")]
 position = Vector2(395, 266)
+max_health = 200
 ground_y = 266.0
 arena_bounds = Rect2(0, 0, 500, 200)
 
@@ -40,8 +60,6 @@ arena_bounds = Rect2(0, 0, 500, 200)
 
 [node name="Player" parent="Player" instance=ExtResource("2_1rafi")]
 position = Vector2(156, 311)
-collision_layer = 5
-step_pixels = 44.0
 virtual_floor_bit = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Player"]
@@ -68,13 +86,29 @@ metadata/surface = "default"
 position = Vector2(396, 356)
 shape = SubResource("RectangleShape2D_liq05")
 
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+build_mode = 1
+polygon = PackedVector2Array(-7, 423, -6, 6, 740, 6, 740, 425)
+
+[node name="SpawnMarkers" type="Node2D" parent="."]
+
+[node name="Left" type="Marker2D" parent="SpawnMarkers"]
+position = Vector2(64, 313)
+
 [node name="Vignete" type="CanvasLayer" parent="."]
 
 [node name="PostFX" type="CanvasLayer" parent="Vignete"]
 script = ExtResource("5_ijvk1")
-effects = Array[ExtResource("6_m0xnq")]([SubResource("Resource_50kcf")])
+effects = Array[ExtResource("6_m0xnq")]([SubResource("Resource_50kcf"), SubResource("Resource_s2uxd"), SubResource("Resource_v7sgg")])
 metadata/_custom_type_script = "uid://d15nobs3uuxeb"
 
 [node name="InGameMenu" type="CanvasLayer" parent="."]
+process_mode = 2
+layer = 128
 
 [node name="InGameMenu" parent="InGameMenu" instance=ExtResource("4_0pyax")]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("11_ic7el")
+autoplay = true

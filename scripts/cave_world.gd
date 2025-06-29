@@ -4,6 +4,8 @@
 # ------------------------------------------------------------------------------
 extends Node
 
+@export_file("*.tscn") var to_mine := "res://scenes/Levels/mining.tscn"
+
 const Item      = preload("res://scripts/item.gd")
 const TerrainID = TerrainData.TerrainID
 
@@ -29,13 +31,18 @@ var generator  : WorldGenerator   = WorldGenerator.new()
 
 # — сцены / узлы — -------------------------------------------------------------
 @onready var tilemap    : TileMapLayer = $WorldMap
-@onready var player     : Node2D       = $Player/Player
-@onready var exit_area  : Area2D       = $Exit
-@onready var hint_popup : PopupPanel   = $ExitUI
+@onready var exit_area  : Area2D       = $SpawnMarkers/CenterExit
 @onready var Inv := InventoryData
 
-var _player_inside_exit := false
+@onready var hint_popup: PopupPanel = $ExitUI
+@onready var player = $Player/Player
+@onready var player_sprite = $Player/Player/AnimatedSprite2D
+@onready var spawn_points = {
+	"center": $SpawnMarkers/Center,
+}
 
+var player_inside = false
+var is_spawning = true
 
 #==============================================================================#
 #  ИНИЦИАЛИЗАЦИЯ
@@ -45,24 +52,56 @@ func _ready() -> void:
 	if world_tiles:
 		tilemap.tile_set = world_tiles
 
-	# 1 — генератор
 	_setup_generator()
-
-	# 2 — заполняем мир тайлами + чёрной рамкой
 	_fill_world()
-
-	# 3 — площадка спавна и игрок
 	_position_player_and_exit()
-
-	# 4 — стартовый предмет в инвентаре
 	Inv.add_item(load("res://items/wooden_pickaxe.tres"), 1)
 
-	# 5 — сигналы
 	$Player/Player.player_died.connect(_on_player_died)
-	hint_popup.hide()
 	$HUD/Inventory.refresh()
 
+	hint_popup.hide()
+	_setup_spawn()   # <<< плавное появление
 
+
+func _setup_spawn():
+	var entry_dir = Global.last_exit_direction if "last_exit_direction" in Global else "center"
+	var spawn_point = spawn_points.center
+	var offset = Vector2(100, 0)
+	var flip_h = true
+	
+	if entry_dir == "center":
+		spawn_point = spawn_points.center
+		offset = Vector2(0, -50) 
+		flip_h = true
+	
+	match entry_dir:
+		"left":
+			spawn_point = spawn_points.right
+			flip_h = true
+		"right":
+			spawn_point = spawn_points.left
+			flip_h = false
+	
+	player.position = spawn_point.position + (offset * (-1 if entry_dir == "right" else 1))
+	player.set_physics_process(false)
+	player_sprite.play("walking")
+	player_sprite.flip_h = flip_h
+	
+	var tween = create_tween().set_trans(Tween.TRANS_SINE)
+	tween.tween_property(player, "position", spawn_point.position, 1.0)
+	tween.tween_callback(_enable_player)
+
+func _enable_player() -> void:
+	player.set_physics_process(true)
+	player_sprite.stop()
+	is_spawning = false
+	_check_exit_overlap()          # <<< новая строка
+
+func _check_exit_overlap() -> void:    # <<< новая функция
+	if exit_area.get_overlapping_bodies().has(player):
+		player_inside = true
+		hint_popup.popup()
 #------------------------------------------------------------------------------#
 #  НАСТРОЙКА ГЕНЕРАТОРА
 #------------------------------------------------------------------------------#
@@ -107,52 +146,50 @@ func _fill_world() -> void:
 #  СПАВН ИГРОКА + ВЫХОД
 #------------------------------------------------------------------------------#
 func _position_player_and_exit() -> void:
-	var cx := world_width  / 2
+	var cx := world_width / 2
 	var cy := world_height / 2
 	var spawn_tile := Vector2i(cx, cy)
 
-	# очищаем 5 × 5 под ногами
+	# очищаем 5×5 под площадку
 	for dx in range(-2, 3):
-		for dy in range(-2, 2):
-			tilemap.erase_cell(spawn_tile + Vector2i(dx, dy))
-		for dy in range(2, 3):
+		for dy in range(-2, 3):
 			var cell := spawn_tile + Vector2i(dx, dy)
-			tilemap.set_cell(cell, VOID_SOURCE_ID, Vector2i.ZERO, 0)
+			if dy < 2:
+				tilemap.erase_cell(cell)
+			else:
+				tilemap.set_cell(cell, VOID_SOURCE_ID, Vector2i.ZERO, 0)
 
-	# координаты в пикселях
+	# перевод в пиксели
 	var ts := tilemap.tile_set.tile_size
 	var spawn_pos := Vector2(spawn_tile.x * ts.x, spawn_tile.y * ts.y)
 
-	# игрок
-	if player.has_method("set_spawn_position"):
-		player.set_spawn_position(spawn_pos)
-	else:
-		player.global_position = spawn_pos
-
-	# и там-же выход
+	# переносим МАРКЕР (а не игрока)
+	spawn_points.center.position = spawn_pos
 	exit_area.position = spawn_pos
+
 
 
 #==============================================================================#
 #  ВЫХОД – СИГНАЛЫ И КНОПКА
 #==============================================================================#
 func _on_exit_body_entered(body: Node2D) -> void:
-	if body == player:
+	if body.name == "Player" and not is_spawning:
 		hint_popup.popup()
-		_player_inside_exit = true
+		player_inside = true
 
 
 func _on_exit_body_exited(body: Node2D) -> void:
-	if body == player:
+	if body.name == "Player":
 		hint_popup.hide()
-		_player_inside_exit = false
+		player_inside = false
 
 
 func _process(_delta: float) -> void:
-	if _player_inside_exit and Input.is_action_just_pressed("interact"):
+	if player_inside and Input.is_action_just_pressed("interact") and not is_spawning:
 		# ⬇ автосохранение перед сменой сцены, чтобы добытая руда не потерялась
 		SaveManager.save_game(SaveManager.current_slot)
-		TransitionManager.change_scene("res://scenes/Levels/mining.tscn")
+		Global.last_exit_direction = "center"
+		TransitionManager.change_scene(to_mine)
 
 
 #==============================================================================#

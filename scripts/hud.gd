@@ -118,12 +118,15 @@ func _connect_quest_signals() -> void:
 # ==================================================
 func _update_blessings_list(selected_god: String = "", selected_blessing: String = "") -> void:
 	blessings_list.clear()
-	for god_key in BlessingManager.blessings.keys():
-		var bless = BlessingManager.blessings[god_key]
+
+	var all_blessings := BlessingManager.get_all_blessings()
+	for god_key in all_blessings.keys():
+		var bless = all_blessings[god_key]
 		var text = "%s: %s" % [god_key, bless]
 		if god_key == selected_god and bless == selected_blessing:
 			text += " (выбрано)"
 		blessings_list.add_item(text)
+
 
 
 # ==================================================

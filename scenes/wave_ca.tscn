@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1votgovoovmj"]
+
+[ext_resource type="Shader" uid="uid://bi88qda0b6wr" path="res://shaders/blast.gdshader" id="1_kwan5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mpdld"]
+shader = ExtResource("1_kwan5")
+shader_parameter/center_uv = Vector2(0.5, 0.5)
+shader_parameter/screen_size = Vector2(74.6, -10)
+shader_parameter/time = 0.0
+shader_parameter/base_alpha = 0.5
+shader_parameter/fade_out = 1.0
+shader_parameter/ring_speed = 800.0
+shader_parameter/ring_width = 40.0
+shader_parameter/red_off = 0.2
+shader_parameter/green_off = 0.8
+shader_parameter/blue_off = 0.4
+shader_parameter/disper_strength = 20.0
+shader_parameter/blur_px = 16.0
+shader_parameter/glow_strength = 0.1
+shader_parameter/reflect_strength = 2.0
+
+[node name="BlastFXLayer" type="CanvasLayer"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_mpdld")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://drcpid30wp65t"]
+[gd_scene load_steps=30 format=3 uid="uid://drcpid30wp65t"]
 
 [ext_resource type="Texture2D" uid="uid://j5uws3p6obw1" path="res://assets/Levels/Kingdom holl/0.png" id="1_606s2"]
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_myoku"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://bvbw3ejkm2bck" path="res://addons/postfx/scripts/FXBase.gd" id="12_vb0pl"]
 [ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="13_r68dp"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="14_4tqme"]
+[ext_resource type="AudioStream" uid="uid://mcx73unj6r27" path="res://assets/music/holl.wav" id="17_vb0pl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ucs00"]
 radius = 2.61
@@ -119,7 +120,7 @@ follow_viewport_enabled = true
 
 [node name="Player" parent="Player" instance=ExtResource("1_myoku")]
 position = Vector2(184, 77)
-virtual_floor_bit = 5
+virtual_floor_bit = 4
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player/Player"]
@@ -146,13 +147,12 @@ collision_layer = 48
 metadata/surface = "carpet"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
-position = Vector2(174, 21)
+position = Vector2(158, 0)
 build_mode = 1
-polygon = PackedVector2Array(-500, 60, 211, 60, 220, -119, -503, -121)
+polygon = PackedVector2Array(-500, 74.8, 211, 74.8, 220, -119, -503, -121)
 
 [node name="HUD" parent="." instance=ExtResource("2_ucs00")]
 layer = 100
-visible = false
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -255,24 +255,36 @@ effects = Array[ExtResource("12_vb0pl")]([SubResource("Resource_myoku")])
 metadata/_custom_type_script = "uid://d15nobs3uuxeb"
 
 [node name="InGameMenu" type="CanvasLayer" parent="."]
+process_mode = 2
+layer = 128
 
 [node name="InGameMenu" parent="InGameMenu" instance=ExtResource("14_4tqme")]
 
-[node name="RightExit" type="Area2D" parent="."]
+[node name="SpawnMarkers" type="Node2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightExit"]
+[node name="RightExit" type="Area2D" parent="SpawnMarkers"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnMarkers/RightExit"]
 position = Vector2(290, 44.5)
 shape = SubResource("RectangleShape2D_bbgxk")
 
-[node name="LeftExit" type="Area2D" parent="."]
+[node name="LeftExit" type="Area2D" parent="SpawnMarkers"]
 position = Vector2(-577, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftExit"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnMarkers/LeftExit"]
 position = Vector2(290, 44.5)
 shape = SubResource("RectangleShape2D_bbgxk")
 
-[node name="EntranceRight" type="Marker2D" parent="."]
-position = Vector2(191, 74.8)
+[node name="Right" type="Marker2D" parent="SpawnMarkers"]
+position = Vector2(191, 74.85)
 
-[connection signal="body_entered" from="RightExit" to="." method="_on_right_exit_body_entered"]
-[connection signal="body_entered" from="LeftExit" to="." method="_on_left_exit_body_entered"]
+[node name="Left" type="Marker2D" parent="SpawnMarkers"]
+position = Vector2(-203, 74.85)
+
+[node name="AudioListener2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("17_vb0pl")
+autoplay = true
+
+[connection signal="body_entered" from="SpawnMarkers/RightExit" to="." method="_on_right_exit_body_entered"]
+[connection signal="body_entered" from="SpawnMarkers/LeftExit" to="." method="_on_left_exit_body_entered"]

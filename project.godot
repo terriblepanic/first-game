@@ -13,7 +13,7 @@ config_version=5
 config/name="isekai"
 run/main_scene="uid://j8tyoq1hd1bx"
 config/features=PackedStringArray("4.4", "Forward Plus")
-run/max_fps=60
+run/max_fps=30
 boot_splash/show_image=false
 
 [autoload]
@@ -28,6 +28,8 @@ GameState="*res://scripts/GameState.gd"
 DialogueMgr="*res://scripts/DialogueManager.gd"
 QuestMgr="*res://scripts/QuestManager.gd"
 QuestCatalog="*res://scripts/QuestCatalog.gd"
+BlastFX="*res://scripts/BlastFX.gd"
+Global="*res://scripts/Global.gd"
 
 [display]
 

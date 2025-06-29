@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=4 uid="uid://c6r75dgerce7a"]
+[gd_scene load_steps=65 format=4 uid="uid://c6r75dgerce7a"]
 
 [ext_resource type="PackedScene" uid="uid://dolm0awkrgl7m" path="res://scenes/player.tscn" id="1_d72ae"]
 [ext_resource type="PackedScene" uid="uid://i60btftcy6ji" path="res://scenes/HUD.tscn" id="2_vr15j"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://bvbw3ejkm2bck" path="res://addons/postfx/scripts/FXBase.gd" id="19_xjg63"]
 [ext_resource type="PackedScene" uid="uid://dk5n7gglkk0k5" path="res://scenes/in_game_menu.tscn" id="20_j8446"]
 [ext_resource type="Script" uid="uid://cqqc7s7kp8uem" path="res://addons/postfx/effects/VignetteFX.gd" id="20_xt1kv"]
+[ext_resource type="AudioStream" uid="uid://b01kwmj1dnna2" path="res://assets/music/pantheon.wav" id="22_xjg63"]
 
 [sub_resource type="Gradient" id="Gradient_fuqn8"]
 interpolation_mode = 2
@@ -309,7 +310,6 @@ follow_viewport_enabled = true
 
 [node name="Player" parent="Player" instance=ExtResource("1_d72ae")]
 position = Vector2(-29, 69)
-virtual_floor_bit = 4
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player/Player"]
@@ -476,6 +476,7 @@ tile_map_data = PackedByteArray("AAD2//7/AQAAAAAAAAD6//7/AQAAAAAAAAD+//7/AQAAAAA
 tile_set = ExtResource("10_3qtx6")
 
 [node name="EdgeOfScreen" type="StaticBody2D" parent="."]
+collision_layer = 16
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="EdgeOfScreen"]
 build_mode = 1
@@ -517,5 +518,12 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="InGameMenu" type="CanvasLayer" parent="."]
+process_mode = 2
+layer = 128
 
 [node name="InGameMenu" parent="InGameMenu" instance=ExtResource("20_j8446")]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("22_xjg63")
+autoplay = true

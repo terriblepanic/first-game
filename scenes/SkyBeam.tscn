@@ -96,6 +96,8 @@ autostart = true
 
 [node name="MarkerSfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_nuvq7")
+volume_db = -9.455
 
 [node name="ImpactSfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_4vk7h")
+volume_db = -20.665
